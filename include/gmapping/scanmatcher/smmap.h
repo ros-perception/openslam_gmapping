@@ -1,8 +1,8 @@
 #ifndef SMMAP_H
 #define SMMAP_H
-#include <grid/map.h>
-#include <grid/harray2d.h>
-#include <utils/point.h>
+#include <gmapping/grid/map.h>
+#include <gmapping/grid/harray2d.h>
+#include <gmapping/utils/point.h>
 #define SIGHT_INC 1
 
 namespace GMapping {

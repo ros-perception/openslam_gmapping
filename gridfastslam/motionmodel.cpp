@@ -1,5 +1,5 @@
-#include "motionmodel.h"
-#include <utils/stat.h>
+#include <gmapping/gridfastslam/motionmodel.h>
+#include <gmapping/utils/stat.h>
 #include <iostream>
 
 #define MotionModelConditioningLinearCovariance 0.01

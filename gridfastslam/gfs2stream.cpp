@@ -3,8 +3,8 @@
 #include <sstream>
 #include <vector>
 #include <list>
-#include <utils/point.h>
-#include <utils/commandline.h>
+#include <gmapping/utils/point.h>
+#include <gmapping/utils/commandline.h>
 #include "gfsreader.h"
 #define MAX_LINE_LENGHT (1000000)
 

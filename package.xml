@@ -1,0 +1,19 @@
+<package>
+  <name>gmapping</name>
+  <version>0.1.0</version>
+  <description>gmapping</description>
+  <author>Giorgio</author>
+  <maintainer email="vincent.rabaud@gmail.com">Vincent Rabaud</maintainer>
+  <license>BSD</license>
+
+  <url>http://gmapping.com</url>
+
+  <build_depend>boost</build_depend>
+  <build_depend>curl</build_depend>
+
+  <run_depend>boost</run_depend>
+  <run_depend>couchdb</run_depend>
+  <run_depend>curl</run_depend>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>

@@ -1,7 +1,7 @@
 #ifndef FSRMOVEMENT_H
 #define FSRMOVEMENT_H
 
-#include "point.h"
+#include <gmapping/utils/point.h>
 
 namespace GMapping {
 

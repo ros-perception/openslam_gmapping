@@ -6,7 +6,7 @@
 #include <sstream>
 #include <vector>
 #include <list>
-#include <utils/point.h>
+#include <gmapping/utils/point.h>
 
 #define MAX_LINE_LENGHT (1000000)
 

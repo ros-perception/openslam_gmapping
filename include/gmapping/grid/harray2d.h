@@ -1,8 +1,8 @@
 #ifndef HARRAY2D_H
 #define HARRAY2D_H
 #include <set>
-#include <utils/point.h>
-#include <utils/autoptr.h>
+#include <gmapping/utils/point.h>
+#include <gmapping/utils/autoptr.h>
 #include "array2d.h"
 
 namespace GMapping {

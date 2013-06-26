@@ -1,6 +1,6 @@
 #ifndef MAP_H
 #define MAP_H
-#include <utils/point.h>
+#include <gmapping/utils/point.h>
 #include <assert.h>
 #include "accessstate.h"
 #include "array2d.h"
