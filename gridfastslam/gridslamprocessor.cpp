@@ -19,14 +19,17 @@ using namespace std;
 
   GridSlamProcessor::GridSlamProcessor(): m_infoStream(cout){
     
+    period_ = 5.0;
     m_obsSigmaGain=1;
     m_resampleThreshold=0.5;
     m_minimumScore=0.;
   }
   
   GridSlamProcessor::GridSlamProcessor(const GridSlamProcessor& gsp) 
-    :m_particles(gsp.m_particles), m_infoStream(cout){
+    :last_update_time_(0.0), m_particles(gsp.m_particles), m_infoStream(cout){
     
+    period_ = 5.0;
+
     m_obsSigmaGain=gsp.m_obsSigmaGain;
     m_resampleThreshold=gsp.m_resampleThreshold;
     m_minimumScore=gsp.m_minimumScore;
@@ -85,6 +88,7 @@ using namespace std;
   }
   
   GridSlamProcessor::GridSlamProcessor(std::ostream& infoS): m_infoStream(infoS){
+    period_ = 5.0;
     m_obsSigmaGain=1;
     m_resampleThreshold=0.5;
     m_minimumScore=0.;
@@ -146,7 +150,7 @@ using namespace std;
   
   GridSlamProcessor::~GridSlamProcessor(){
     cerr << __PRETTY_FUNCTION__ << ": Start" << endl;
-    cerr << __PRETTY_FUNCTION__ << ": Deeting tree" << endl;
+    cerr << __PRETTY_FUNCTION__ << ": Deleting tree" << endl;
     for (std::vector<Particle>::iterator it=m_particles.begin(); it!=m_particles.end(); it++){
 #ifdef TREE_CONSISTENCY_CHECK		
       TNode* node=it->node;
@@ -374,11 +378,13 @@ void GridSlamProcessor::setMotionModelParameters
     
     bool processed=false;
 
-    // process a scan only if the robot has traveled a given distance
+    // process a scan only if the robot has traveled a given distance or a certain amount of time has elapsed
     if (! m_count 
-	|| m_linearDistance>m_linearThresholdDistance 
-	|| m_angularDistance>m_angularThresholdDistance){
-      
+	|| m_linearDistance>=m_linearThresholdDistance 
+	|| m_angularDistance>=m_angularThresholdDistance
+    || (period_ >= 0.0 && (reading.getTime() - last_update_time_) > period_)){
+      last_update_time_ = reading.getTime();      
+
       if (m_outputStream.is_open()){
 	m_outputStream << setiosflags(ios::fixed) << setprecision(6);
 	m_outputStream << "FRAME " <<  m_readingCount;
@@ -402,6 +408,13 @@ void GridSlamProcessor::setMotionModelParameters
 	plainReading[i]=reading[i];
       }
       m_infoStream << "m_count " << m_count << endl;
+
+      RangeReading* reading_copy = 
+              new RangeReading(reading.size(),
+                               &(reading[0]),
+                               static_cast<const RangeSensor*>(reading.getSensor()),
+                               reading.getTime());
+
       if (m_count>0){
 	scanMatch(plainReading);
 	if (m_outputStream.is_open()){
@@ -432,7 +445,7 @@ void GridSlamProcessor::setMotionModelParameters
 	  m_outputStream << setiosflags(ios::fixed) << setprecision(6);
 	  m_outputStream << "NEFF " << m_neff << endl;
 	}
-	resample(plainReading, adaptParticles);
+ 	resample(plainReading, adaptParticles, reading_copy);
 	
       } else {
 	m_infoStream << "Registering First Scan"<< endl;
@@ -443,7 +456,8 @@ void GridSlamProcessor::setMotionModelParameters
 	  
 	  // cyr: not needed anymore, particles refer to the root in the beginning!
 	  TNode* node=new	TNode(it->pose, 0., it->node,  0);
-	  node->reading=0;
+	  //node->reading=0;
+      node->reading = reading_copy;
 	  it->node=node;
 	  
 	}
