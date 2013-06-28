@@ -35,7 +35,7 @@ ifeq ($(MACOSX),1)
 	@$(PRETTY) "$(CXX) $(LDFLAGS)  -dynamiclib $(OBJS) $(COBJS) -L$(LIBDIR) $(LIBS) -install_name $@ -o $@"
 endif
 ifeq ($(LINUX),1)
-	@$(PRETTY) "$(CXX) $(LDFLAGS) -fPIC -shared $(OBJS) $(COBJS) -L $(LIBDIR) $(LIBS) -o $@"
+ 	@$(PRETTY) "$(CXX) -fPIC -shared $(OBJS) $(COBJS) -L $(LIBDIR) $(LIBS) $(LDFLAGS) -o $@"
 	@if ! $(PRETTY) "$(TESTLIB) $(SONAME)"; then $(MESSAGE) "Testing of $(SONAME) failed."; rm $(SONAME); exit 1; fi;
 endif
 
