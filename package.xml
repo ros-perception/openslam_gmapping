@@ -1,12 +1,14 @@
 <package>
-  <name>gmapping</name>
+  <name>openslam_gmapping</name>
   <version>0.1.0</version>
-  <description>gmapping</description>
-  <author>Giorgio</author>
+  <description>openslam_gmapping</description>
+  <author>Giorgio Grisetti</author>
+  <author>Cyrill Stachniss</author>
+  <author>Wolfram Burgard</author>
   <maintainer email="vincent.rabaud@gmail.com">Vincent Rabaud</maintainer>
   <license>BSD</license>
 
-  <url>http://gmapping.com</url>
+  <url>http://openslam.org/gmapping</url>
 
   <build_depend>boost</build_depend>
   <build_depend>curl</build_depend>
