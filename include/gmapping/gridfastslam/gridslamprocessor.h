@@ -148,6 +148,7 @@ namespace GMapping {
 			       int iterations, double likelihoodSigma=1, double likelihoodGain=1, unsigned int likelihoodSkip=0);
     void setMotionModelParameters(double srr, double srt, double str, double stt);
     void setUpdateDistances(double linear, double angular, double resampleThreshold);
+    void setUpdatePeriod(double p) {period_=p;}
     
     //the "core" algorithm
     void processTruePos(const OdometryReading& odometry);
@@ -248,7 +249,8 @@ namespace GMapping {
  
     /**the laser beams*/
     unsigned int m_beams;
-    
+    double last_update_time_;
+    double period_;
     
     /**the particles*/
     ParticleVector m_particles;

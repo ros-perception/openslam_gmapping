@@ -1,6 +1,7 @@
 #ifndef PARTICLEFILTER_H
 #define PARTICLEFILTER_H
 #include <stdlib.h>
+#include <float.h>
 #include <sys/types.h>
 #include<vector>
 #include<utility>
@@ -23,7 +24,8 @@ typedef std::pair<uint,uint> UIntPair;
 template <class OutputIterator, class Iterator>
 double toNormalForm(OutputIterator& out, const Iterator & begin, const Iterator & end){
 	//determine the maximum
-	double lmax=-MAXDOUBLE;
+	//double lmax=-MAXDOUBLE;
+    double lmax=-DBL_MAX;
 	for (Iterator it=begin; it!=end; it++){
 		lmax=lmax>((double)(*it))? lmax: (double)(*it);
 	}

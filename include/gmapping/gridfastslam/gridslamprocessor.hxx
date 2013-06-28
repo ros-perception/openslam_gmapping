@@ -67,7 +67,7 @@ inline void GridSlamProcessor::normalize(){
   
 }
 
-inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSize, const RangeReading* ){
+inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSize, const RangeReading* reading){
   
   bool hasResampled = false;
   
@@ -112,7 +112,8 @@ inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSiz
       TNode* oldNode=oldGeneration[m_indexes[i]];
       //			cerr << i << "->" << m_indexes[i] << "B("<<oldNode->childs <<") ";
       node=new	TNode(p.pose, 0, oldNode, 0);
-      node->reading=0;
+      //node->reading=0;
+      node->reading=reading;
       //			cerr << "A("<<node->parent->childs <<") " <<endl;
       
       temp.push_back(p);
@@ -155,7 +156,8 @@ inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSiz
       TNode* node=0;
       node=new TNode(it->pose, 0.0, *node_it, 0);
       
-      node->reading=0;
+      //node->reading=0;
+      node->reading=reading;
       it->node=node;
 
       //END: BUILDING TREE
