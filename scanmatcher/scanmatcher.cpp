@@ -133,7 +133,7 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 	/*determine the size of the area*/
 	const double * angle=m_laserAngles+m_initialBeamsSkip;
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++){
-		if (*r>m_laserMaxRange||*r==0.0) continue;
+		if (*r>m_laserMaxRange||*r==0.0||isnan(*r)) continue;
 		double d=*r>m_usableRange?m_usableRange:*r;
 		Point phit=lp;
 		phit.x+=d*cos(lp.theta+*angle);
@@ -165,7 +165,7 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++)
 		if (m_generateMap){
 			double d=*r;
-			if (d>m_laserMaxRange||d==0.0)
+			if (d>m_laserMaxRange||d==0.0||isnan(d))
 				continue;
 			if (d>m_usableRange)
 				d=m_usableRange;
@@ -188,7 +188,7 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 				activeArea.insert(cp);
 			}
 		} else {
-			if (*r>m_laserMaxRange||*r>m_usableRange||*r==0.0) continue;
+			if (*r>m_laserMaxRange||*r>m_usableRange||*r==0.0||isnan(*r)) continue;
 			Point phit=lp;
 			phit.x+=*r*cos(lp.theta+*angle);
 			phit.y+=*r*sin(lp.theta+*angle);
@@ -231,7 +231,7 @@ double ScanMatcher::registerScan(ScanMatcherMap& map, const OrientedPoint& p, co
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++)
 		if (m_generateMap){
 			double d=*r;
-			if (d>m_laserMaxRange||d==0.0)
+			if (d>m_laserMaxRange||d==0.0||isnan(d))
 				continue;
 			if (d>m_usableRange)
 				d=m_usableRange;
@@ -255,7 +255,7 @@ double ScanMatcher::registerScan(ScanMatcherMap& map, const OrientedPoint& p, co
 				esum+=e;
 			}
 		} else {
-			if (*r>m_laserMaxRange||*r>m_usableRange||*r==0.0) continue;
+			if (*r>m_laserMaxRange||*r>m_usableRange||*r==0.0||isnan(*r)) continue;
 			Point phit=lp;
 			phit.x+=*r*cos(lp.theta+*angle);
 			phit.y+=*r*sin(lp.theta+*angle);
