@@ -7,7 +7,7 @@
 #include <gmapping/utils/stat.h>
 #include <iostream>
 #include <gmapping/utils/gvalues.h>
-#define LASER_MAXBEAMS 1024
+#define LASER_MAXBEAMS 2048
 
 namespace GMapping {
 
@@ -16,6 +16,7 @@ class ScanMatcher{
 		typedef Covariance3 CovarianceMatrix;
 		
 		ScanMatcher();
+		~ScanMatcher();
 		double icpOptimize(OrientedPoint& pnew, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const;
 		double optimize(OrientedPoint& pnew, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const;
 		double optimize(OrientedPoint& mean, CovarianceMatrix& cov, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const;
@@ -67,6 +68,9 @@ class ScanMatcher{
 		PARAM_SET_GET(double, linearOdometryReliability, protected, public, public)
 		PARAM_SET_GET(double, freeCellRatio, protected, public, public)
 		PARAM_SET_GET(unsigned int, initialBeamsSkip, protected, public, public)
+
+		// allocate this large array only once
+		IntPoint* m_linePoints;
 };
 
 inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const{
@@ -82,7 +86,7 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++){
 		skip++;
 		skip=skip>m_likelihoodSkip?0:skip;
-		if (*r>m_usableRange) continue;
+		if (*r>m_usableRange||*r==0.0) continue;
 		if (skip) continue;
 		Point phit=lp;
 		phit.x+=*r*cos(lp.theta+*angle);
@@ -148,8 +152,7 @@ inline double ScanMatcher::score(const ScanMatcherMap& map, const OrientedPoint&
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++){
 		skip++;
 		skip=skip>m_likelihoodSkip?0:skip;
-		if (*r>m_usableRange) continue;
-		if (skip) continue;
+		if (skip||*r>m_usableRange||*r==0.0) continue;
 		Point phit=lp;
 		phit.x+=*r*cos(lp.theta+*angle);
 		phit.y+=*r*sin(lp.theta+*angle);
