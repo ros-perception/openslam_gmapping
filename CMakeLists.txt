@@ -4,11 +4,11 @@ project(openslam_gmapping)
 find_package(catkin)
 
 catkin_package(
-  INCLUDE_DIRS ./include/
+  INCLUDE_DIRS include
   LIBRARIES gridfastslam scanmatcher sensor_base sensor_range sensor_odometry utils
 )
 
-include_directories(./include/)
+include_directories(include)
 
 #add_subdirectory(log)
 #add_subdirectory(configfile)
