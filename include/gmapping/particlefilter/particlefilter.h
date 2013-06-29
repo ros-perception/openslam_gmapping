@@ -1,11 +1,11 @@
 #ifndef PARTICLEFILTER_H
 #define PARTICLEFILTER_H
 #include <stdlib.h>
-#include <float.h>
 #include <sys/types.h>
-#include<vector>
-#include<utility>
-#include<cmath>
+#include <vector>
+#include <utility>
+#include <cmath>
+#include <limits>
 #include <gmapping/utils/gvalues.h>
 
 
@@ -24,8 +24,7 @@ typedef std::pair<uint,uint> UIntPair;
 template <class OutputIterator, class Iterator>
 double toNormalForm(OutputIterator& out, const Iterator & begin, const Iterator & end){
 	//determine the maximum
-	//double lmax=-MAXDOUBLE;
-    double lmax=-DBL_MAX;
+	double lmax = -std::numeric_limits<double>::max();
 	for (Iterator it=begin; it!=end; it++){
 		lmax=lmax>((double)(*it))? lmax: (double)(*it);
 	}
@@ -300,7 +299,7 @@ void auxiliary_evolver<Particle, Numeric, QualificationModel, EvolutionModel, Li
 	}
 	uniform_resampler<Numeric, Numeric> resampler;
 	std::vector<unsigned int> indexes(resampler.resampleIndexes(observationWeights));
-	for (typename std::vector<unsigned int>::const_iterator it=indexes.begin(); it!=indexes.end(); it++){
+	for (typename std::vector<unsigned int>::const_iterator it=indexes.begin(); it!=indexes.end(); ++it){
 		Particle & particle=particles[*it];
 		particle=evolutionModel.evolve(particle);
 		particle.setWeight(likelyhoodModel.likelyhood(particle)/observationWeights[*it]);
@@ -318,7 +317,7 @@ void auxiliary_evolver<Particle, Numeric, QualificationModel, EvolutionModel, Li
 	}
 	uniform_resampler<Numeric, Numeric> resampler;
 	std::vector<unsigned int> indexes(resampler.resampleIndexes(observationWeights));
-	for (typename std::vector<unsigned int>::const_iterator it=indexes.begin(); it!=indexes.end(); it++){
+	for (typename std::vector<unsigned int>::const_iterator it=indexes.begin(); it!=indexes.end(); ++it){
 		Particle & particle=src[*it];
 		dest.push_back(evolutionModel.evolve(particle));
 		dest.back().weight*=likelyhoodModel.likelyhood(particle)/observationWeights[*it];
