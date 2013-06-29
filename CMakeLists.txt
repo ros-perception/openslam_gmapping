@@ -10,12 +10,6 @@ catkin_package(
 
 include_directories(include)
 
-#add_subdirectory(log)
-#add_subdirectory(configfile)
-#add_subdirectory(carmenwrapper)
-#add_subdirectory(gui)
-#add_subdirectory(gfs-carmen)
-
 add_subdirectory(gridfastslam)
 add_subdirectory(scanmatcher)
 add_subdirectory(sensor)
