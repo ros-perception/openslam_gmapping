@@ -1,7 +1,7 @@
 <package>
   <name>openslam_gmapping</name>
   <version>0.1.0</version>
-  <description>openslam_gmapping</description>
+  <description>ROS-ified version of gmapping SLAM. Forked from https://openslam.informatik.uni-freiburg.de/data/svn/gmapping/trunk/</description>
   <maintainer email="vincent.rabaud@gmail.com">Vincent Rabaud</maintainer>
   <license>BSD</license>
 
