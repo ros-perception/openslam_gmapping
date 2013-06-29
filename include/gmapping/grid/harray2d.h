@@ -118,7 +118,7 @@ HierarchicalArray2D<Cell>& HierarchicalArray2D<Cell>::operator=(const Hierarchic
 template <class Cell>
 void HierarchicalArray2D<Cell>::setActiveArea(const typename HierarchicalArray2D<Cell>::PointSet& aa, bool patchCoords){
 	m_activeArea.clear();
-	for (PointSet::const_iterator it= aa.begin(); it!=aa.end(); it++){
+	for (PointSet::const_iterator it= aa.begin(); it!=aa.end(); ++it) {
 		IntPoint p;
 		if (patchCoords)
 			p=*it;
@@ -136,17 +136,18 @@ Array2D<Cell>* HierarchicalArray2D<Cell>::createPatch(const IntPoint& ) const{
 
 template <class Cell>
 AccessibilityState  HierarchicalArray2D<Cell>::cellState(int x, int y) const {
-	if (this->isInside(patchIndexes(x,y)))
+	if (this->isInside(patchIndexes(x,y))) {
 		if(isAllocated(x,y))
 			return (AccessibilityState)((int)Inside|(int)Allocated);
 		else
 			return Inside;
+	}
 	return Outside;
 }
 
 template <class Cell>
 void HierarchicalArray2D<Cell>::allocActiveArea(){
-	for (PointSet::const_iterator it= m_activeArea.begin(); it!=m_activeArea.end(); it++){
+	for (PointSet::const_iterator it= m_activeArea.begin(); it!=m_activeArea.end(); ++it){
 		const autoptr< Array2D<Cell> >& ptr=this->m_cells[it->x][it->y];
 		Array2D<Cell>* patch=0;
 		if (!ptr){

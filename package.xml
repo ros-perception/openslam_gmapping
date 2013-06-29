@@ -2,20 +2,17 @@
   <name>openslam_gmapping</name>
   <version>0.1.0</version>
   <description>openslam_gmapping</description>
-  <author>Giorgio Grisetti</author>
-  <author>Cyrill Stachniss</author>
-  <author>Wolfram Burgard</author>
   <maintainer email="vincent.rabaud@gmail.com">Vincent Rabaud</maintainer>
   <license>BSD</license>
 
-  <url>http://openslam.org/gmapping</url>
+  <url type="website">http://openslam.org/gmapping</url>
+  <url type="repository">https://github.com/ros-perception/openslam_gmapping</url>
+  <url type="bugtracker">https://github.com/ros-perception/openslam_gmapping/issues</url>
 
-  <build_depend>boost</build_depend>
-  <build_depend>curl</build_depend>
-
-  <run_depend>boost</run_depend>
-  <run_depend>couchdb</run_depend>
-  <run_depend>curl</run_depend>
+  <author>Giorgio Grisetti</author>
+  <author>Cyrill Stachniss</author>
+  <author>Wolfram Burgard</author>
 
   <buildtool_depend>catkin</buildtool_depend>
+
 </package>
