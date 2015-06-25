@@ -2,6 +2,12 @@
 Changelog for package openslam_gmapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix cppcheck warnings
+* License from BSD to CC
+* Contributors: Isaac IY Saito, Vincent Rabaud
+
 0.1.0 (2013-06-28 17:33:53 -0700)
 ---------------------------------
 - Forked from https://openslam.informatik.uni-freiburg.de/data/svn/gmapping/trunk/
