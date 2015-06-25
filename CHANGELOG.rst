@@ -2,8 +2,8 @@
 Changelog for package openslam_gmapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.1 (2015-06-25)
+------------------
 * fix cppcheck warnings
 * License from BSD to CC
 * Contributors: Isaac IY Saito, Vincent Rabaud
