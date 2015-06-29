@@ -8,7 +8,7 @@ namespace GMapping {
 
 /**stupid utility function for drawing particles form a zero mean, sigma variance normal distribution
 probably it should not go there*/
-double sampleGaussian(double sigma,unsigned long int S=0);
+double sampleGaussian(double sigma,unsigned int S=0);
 
 double evalGaussian(double sigmaSquare, double delta);
 double evalLogGaussian(double sigmaSquare, double delta);

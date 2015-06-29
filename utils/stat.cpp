@@ -45,7 +45,7 @@ double pf_ran_gaussian(double sigma)
   return(sigma * x2 * sqrt(-2.0*log(w)/w));
 }
 
-double sampleGaussian(double sigma, unsigned long int S) {
+double sampleGaussian(double sigma, unsigned int S) {
   /*
 	static gsl_rng * r = NULL;
 	if(r==NULL) {
@@ -56,7 +56,7 @@ double sampleGaussian(double sigma, unsigned long int S) {
 	if (S!=0)
         {
 		//gsl_rng_set(r, S);
-                srand48(S);
+                srand(S);
         }
 	if (sigma==0)
 		return 0;
