@@ -7,6 +7,12 @@
 #include <math.h>
 #include <gmapping/utils/stat.h>
 
+#ifdef _WIN32
+#define srand48(s) srand(s)
+#define drand48() ((((double)rand())*(double)RAND_MAX))
+#define lrand48() rand()
+#endif
+
 namespace GMapping {
 
 #if 0

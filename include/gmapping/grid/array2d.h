@@ -7,6 +7,10 @@
 
 #include <iostream>
 
+#ifdef _WIN32
+#define __PRETTY_FUNCTION__ __FILE__":" << __LINE__
+#endif
+
 namespace GMapping {
 
 template<class Cell, const bool debug=false> class Array2D{
