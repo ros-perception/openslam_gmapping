@@ -27,7 +27,7 @@
 #include <qframe.h>
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qvbox.h>
+#include <QVBoxLayout>
 #include <qmainwindow.h>
 
 class GFSMainWindow: public QMainWindow{

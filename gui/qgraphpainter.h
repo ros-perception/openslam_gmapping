@@ -37,7 +37,7 @@ typedef std::deque<double> DoubleDeque;
 class QGraphPainter :  public QWidget{
 	Q_OBJECT
 	public:
-		QGraphPainter( QWidget * parent = 0, const char * name = 0, WFlags f = 0);
+		QGraphPainter( QWidget * parent = 0, const char * name = 0, Qt::WindowFlags f = 0);
 		virtual ~QGraphPainter();
 	public slots:
 		void clear();

@@ -34,6 +34,7 @@
 #include <sstream>
 #include <iostream>
 #include <qimage.h>
+#include <QTextIStream>
 
 #include <utils/point.h>
 #include "gsp_thread.h"
@@ -79,7 +80,7 @@ class QParticleViewer :  public QWidget{
 		
 		
 		typedef std::vector<OrientedPoint> OrientedPointVector;
-		QParticleViewer( QWidget * parent = 0, const char * name = 0, WFlags f = 0, GridSlamProcessorThread* thread=0 );
+		QParticleViewer( QWidget * parent = 0, const char * name = 0, Qt::WindowFlags f = 0, GridSlamProcessorThread* thread=0 );
 		virtual ~QParticleViewer();
 		virtual void timerEvent(QTimerEvent * te);
 		virtual void resizeEvent(QResizeEvent *);
@@ -88,7 +89,7 @@ class QParticleViewer :  public QWidget{
 		void drawFromMemory();
 		void drawMap(const ScanMatcherMap& map);
 		void start(int period);
-		QTextIStream* tis;
+		Qt::Core::QTextIStream* tis;
 		
 		MatchingParameters matchingParameters;
 		StartParameters startParameters;
