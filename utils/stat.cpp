@@ -5,6 +5,7 @@
 //#include <gsl/gsl_eigen.h>
 //#include <gsl/gsl_blas.h>
 #include <math.h>
+#include <gmapping/utils/gvalues.h>
 #include <gmapping/utils/stat.h>
 
 namespace GMapping {

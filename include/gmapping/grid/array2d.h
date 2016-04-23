@@ -7,6 +7,10 @@
 
 #include <iostream>
 
+#ifndef __PRETTY_FUNCTION__
+#define __FUNCDNAME__
+#endif
+
 namespace GMapping {
 
 template<class Cell, const bool debug=false> class Array2D{
