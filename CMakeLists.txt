@@ -15,7 +15,7 @@ add_subdirectory(scanmatcher)
 add_subdirectory(sensor)
 add_subdirectory(utils)
 
-if(1)
+if(0)
   add_subdirectory(gui)
 endif()
 
