@@ -2,6 +2,17 @@
 Changelog for package openslam_gmapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* better Windows compilation
+  This is taken from `#9 <https://github.com/ros-perception/openslam_gmapping/issues/9>`_ which can now be closed.
+* fix a few more graphics stuff for Qt5
+* get GUI back in shape for those interested
+* use srand instead of srand48
+  srand48 is non-standard and we are using a seed that is an
+  unsigned int so we might as well use srand
+* Contributors: Vincent Rabaud
+
 0.1.1 (2015-06-25)
 ------------------
 * fix cppcheck warnings
