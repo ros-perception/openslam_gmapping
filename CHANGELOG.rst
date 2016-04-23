@@ -2,8 +2,8 @@
 Changelog for package openslam_gmapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.2 (2016-04-23)
+------------------
 * better Windows compilation
   This is taken from `#9 <https://github.com/ros-perception/openslam_gmapping/issues/9>`_ which can now be closed.
 * fix a few more graphics stuff for Qt5
