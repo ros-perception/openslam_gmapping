@@ -28,7 +28,7 @@
 #include <qpixmap.h>
 #include <qstring.h>
 #include <qwidget.h>
-#include <qwmatrix.h>
+#include <qmatrix.h>
 #include <deque>
 #include <utils/gvalues.h>
 

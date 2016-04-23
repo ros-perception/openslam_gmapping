@@ -27,14 +27,14 @@
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qwidget.h>
-#include <qwmatrix.h>
+#include <qmatrix.h>
 #include <qtextstream.h>
 #include <vector>
 #include <assert.h>
 #include <sstream>
 #include <iostream>
 #include <qimage.h>
-#include <QTextIStream>
+#include <QTextStream>
 
 #include <utils/point.h>
 #include "gsp_thread.h"
@@ -89,7 +89,7 @@ class QParticleViewer :  public QWidget{
 		void drawFromMemory();
 		void drawMap(const ScanMatcherMap& map);
 		void start(int period);
-		Qt::Core::QTextIStream* tis;
+		QTextStream* tis;
 		
 		MatchingParameters matchingParameters;
 		StartParameters startParameters;
