@@ -14,13 +14,13 @@ namespace GMapping {
 class ScanMatcher{
 	public:
 		typedef Covariance3 CovarianceMatrix;
-		
+
 		ScanMatcher();
 		~ScanMatcher();
 		double icpOptimize(OrientedPoint& pnew, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const;
 		double optimize(OrientedPoint& pnew, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const;
 		double optimize(OrientedPoint& mean, CovarianceMatrix& cov, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const;
-		
+
 		double   registerScan(ScanMatcherMap& map, const OrientedPoint& p, const double* readings);
 		void setLaserParameters
 			(unsigned int beams, double* angles, const OrientedPoint& lpose);
@@ -36,12 +36,12 @@ class ScanMatcher{
 		double likelihood(double& _lmax, OrientedPoint& _mean, CovarianceMatrix& _cov, const ScanMatcherMap& map, const OrientedPoint& p, Gaussian3& odometry, const double* readings, double gain=180.);
 		inline const double* laserAngles() const { return m_laserAngles; }
 		inline unsigned int laserBeams() const { return m_laserBeams; }
-		
+
 		static const double nullLikelihood;
 	protected:
 		//state of the matcher
 		bool m_activeAreaComputed;
-		
+
 		/**laser parameters*/
 		unsigned int m_laserBeams;
 		double       m_laserAngles[LASER_MAXBEAMS];
@@ -82,7 +82,7 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 	unsigned int skip=0;
 	double freeDelta=map.getDelta()*m_freeCellRatio;
 	std::list<PointPair> pairs;
-	
+
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++){
 		skip++;
 		skip=skip>m_likelihoodSkip?0:skip;
@@ -92,11 +92,8 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 		phit.x+=*r*cos(lp.theta+*angle);
 		phit.y+=*r*sin(lp.theta+*angle);
 		IntPoint iphit=map.world2map(phit);
-		Point pfree=lp;
-		pfree.x+=(*r-map.getDelta()*freeDelta)*cos(lp.theta+*angle);
-		pfree.y+=(*r-map.getDelta()*freeDelta)*sin(lp.theta+*angle);
- 		pfree=pfree-phit;
-		IntPoint ipfree=map.world2map(pfree);
+		Point pfree(-freeDelta * cos(lp.theta + *angle), -freeDelta * sin(lp.theta + *angle));
+    IntPoint ipfree = map.world2map(phit + pfree) - iphit;
 		bool found=false;
 		Point bestMu(0.,0.);
 		Point bestCell(0.,0.);
@@ -118,8 +115,8 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 						if((mu*mu)<(bestMu*bestMu)){
 							bestMu=mu;
 							bestCell=cell.mean();
-						} 
-						
+						}
+
 				}
 			//}
 		}
@@ -129,7 +126,7 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 		}
 		//std::cerr << std::endl;
 	}
-	
+
 	OrientedPoint result(0,0,0);
 	//double icpError=icpNonlinearStep(result,pairs);
 	std::cerr << "result(" << pairs.size() << ")=" << result.x << " " << result.y << " " << result.theta << std::endl;
@@ -157,11 +154,8 @@ inline double ScanMatcher::score(const ScanMatcherMap& map, const OrientedPoint&
 		phit.x+=*r*cos(lp.theta+*angle);
 		phit.y+=*r*sin(lp.theta+*angle);
 		IntPoint iphit=map.world2map(phit);
-		Point pfree=lp;
-		pfree.x+=(*r-map.getDelta()*freeDelta)*cos(lp.theta+*angle);
-		pfree.y+=(*r-map.getDelta()*freeDelta)*sin(lp.theta+*angle);
- 		pfree=pfree-phit;
-		IntPoint ipfree=map.world2map(pfree);
+		Point pfree(-freeDelta * cos(lp.theta + *angle), -freeDelta * sin(lp.theta + *angle));
+    IntPoint ipfree = map.world2map(phit + pfree) - iphit;
 		bool found=false;
 		Point bestMu(0.,0.);
 		for (int xx=-m_kernelSize; xx<=m_kernelSize; xx++)
@@ -210,11 +204,8 @@ inline unsigned int ScanMatcher::likelihoodAndScore(double& s, double& l, const 
 		phit.x+=*r*cos(lp.theta+*angle);
 		phit.y+=*r*sin(lp.theta+*angle);
 		IntPoint iphit=map.world2map(phit);
-		Point pfree=lp;
-		pfree.x+=(*r-freeDelta)*cos(lp.theta+*angle);
-		pfree.y+=(*r-freeDelta)*sin(lp.theta+*angle);
-		pfree=pfree-phit;
-		IntPoint ipfree=map.world2map(pfree);
+		Point pfree(-freeDelta * cos(lp.theta + *angle), -freeDelta * sin(lp.theta + *angle));
+    IntPoint ipfree = map.world2map(phit + pfree) - iphit;
 		bool found=false;
 		Point bestMu(0.,0.);
 		for (int xx=-m_kernelSize; xx<=m_kernelSize; xx++)
@@ -233,7 +224,7 @@ inline unsigned int ScanMatcher::likelihoodAndScore(double& s, double& l, const 
 					}else
 						bestMu=(mu*mu)<(bestMu*bestMu)?mu:bestMu;
 				}
-			//}	
+			//}
 		}
 		if (found){
 			s+=exp(-1./m_gaussianSigma*bestMu*bestMu);
