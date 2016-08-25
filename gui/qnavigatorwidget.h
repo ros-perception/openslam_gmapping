@@ -6,9 +6,11 @@
 #include <utils/point.h>
 #include <list>
 
+namespace GMapping {
+
 class QNavigatorWidget :  public QMapPainter{
 	public:
-		QNavigatorWidget( QWidget * parent = 0, const char * name = 0, WFlags f = 0);
+		QNavigatorWidget( QWidget * parent = 0, const char * name = 0, Qt::WindowFlags f = 0);
 		virtual ~QNavigatorWidget();
 		std::list<GMapping::IntPoint > trajectoryPoints;
 		bool repositionRobot;
@@ -30,6 +32,8 @@ class QNavigatorWidget :  public QMapPainter{
 		virtual void mousePressEvent ( QMouseEvent * e );
 		virtual void keyPressEvent ( QKeyEvent * e );
 };
+
+}
 
 #endif
 

@@ -2,21 +2,21 @@
  *
  * This file is part of the GMAPPING project
  *
- * GMAPPING Copyright (c) 2004 Giorgio Grisetti, 
+ * GMAPPING Copyright (c) 2004 Giorgio Grisetti,
  * Cyrill Stachniss, and Wolfram Burgard
  *
- * This software is licensed under the "Creative Commons 
- * License (Attribution-NonCommercial-ShareAlike 2.0)" 
- * and is copyrighted by Giorgio Grisetti, Cyrill Stachniss, 
+ * This software is licensed under the "Creative Commons
+ * License (Attribution-NonCommercial-ShareAlike 2.0)"
+ * and is copyrighted by Giorgio Grisetti, Cyrill Stachniss,
  * and Wolfram Burgard.
- * 
+ *
  * Further information on this license can be found at:
  * http://creativecommons.org/licenses/by-nc-sa/2.0/
- * 
+ *
  * GMAPPING is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied 
+ * but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE.  
+ * PURPOSE.
  *
  *****************************************************************/
 
@@ -32,12 +32,14 @@
 #include <deque>
 #include <utils/gvalues.h>
 
+namespace GMapping {
+
 typedef std::deque<double> DoubleDeque;
 
 class QGraphPainter :  public QWidget{
 	Q_OBJECT
 	public:
-		QGraphPainter( QWidget * parent = 0, const char * name = 0, Qt::WindowFlags f = 0);
+		QGraphPainter(QWidget * parent = 0, const char * name = 0, Qt::WindowFlags f = 0);
 		virtual ~QGraphPainter();
 	public slots:
 		void clear();
@@ -58,10 +60,11 @@ class QGraphPainter :  public QWidget{
 		bool autoscale;
 		bool m_useYReference;
 		int timer;
-		virtual void paintEvent ( QPaintEvent *paintevent );
+		virtual void paintEvent (QPaintEvent *paintevent);
 		QPixmap * m_pixmap;
 		QString title;
 };
 
-#endif
+}
 
+#endif

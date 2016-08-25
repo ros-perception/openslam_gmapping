@@ -69,7 +69,7 @@ int main(int argc, char** argv){
 		parseString("-filename",filename);
 		parseString("-format",format);
 	CMD_PARSE_END
-	
+
 	double maxUrange=maxrange;
 	if (! filename){
 		cout << " supply a gfs file, please" << endl;
@@ -88,7 +88,7 @@ int main(int argc, char** argv){
 	}
 	RecordList rl;
 	rl.read(is);
-	
+
 	int particles=0;
 	int beams=0;
 	for (RecordList::const_iterator it=rl.begin(); it!=rl.end(); it++){
@@ -113,8 +113,8 @@ int main(int argc, char** argv){
 		cout << "0 beams found, terminating" << endl;
 		return -1;
 	}
-	
-	
+
+
 	double laserBeamStep=0;
 	if (beams==180||beams==181){
 		laserBeamStep=M_PI/180;
@@ -138,7 +138,7 @@ int main(int argc, char** argv){
 	matcher.setlaserMaxRange(maxrange);
 	matcher.setusableRange(maxUrange);
 	matcher.setgenerateMap(true);
-	
+
 	double xmin, ymin, xmax, ymax;
 	cout << "computing bounding box" << endl;
 	computeBoundingBox(xmin, ymin, xmax, ymax, rl, maxrange);
@@ -147,14 +147,14 @@ int main(int argc, char** argv){
 	Point center;
 	center.x=(xmin+xmax)/2.;
 	center.y=(ymin+ymax)/2.;
-		
+
 	cout << "computing paths" << endl;
 	unsigned int frame=0;
 	int scanCount=0;
-	
+
 	for (RecordList::const_iterator it=rl.begin(); it!=rl.end(); it++){
 		const ScanMatchRecord* s=dynamic_cast<const ScanMatchRecord*>(*it);
-		if (!s) 
+		if (!s)
 			continue;
 		scanCount++;
 		if (scanCount%scanSkip)
@@ -172,7 +172,7 @@ int main(int argc, char** argv){
 			}
 		}
 		cout << "bestIdx=" << bestIdx << " bestWeight=" << bestWeight << endl;
-		
+
 		cout << "computing best map" << endl;
 		ScanMatcherMap smap(center, xmin, ymin, xmax, ymax, delta);
 		int count=0;
@@ -203,7 +203,7 @@ int main(int argc, char** argv){
 					painter.drawPoint(x,smap.getMapSizeY()-y-1);
 				}
 			}
-		
+
 		/*
 		cout << "painting trajectories" << endl;
 		for (int p=0; p<particles; p++){
@@ -223,7 +223,7 @@ int main(int argc, char** argv){
 					oldPoint=ip;
 					first=false;
 				}
-			}	
+			}
 			paths[p].destroyReferences();;
 		}
 		painter.setPen(QColor(Qt::black));
@@ -236,22 +236,22 @@ int main(int argc, char** argv){
 				ip.y=smap.getMapSizeY()-ip.y-1;
 				if (!first){
 					painter.drawLine( oldPoint.x, oldPoint.y, ip.x, ip.y);
-				} 
+				}
 				oldPoint=ip;
 				first=false;
 			}
-		}	
+		}
 		paths[bestIdx].destroyReferences();;
 		*/
 		cout << " DONE" << endl;
 		cout << "writing image" << endl;
-		QImage img=pixmap.convertToImage();
+		QImage img=pixmap.toImage();
 		char ofilename[MAX_FILENAME];
 		sprintf(ofilename,"%s-%.4d.%s",filename, frame, format);
 		cout << ofilename << endl;
 		img.save(QString(ofilename), format,0);
 		frame++;
-		
+
 	}
 	cout << "For Cyrill: \"The Evil is Outside\"" << endl;
 }

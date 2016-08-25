@@ -13,11 +13,10 @@ include_directories(include)
 add_subdirectory(gridfastslam)
 add_subdirectory(scanmatcher)
 add_subdirectory(sensor)
+add_subdirectory(log)
 add_subdirectory(utils)
-
-if(0)
-  add_subdirectory(gui)
-endif()
+add_subdirectory(configfile)
+add_subdirectory(gui)
 
 install(DIRECTORY include/
   DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}

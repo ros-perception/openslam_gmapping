@@ -326,7 +326,7 @@ void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 	
 	if( gpt->infoStream()){
 		gpt->infoStream() << " initialPose=" << initialPose.x << " " << initialPose.y << " " << initialPose.theta
-				<< cout << " xmin=" << xmin <<" ymin=" << ymin <<" xmax=" << xmax <<" ymax=" << ymax << endl;
+				<< " xmin=" << xmin <<" ymin=" << ymin <<" xmax=" << xmax <<" ymax=" << ymax << endl;
 	}
 	gpt->setMotionModelParameters(gpt->srr, gpt->srt, gpt->str, gpt->stt);
 	gpt->setUpdateDistances(gpt->linearUpdate, gpt->angularUpdate, gpt->resampleThreshold);

@@ -1,14 +1,16 @@
 #include "qmappainter.h"
-#include "moc_qmappainter.cpp"
+#include <qevent.h>
 
-QMapPainter::QMapPainter( QWidget * parent, const char * name, WFlags f):
-	QWidget(parent, name, f|WRepaintNoErase|WResizeNoErase){
+using namespace GMapping;
+
+QMapPainter::QMapPainter( QWidget * parent, const char * name, Qt::WindowFlags f):
+	QWidget(parent, f){
 	m_pixmap=new QPixmap(size());
 	m_pixmap->fill(Qt::white);
 }
 
 void QMapPainter::resizeEvent(QResizeEvent * sizeev){
-	m_pixmap->resize(sizeev->size());
+	m_pixmap->scaled(sizeev->size());
 }
 
 QMapPainter::~QMapPainter(){
@@ -17,7 +19,7 @@ QMapPainter::~QMapPainter(){
 
 
 void QMapPainter::timerEvent(QTimerEvent * te) {
-        if (te->timerId()==timer) 
+  if (te->timerId()==timer)
 		update();
 }
 
@@ -27,6 +29,6 @@ void QMapPainter::start(int period){
 
 
 void QMapPainter::paintEvent ( QPaintEvent * ){
-	bitBlt(this,0,0,m_pixmap,0,0,m_pixmap->width(),m_pixmap->height(),CopyROP);
+  m_pixmap->grabWidget(this);
 }
 

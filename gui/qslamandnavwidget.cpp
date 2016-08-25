@@ -1,9 +1,10 @@
 #include "qslamandnavwidget.h"
 #include <stdio.h>
+#include <qevent.h>
+
 using namespace GMapping;
 
-
-QSLAMandNavWidget::QSLAMandNavWidget( QWidget * parent, const char * name, WFlags f)
+QSLAMandNavWidget::QSLAMandNavWidget( QWidget * parent, const char * name, Qt::WindowFlags f)
 : QMapPainter(parent, name, f), dumper("slamandnav", 1){
 	robotPose=IntPoint(0,0);
 	robotHeading=0;
@@ -27,14 +28,14 @@ void QSLAMandNavWidget::mousePressEvent ( QMouseEvent * e ){
 	QPoint p=e->pos();
 	int mx=p.x();
 	int my=height()-p.y();
-	if ( e->state()&Qt::ShiftButton && e->button()==Qt::LeftButton) {
+	if ((e->modifiers() & Qt::ShiftModifier) && e->button()==Qt::LeftButton) {
 		if (trajectorySent)
 			trajectoryPoints.clear();
 		e->accept();
 		IntPoint p=IntPoint(mx, my);
 		trajectoryPoints.push_back(p);
 		trajectorySent=false;
-	} 
+	}
 }
 
 void QSLAMandNavWidget::keyPressEvent ( QKeyEvent * e ){
@@ -62,16 +63,16 @@ void QSLAMandNavWidget::keyPressEvent ( QKeyEvent * e ){
 	if (e->key()==Qt::Key_R){
 		e->accept();
 		goHome=true;
-	}	
+	}
 	if (e->key()==Qt::Key_C){
 		e->accept();
 		slamFinished=true;
-		
+
 	}
 	if (e->key()==Qt::Key_Q){
 		e->accept();
 		wantsQuit=true;
-		
+
 	}
 	if (e->key()==Qt::Key_H){
 		e->accept();
@@ -117,12 +118,12 @@ void QSLAMandNavWidget::paintEvent ( QPaintEvent * ){
 		int rx=robotPose.x;
 		int ry=height()-robotPose.y;
 		int robotSize=6;
-		painter.drawLine(rx, ry, 
+		painter.drawLine(rx, ry,
 				rx+(int)(robotSize*cos(robotHeading)), ry-(int)(robotSize*sin(robotHeading)));
 		painter.drawEllipse(rx-robotSize, ry-robotSize, 2*robotSize, 2*robotSize);
 	}
 	if (writeImages){
 		dumper.dump(pixmap);
 	}
-	bitBlt(this,0,0,&pixmap,0,0,pixmap.width(),pixmap.height(),CopyROP);
+	pixmap.grabWidget(this);
 }

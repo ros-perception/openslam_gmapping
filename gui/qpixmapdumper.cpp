@@ -1,6 +1,9 @@
 #include "qpixmapdumper.h"
 #include <cstdio>
 #include <cstring>
+#include <qevent.h>
+
+using namespace GMapping;
 
 QPixmapDumper::QPixmapDumper(std::string p, int c){
 	format="PNG";
@@ -22,7 +25,7 @@ bool QPixmapDumper::dump(const QPixmap& pixmap){
 	if (!(counter%cycles)){
 		char buf[filename_bufsize];
 		sprintf(buf,"%s-%05d.%s",prefix.c_str(), frame, format.c_str());
-		QImage image=pixmap.convertToImage();
+		QImage image=pixmap.toImage();
 		image.save(QString(buf), format.c_str(),0);
 		frame ++;
 	}

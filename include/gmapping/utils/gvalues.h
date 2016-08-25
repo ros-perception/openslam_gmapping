@@ -24,5 +24,5 @@
   #define isnan(x) (_isnan(x))
 #endif
 
-#endif 
+#endif
 

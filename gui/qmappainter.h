@@ -8,9 +8,11 @@
 #include <utils/gvalues.h>
 #include <utils/point.h>
 
+namespace GMapping {
+
 class QMapPainter :  public QWidget{
 	public:
-		QMapPainter( QWidget * parent = 0, const char * name = 0, WFlags f = 0);
+		QMapPainter( QWidget * parent = 0, const char * name = 0, Qt::WindowFlags f = 0);
 		virtual ~QMapPainter();
 	public:
 		template < typename Cell >
@@ -29,13 +31,13 @@ class QMapPainter :  public QWidget{
 template <typename Cell>
 void QMapPainter::setPixmap(unsigned int xsize, unsigned int ysize, Cell** values){
 	QSize s(xsize, ysize);
-	m_pixmap->resize(s);
+	m_pixmap->scaled(s);
 	m_pixmap->fill(Qt::white);
 	QPainter painter(m_pixmap);
 	for (unsigned int x=0; x<(unsigned int)xsize; x++)
 		for (unsigned int y=0; y<(unsigned int)ysize; y++){
 			double v=(double) values[x][y];
-			
+
 			if (v>=0){
 				unsigned int grayVal=(unsigned char) (255-(unsigned char)(255*v));
 				painter.setPen(QColor(grayVal, grayVal, grayVal));
@@ -54,6 +56,8 @@ void QMapPainter::drawPoints(const Iterator& begin, const Iterator& end, unsigne
 		GMapping::IntPoint p=(GMapping::IntPoint)*it;
 		painter.drawPoint(p.x, height()-p.y);
 	}
+}
+
 }
 
 #endif

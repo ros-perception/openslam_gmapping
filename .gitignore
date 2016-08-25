@@ -2,3 +2,6 @@
 *.o
 bin/
 lib/
+.project
+.cproject
+build/
