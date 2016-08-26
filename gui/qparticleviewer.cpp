@@ -276,7 +276,7 @@ void QParticleViewer::drawFromMemory(){
   }
 
   //check for the best index
-  double wmax=-1e2000;
+  double wmax=-DBL_MAX;
   unsigned int bestIdx=0;
   bool emitted=false;
   for (unsigned int i=0; i<particleSize; i++){

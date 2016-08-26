@@ -2,26 +2,26 @@
  *
  * This file is part of the GMAPPING project
  *
- * GMAPPING Copyright (c) 2004 Giorgio Grisetti, 
+ * GMAPPING Copyright (c) 2004 Giorgio Grisetti,
  * Cyrill Stachniss, and Wolfram Burgard
  *
- * This software is licensed under the "Creative Commons 
- * License (Attribution-NonCommercial-ShareAlike 2.0)" 
- * and is copyrighted by Giorgio Grisetti, Cyrill Stachniss, 
+ * This software is licensed under the "Creative Commons
+ * License (Attribution-NonCommercial-ShareAlike 2.0)"
+ * and is copyrighted by Giorgio Grisetti, Cyrill Stachniss,
  * and Wolfram Burgard.
- * 
+ *
  * Further information on this license can be found at:
  * http://creativecommons.org/licenses/by-nc-sa/2.0/
- * 
+ *
  * GMAPPING is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied 
+ * but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE.  
+ * PURPOSE.
  *
  *****************************************************************/
 
-
 #include "gsp_thread.h"
+#include <utils/gvalues.h>
 #include <utils/commandline.h>
 #include <utils/stat.h>
 #include <configfile/configfile.h>
@@ -91,7 +91,7 @@ int GridSlamProcessorThread::init(int argc, const char * const * argv){
 	  angularOdometryReliability = cfg.value("gfs","angularOdometryReliability",angularOdometryReliability);
 	  ebuf = (std::string) cfg.value("gfs","estrategy", ebuf);
 	  considerOdometryCovariance = cfg.value("gfs","considerOdometryCovariance",considerOdometryCovariance);
-	  
+
 	}
 
 
@@ -140,10 +140,10 @@ int GridSlamProcessorThread::init(int argc, const char * const * argv){
 		parseDouble("-linearOdometryReliability",linearOdometryReliability);
 		parseDouble("-angularOdometryReliability",angularOdometryReliability);
 		parseString("-estrategy", ebuf);
-		
+
 		parseFlag("-considerOdometryCovariance",considerOdometryCovariance);
 	CMD_PARSE_END;
-	
+
 	if (filename.length() <=0){
 		cout << "no filename specified" << endl;
 		return -1;
@@ -155,7 +155,7 @@ int GridSlamProcessorThread::loadFiles(const char * fn){
 	if (onLine){
 		cout << " onLineProcessing" << endl;
 		return 0;
-	}	
+	}
 	ifstream is;
 	if (fn)
 	  is.open(fn);
@@ -171,10 +171,10 @@ int GridSlamProcessorThread::loadFiles(const char * fn){
 	is.close();
 
 	sensorMap=conf.computeSensorMap();
-	
+
 	if (input)
 		delete input;
-	
+
 	if (! readFromStdin){
 		plainStream.open(filename.c_str());
 		input=new InputSensorStream(sensorMap, plainStream);
@@ -184,7 +184,7 @@ int GridSlamProcessorThread::loadFiles(const char * fn){
 		cout << "Plain Stream opened on stdin" << endl;
 	}
 	return 0;
-}	
+}
 
 GridSlamProcessorThread::GridSlamProcessorThread(): GridSlamProcessor(cerr){
 	//This are the processor parameters
@@ -195,7 +195,7 @@ GridSlamProcessorThread::GridSlamProcessorThread(): GridSlamProcessor(cerr){
 	xmax=100.;
 	ymax=100.;
 	delta=0.05;
-	
+
 	//scan matching parameters
 	sigma=0.05;
 	maxrange=80.;
@@ -218,14 +218,14 @@ GridSlamProcessorThread::GridSlamProcessorThread(): GridSlamProcessor(cerr){
 	//particle parameters
 	particles=30;
 	randseed=0;
-	
+
 	//gfs parameters
 	angularUpdate=0.5;
 	linearUpdate=1;
 	resampleThreshold=0.5;
-	
+
 	input=0;
-	
+
 	pthread_mutex_init(&hp_mutex,0);
 	pthread_mutex_init(&ind_mutex,0);
 	pthread_mutex_init(&hist_mutex,0);
@@ -244,15 +244,15 @@ GridSlamProcessorThread::GridSlamProcessorThread(): GridSlamProcessor(cerr){
 	lasamplestep=0.005;
 	linearOdometryReliability=0.;
 	angularOdometryReliability=0.;
-	
+
 	considerOdometryCovariance=false;
-/*	
+/*
 	// This  are the dafault settings for a grid map of 10 cm
 	m_llsamplerange=0.1;
 	m_llsamplestep=0.1;
 	m_lasamplerange=0.02;
 	m_lasamplestep=0.01;
-*/	
+*/
 	// This  are the dafault settings for a grid map of 20/25 cm
 /*
 	m_llsamplerange=0.2;
@@ -262,24 +262,24 @@ GridSlamProcessorThread::GridSlamProcessorThread(): GridSlamProcessor(cerr){
 	m_generateMap=false;
 */
 
-			
+
 }
 
 GridSlamProcessorThread::~GridSlamProcessorThread(){
 	pthread_mutex_destroy(&hp_mutex);
 	pthread_mutex_destroy(&ind_mutex);
 	pthread_mutex_destroy(&hist_mutex);
-	
+
 	for (deque<Event*>::const_iterator it=eventBuffer.begin(); it!=eventBuffer.end(); it++)
 		delete *it;
 }
-	
+
 
 void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 	if (! gpt->input && ! gpt->onLine)
 		return 0;
-		
-	
+
+
 	//if started online retrieve the settings from the connection
 #ifdef CARMEN_SUPPORT
 	if (gpt->onLine){
@@ -302,17 +302,17 @@ void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 		return 0;
 	}
 #endif
-	
+
 	gpt->setSensorMap(gpt->sensorMap);
 	gpt->setMatchingParameters(gpt->maxUrange, gpt->maxrange, gpt->sigma, gpt->kernelSize, gpt->lstep, gpt->astep, gpt->iterations, gpt->lsigma, gpt->ogain, gpt->lskip);
-	
-	double xmin=gpt->xmin, 
-	       ymin=gpt->ymin, 
-	       xmax=gpt->xmax, 
+
+	double xmin=gpt->xmin,
+	       ymin=gpt->ymin,
+	       xmax=gpt->xmax,
 	       ymax=gpt->ymax;
-	
+
 	OrientedPoint initialPose(0,0,0);
-	
+
 	if (gpt->autosize){
 		if (gpt->readFromStdin || gpt->onLine)
 		cout << "Error, cant autosize form stdin" << endl;
@@ -323,7 +323,7 @@ void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 		initialPose=gpt->boundingBox(log, xmin, ymin, xmax, ymax);
 		delete log;
 	}
-	
+
 	if( gpt->infoStream()){
 		gpt->infoStream() << " initialPose=" << initialPose.x << " " << initialPose.y << " " << initialPose.theta
 				<< " xmin=" << xmin <<" ymin=" << ymin <<" xmax=" << xmax <<" ymax=" << ymax << endl;
@@ -336,13 +336,13 @@ void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 	gpt->setllsamplestep(gpt->llsamplestep);
 	gpt->setlasamplerange(gpt->llsamplerange);
 	gpt->setlasamplestep(gpt->llsamplestep);
-	
+
 #define printParam(n)\
 	 gpt->outputStream() \
 	 << "PARAM " << \
 	 #n \
 	 << " " << gpt->n << endl
-	
+
 	if (gpt->outfilename.length()>0 ){
 		gpt->outputStream().open(gpt->outfilename.c_str());
 		printParam(filename);
@@ -352,7 +352,7 @@ void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 		printParam(xmax);
 		printParam(ymax);
 		printParam(delta);
-		
+
 		//scan matching parameters
 		printParam(sigma);
 		printParam(maxrange);
@@ -369,28 +369,28 @@ void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 		printParam(lskip);
 		printParam(autosize);
 		printParam(skipMatching);
-	
+
 		//motion model parameters
 		printParam(srr);
-		printParam(srt); 
+		printParam(srt);
 		printParam(str);
 		printParam(stt);
 		//particle parameters
 		printParam(particles);
 		printParam(randseed);
-		
+
 		//gfs parameters
 		printParam(angularUpdate);
 		printParam(linearUpdate);
 		printParam(resampleThreshold);
-		
+
 		printParam(llsamplerange);
 		printParam(lasamplerange);
 		printParam(llsamplestep);
 		printParam(lasamplestep);
 	}
 	#undef printParam
-	
+
 	if (gpt->randseed!=0)
 		sampleGaussian(1,gpt->randseed);
 	if (!gpt->infoStream()){
@@ -398,8 +398,8 @@ void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 	} else {
 		gpt->infoStream() << "setting randseed" << gpt->randseed<< endl;
 	}
-	
-	
+
+
 #ifdef CARMEN_SUPPORT
 	list<RangeReading*> rrlist;
 	if (gpt->onLine){
@@ -424,7 +424,7 @@ void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 			if (rr && gpt->running){
 				const RangeSensor* rs=dynamic_cast<const RangeSensor*>(rr->getSensor());
 				assert (rs && rs->beams().size()==rr->size());
-				
+
 				bool processed=gpt->processScan(*rr);
 				rawpath << rr->getPose().x << " " << rr->getPose().y << " " << rr->getPose().theta << endl;
 				if (0 && processed){
@@ -476,7 +476,7 @@ void * GridSlamProcessorThread::fastslamthread(GridSlamProcessorThread* gpt){
 		pnumber++;
 		cerr << buf << endl;
 	}
-		
+
 	DoneEvent *done=new DoneEvent;
 	gpt->addEvent(done);
 	gpt->infoStream() << "Hallo, I am the gsp thread. I have finished. Do you think it is the case of checking for unlocked mutexes." << endl;
@@ -522,34 +522,34 @@ void GridSlamProcessorThread::onOdometryUpdate(){
 		hypotheses.push_back(part->pose);
 		weightSums.push_back(part->weightSum);
 	}
-	
+
 	ParticleMoveEvent* event=new ParticleMoveEvent;
 	event->scanmatched=false;
 	event->hypotheses=hypotheses;
 	event->weightSums=weightSums;
 	event->neff=m_neff;
 	pthread_mutex_unlock(&hp_mutex);
-	
+
 	addEvent(event);
-	
+
 	syncOdometryUpdate();
 }
 
 void GridSlamProcessorThread::onResampleUpdate(){
 	pthread_mutex_lock(&ind_mutex);
 	pthread_mutex_lock(&hp_mutex);
-	
+
 	indexes=GridSlamProcessor::getIndexes();
-	
+
 	assert (indexes.size()==getParticles().size());
 	ResampleEvent* event=new ResampleEvent;
 	event->indexes=indexes;
-	
+
 	pthread_mutex_unlock(&hp_mutex);
 	pthread_mutex_unlock(&ind_mutex);
-	
+
 	addEvent(event);
-	
+
 	syncResampleUpdate();
 }
 
@@ -558,7 +558,7 @@ void GridSlamProcessorThread::onScanmatchUpdate(){
 	hypotheses.clear();
 	weightSums.clear();
 	unsigned int bestIdx=0;
-	double bestWeight=-1e1000;
+	double bestWeight=-DBL_MAX;
 	unsigned int idx=0;
 	for (GridSlamProcessor::ParticleVector::const_iterator part=getParticles().begin(); part!=getParticles().end(); part++ ){
 		hypotheses.push_back(part->pose);
@@ -569,14 +569,14 @@ void GridSlamProcessorThread::onScanmatchUpdate(){
 		}
 		idx++;
 	}
-	
+
 	ParticleMoveEvent* event=new ParticleMoveEvent;
 	event->scanmatched=true;
 	event->hypotheses=hypotheses;
 	event->weightSums=weightSums;
 	event->neff=m_neff;
 	addEvent(event);
-	
+
 	if (! mapTimer){
 		MapEvent* event=new MapEvent;
 		event->index=bestIdx;
@@ -584,10 +584,10 @@ void GridSlamProcessorThread::onScanmatchUpdate(){
 		event->pose=getParticles()[bestIdx].pose;
 		addEvent(event);
 	}
-	
+
 	mapTimer++;
 	mapTimer=mapTimer%mapUpdateTime;
-	
+
 	pthread_mutex_unlock(&hp_mutex);
 
 	syncOdometryUpdate();

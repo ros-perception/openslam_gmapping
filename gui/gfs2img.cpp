@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include <limits.h>
+#include <cfloat>
 #include <scanmatcher/scanmatcher.h>
 #include <gridfastslam/gfsreader.h>
 #include <qpixmap.h>
@@ -38,8 +38,8 @@ void computeBoundingBox(double& xmin, double& ymin, double& xmax, double& ymax, 
 }
 
 void computeBoundingBox(double& xmin, double& ymin, double& xmax, double& ymax, const RecordList& rl, double maxrange){
-	xmin = ymin = MAXDOUBLE;
-	xmax = ymax =-MAXDOUBLE;
+	xmin = ymin = DBL_MAX;
+	xmax = ymax =-DBL_MAX;
 	const LaserRecord* lastLaser=0;
 	for (RecordList::const_iterator it=rl.begin(); it!=rl.end(); it++){
 		const LaserRecord* lr= dynamic_cast<const LaserRecord*>(*it);
@@ -162,7 +162,7 @@ int main(int argc, char** argv){
 		cout << "Frame " << frame << " ";
 		std::vector<RecordList> paths(particles);
 		int bestIdx=0;
-		double bestWeight=-MAXDOUBLE;
+		double bestWeight=-DBL_MAX;
 		for (int p=0; p<particles; p++){
 			paths[p]=rl.computePath(p,it);
 			double w=rl.getLogWeight(p,it);

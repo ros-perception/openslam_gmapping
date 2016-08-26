@@ -22,6 +22,7 @@
 
 
 #include "qgraphpainter.h"
+#include <utils/gvalues.h>
 #include <iostream>
 #include <qevent.h>
 
@@ -101,7 +102,7 @@ void QGraphPainter::start(int period){
 void QGraphPainter::paintEvent ( QPaintEvent * ){
 	m_pixmap->fill(Qt::white);
 	QPainter painter(m_pixmap);
-	double _min=MAXDOUBLE, _max=-MAXDOUBLE;
+	double _min=DBL_MAX, _max=-DBL_MAX;
 	if (autoscale){
 		for (unsigned int i=0; i<(unsigned int)width() && i<values.size(); i++){
 			_min=_min<values[i]?_min:values[i];

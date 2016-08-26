@@ -22,7 +22,7 @@ typedef std::pair<uint,uint> UIntPair;
 template <class OutputIterator, class Iterator>
 double toNormalForm(OutputIterator& out, const Iterator & begin, const Iterator & end){
 	//determine the maximum
-	double lmax=-MAXDOUBLE;
+	double lmax=-DBL_MAX;
 	for (Iterator it=begin; it!=end; it++){
 		lmax=lmax>((double)(*it))? lmax: (double)(*it);
 	}
@@ -81,8 +81,8 @@ void resample(std::vector<int>& indexes, const WeightVector& weights, unsigned i
 
 template <typename WeightVector>
 void normalizeWeights(WeightVector& weights, unsigned int size, double minWeight){
-	double wmin=MAXDOUBLE;
-	double wmax=-MAXDOUBLE;
+	double wmin=DBL_MAX;
+	double wmax=-DBL_MAX;
 	for (uint i=0; i<size; i++){
 		wmin=wmin<weights[i]?wmin:weights[i];
 		wmax=wmax>weights[i]?wmax:weights[i];
