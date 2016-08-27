@@ -4,17 +4,19 @@
 #include <qimage.h>
 #include <string>
 
-namespace GMapping {
+namespace GMapping
+{
 
-struct QPixmapDumper{
-	QPixmapDumper(std::string prefix, int cycles);
-	void reset();
-	std::string prefix;
-	std::string format;
-	bool dump(const QPixmap& pixmap);
-	int counter;
-	int cycles;
-	int frame;
+struct QPixmapDumper
+{
+    QPixmapDumper(std::string prefix, int cycles);
+    void reset();
+    std::string prefix;
+    std::string format;
+    bool dump(const QPixmap& pixmap);
+    int counter;
+    int cycles;
+    int frame;
 };
 
 }

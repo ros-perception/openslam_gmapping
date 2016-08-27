@@ -20,24 +20,23 @@
  *
  *****************************************************************/
 
-
 #include <qapplication.h>
 #include "qparticleviewer.h"
 
 using namespace GMapping;
 
-int  main (int argc, char ** argv){
-	QApplication app(argc, argv);
-	QParticleViewer * pviewer=new QParticleViewer(0);
-	app.setActiveWindow(pviewer);
-	pviewer->show();
-	FILE* f=fopen(argv[1], "r");
-	if (!f)
-		return -1;
-	QTextStream is(f);
-	pviewer->tis=&is;
-	pviewer->start(10);
-	return app.exec();
-	std::cout << "DONE: " << argv[1] <<endl;
+int main(int argc, char ** argv)
+{
+  QApplication app(argc, argv);
+  QParticleViewer * pviewer = new QParticleViewer(0);
+  app.setActiveWindow(pviewer);
+  pviewer->show();
+  FILE* f = fopen(argv[1], "r");
+  if (!f)
+    return -1;
+  QTextStream is(f);
+  pviewer->tis = &is;
+  pviewer->start(10);
+  return app.exec();
+  std::cout << "DONE: " << argv[1] << endl;
 }
-
