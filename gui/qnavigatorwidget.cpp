@@ -123,5 +123,6 @@ void QNavigatorWidget::paintEvent ( QPaintEvent * ){
 	if (writeImages){
 		dumper.dump(pixmap);
 	}
-	pixmap.grabWidget(this);
+	QPainter widgetPainter(this);
+  widgetPainter.drawPixmap(0, 0, pixmap, 0, 0, pixmap.width(), pixmap.height());
 }

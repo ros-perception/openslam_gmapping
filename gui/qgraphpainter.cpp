@@ -113,7 +113,6 @@ void QGraphPainter::paintEvent ( QPaintEvent * ){
 		_max=max;
 	}
 
-
 	painter.setPen(Qt::black);
 	painter.drawRect(0, 0, width(), height());
 	const int boundary=2;
@@ -143,5 +142,7 @@ void QGraphPainter::paintEvent ( QPaintEvent * ){
 	painter.drawText( 3, height()/2, title);
 	QFont sansFont( "Helvetica [Cronyx]", 6);
 	painter.setFont(sansFont);
-	m_pixmap->grabWidget(this);
+
+  QPainter widgetPainter(this);
+  widgetPainter.drawPixmap(0, 0, *m_pixmap, 0, 0, m_pixmap->width(), m_pixmap->height());
 }

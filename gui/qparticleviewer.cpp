@@ -57,7 +57,8 @@ QParticleViewer::~QParticleViewer(){
 void QParticleViewer::paintEvent ( QPaintEvent *paintevent ){
   if (! m_pixmap)
     return;
-  m_pixmap->grabWidget(this);
+  QPainter painter(this);
+  painter.drawPixmap(0, 0, *m_pixmap, 0, 0, m_pixmap->width(), m_pixmap->height());
 }
 
 void QParticleViewer::mousePressEvent ( QMouseEvent *event ){
