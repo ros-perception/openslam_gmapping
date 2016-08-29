@@ -17,6 +17,7 @@ add_subdirectory(log)
 add_subdirectory(utils)
 add_subdirectory(configfile)
 add_subdirectory(gui)
+add_subdirectory(particlefilter)
 
 install(DIRECTORY include/
   DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}

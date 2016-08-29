@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <utils/point.h>
-#include "particlefilter.h"
+#include <particlefilter/particlefilter.h>
 
 using namespace std;
 using namespace GMapping;
@@ -52,7 +52,7 @@ struct LikelyhoodModel{
 	}
 };
 
-int main (unsigned int argc, const char * const * argv){
+int main (int argc, const char * const * argv){
 	vector<Particle> particles(1000);
 	LikelyhoodModel likelyhoodModel;
 	uniform_resampler<Particle, double> resampler;
@@ -63,18 +63,18 @@ int main (unsigned int argc, const char * const * argv){
 		it->p.x=400*(drand48()-.5);
 		it->p.y=400*(drand48()-.5);
 	}
-	
+
 	vector<Point> sensors;
-	
+
 	sensors.push_back(Point(-50,0));
 	sensors.push_back(Point(50,0));
 	sensors.push_back(Point(0,100));
-	
+
 	likelyhoodModel.sigma=1000;
 	likelyhoodModel.observations.push_back(70);
 	likelyhoodModel.observations.push_back(70);
 	likelyhoodModel.observations.push_back(70);
-	
+
 	likelyhoodModel.observerVector=sensors;
 	while (1){
 		char buf[2];
@@ -86,7 +86,7 @@ int main (unsigned int argc, const char * const * argv){
 		for (vector<Particle>::iterator it=particles.begin(); it!=particles.end(); it++){
 			it->w*=likelyhoodModel.likelyhood(*it);
 		}
-		
+
 		ofstream os("sir.dat");
 		printParticles(os, particles);
 		os.close();

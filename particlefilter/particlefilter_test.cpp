@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include "particlefilter.h"
+#include <particlefilter/particlefilter.h>
 
 using namespace std;
 
@@ -44,7 +44,7 @@ struct LikelyhoodModel{
 	}
 };
 
-int main (unsigned int argc, const char * const * argv){
+int main (int argc, const char * const * argv){
 	int nparticles=100;
 	if (argc>1)
 		nparticles=atoi(argv[1]);
@@ -91,7 +91,7 @@ int main (unsigned int argc, const char * const * argv){
 		auxparticles=newgeneration;
 		cout << "plot [0:10][0:10]\"sir.dat\" w impulses" << endl;
 		cout << "replot 1./(0.1+10*(x-2)*(x-2))+0.5/(0.1+10*(x-8)*(x-8))" << endl;
-		
+
 //		cout << "replot \"aux.dat\" w p" << endl;
 	}
 }
