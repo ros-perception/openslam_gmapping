@@ -40,7 +40,7 @@ unsigned int RangeReading::rawView(double* v, double density) const{
 			Point dp=lastPoint-lp;
 			double distance=sqrt(dp*dp);
 			if (distance<density){
-			  //				v[i]=MAXDOUBLE;
+			  //				v[i]=DBL_MAX;
 				v[i]=std::numeric_limits<double>::max();
 				suppressed++;
 			}

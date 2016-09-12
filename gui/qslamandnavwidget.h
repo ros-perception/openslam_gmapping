@@ -6,33 +6,38 @@
 #include <utils/point.h>
 #include <list>
 
-class QSLAMandNavWidget :  public QMapPainter{
-	public:
-		QSLAMandNavWidget( QWidget * parent = 0, const char * name = 0, WFlags f = 0);
-		virtual ~QSLAMandNavWidget();
-		std::list<GMapping::IntPoint > trajectoryPoints;
-		GMapping::IntPoint robotPose;
-		double robotHeading;
-		
-		bool slamRestart;
-		bool slamFinished;
-		bool enableMotion;
-		bool startWalker;
-		bool trajectorySent;
-		bool goHome;
-		bool wantsQuit;
-		bool printHelp;
-		bool saveGoalPoints;
-		bool writeImages;
-		bool drawRobot;
-		QPixmapDumper dumper;
+namespace GMapping
+{
 
+class QSLAMandNavWidget: public QMapPainter
+{
+  public:
+    QSLAMandNavWidget(QWidget * parent = 0, const char * name = 0, Qt::WindowFlags f = 0);
+    virtual ~QSLAMandNavWidget();
 
-	protected:
-		virtual void paintEvent ( QPaintEvent *paintevent );
-		virtual void mousePressEvent ( QMouseEvent * e );
-		virtual void keyPressEvent ( QKeyEvent * e );
+    std::list<GMapping::IntPoint> trajectoryPoints;
+    GMapping::IntPoint robotPose;
+    double robotHeading;
+    bool slamRestart;
+    bool slamFinished;
+    bool enableMotion;
+    bool startWalker;
+    bool trajectorySent;
+    bool goHome;
+    bool wantsQuit;
+    bool printHelp;
+    bool saveGoalPoints;
+    bool writeImages;
+    bool drawRobot;
+    QPixmapDumper dumper;
+
+  protected:
+    virtual void paintEvent(QPaintEvent *paintevent);
+    virtual void mousePressEvent(QMouseEvent * e);
+    virtual void keyPressEvent(QKeyEvent * e);
 };
+
+}
 
 #endif
 

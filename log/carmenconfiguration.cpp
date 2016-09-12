@@ -1,11 +1,11 @@
 #include <cstdlib>
-#include "carmenconfiguration.h"
 #include <iostream>
 #include <sstream>
 #include <assert.h>
 #include <sys/types.h>
-#include <sensor_odometry/odometrysensor.h>
-#include <sensor_range/rangesensor.h>
+#include <log/carmenconfiguration.h>
+#include <sensor/sensor_odometry/odometrysensor.h>
+#include <sensor/sensor_range/rangesensor.h>
 
 
 #define LINEBUFFER_SIZE 10000

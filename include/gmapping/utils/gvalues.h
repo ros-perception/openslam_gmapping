@@ -1,16 +1,13 @@
 #ifndef _GVALUES_H_
 #define _GVALUES_H_
 
-#define MAXDOUBLE 1e1000
-#ifdef LINUX
-	#include <values.h>
-#endif
-#ifdef MACOSX
-	#include <limits.h>
+#if __linux__ or __APPLE__
+	#include <climits>
+  #include <cfloat>
 	#include <math.h>
-	//#define isnan(x) (x==FP_NAN)
 #endif
-#ifdef _WIN32
+
+#if _WIN32
   #include <limits>
   #ifndef __DRAND48_DEFINED__
      #define __DRAND48_DEFINED__
@@ -24,5 +21,4 @@
   #define isnan(x) (_isnan(x))
 #endif
 
-#endif 
-
+#endif

@@ -34,8 +34,8 @@ class DataSmoother {
     m_cummulated.clear();
     m_int=-1; 
     m_parzenWindow = parzenWindow;
-    m_from = MAXDOUBLE;
-    m_to = -MAXDOUBLE;
+    m_from = DBL_MAX;
+    m_to = -DBL_MAX;
     m_lastStep = 0.001;
   };
 
@@ -46,7 +46,7 @@ class DataSmoother {
 
 
   void setMinToZero() {
-    double minval=MAXDOUBLE;
+    double minval=DBL_MAX;
 
     for (Data::const_iterator it = m_data.begin(); it != m_data.end(); it++) {
       const DataPoint& d = *it;
@@ -324,8 +324,8 @@ class DataSmoother {
 /*   DataSmoother(double parzenWindow) { */
 /*     m_int=-1;  */
 /*     m_parzenWindow = parzenWindow; */
-/*     m_from = InputPoint(MAXDOUBLE,MAXDOUBLE,MAXDOUBLE); */
-/*     m_to = InputPoint(-MAXDOUBLE,-MAXDOUBLE,-MAXDOUBLE); */
+/*     m_from = InputPoint(DBL_MAX,DBL_MAX,DBL_MAX); */
+/*     m_to = InputPoint(-DBL_MAX,-DBL_MAX,-DBL_MAX); */
 /*   }; */
 
 /*   virtual ~DataSmoother() { */
@@ -338,7 +338,7 @@ class DataSmoother {
 
 
 /*   void setMinToZero() { */
-/*     double minval=MAXDOUBLE; */
+/*     double minval=DBL_MAX; */
 /*     for (Data::const_iterator it = m_data.begin(); it != m_data.end(); it++) { */
 /*       const DataPoint& d = *it; */
 /*       if (minval > d.val) */

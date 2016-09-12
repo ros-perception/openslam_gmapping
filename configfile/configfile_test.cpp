@@ -20,23 +20,30 @@
  *
  *****************************************************************/
 
-#include <qapplication.h>
-#include "qparticleviewer.h"
+#include <iostream>
+#include <configfile/configfile.h>
 
+using namespace std;
 using namespace GMapping;
 
-int main(int argc, char ** argv)
+int main(int argc, char** argv)
 {
-  QApplication app(argc, argv);
-  QParticleViewer * pviewer = new QParticleViewer(0);
-  app.setActiveWindow(pviewer);
-  pviewer->show();
-  FILE* f = fopen(argv[1], "r");
-  if (!f)
-    return -1;
-  QTextStream is(f);
-  pviewer->tis = &is;
-  pviewer->start(10);
-  return app.exec();
-  std::cout << "DONE: " << argv[1] << endl;
+  if (argc != 2) {
+    cerr << "Usage:  " << argv[0] << " [initifle]" << endl;
+    exit(0);
+  }
+
+  ConfigFile cfg;
+  cfg.read(argv[argc - 1]);
+
+  cout << "-- values from configfile --" << endl;
+  cfg.dumpValues(cout);
+
+  cout << "-- adding a value --" << endl;
+  cfg.value("unkown", "unkown", "the new value!");
+
+  cout << "-- values from configfile & added values --" << endl;
+  cfg.dumpValues(cout);
+
+  return 0;
 }

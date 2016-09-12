@@ -1,32 +1,38 @@
 #include "qmappainter.h"
-#include "moc_qmappainter.cpp"
+#include <qevent.h>
 
-QMapPainter::QMapPainter( QWidget * parent, const char * name, WFlags f):
-	QWidget(parent, name, f|WRepaintNoErase|WResizeNoErase){
-	m_pixmap=new QPixmap(size());
-	m_pixmap->fill(Qt::white);
+using namespace GMapping;
+
+QMapPainter::QMapPainter(QWidget * parent, const char * name, Qt::WindowFlags f) :
+    QWidget(parent, f)
+{
+  m_pixmap = new QPixmap(size());
+  m_pixmap->fill(Qt::white);
 }
 
-void QMapPainter::resizeEvent(QResizeEvent * sizeev){
-	m_pixmap->resize(sizeev->size());
+void QMapPainter::resizeEvent(QResizeEvent * sizeev)
+{
+  m_pixmap->scaled(sizeev->size());
 }
 
-QMapPainter::~QMapPainter(){
-	delete m_pixmap;
+QMapPainter::~QMapPainter()
+{
+  delete m_pixmap;
 }
 
-
-void QMapPainter::timerEvent(QTimerEvent * te) {
-        if (te->timerId()==timer) 
-		update();
+void QMapPainter::timerEvent(QTimerEvent * te)
+{
+  if (te->timerId() == timer)
+    update();
 }
 
-void QMapPainter::start(int period){
-	timer=startTimer(period);
+void QMapPainter::start(int period)
+{
+  timer = startTimer(period);
 }
 
-
-void QMapPainter::paintEvent ( QPaintEvent * ){
-	bitBlt(this,0,0,m_pixmap,0,0,m_pixmap->width(),m_pixmap->height(),CopyROP);
+void QMapPainter::paintEvent(QPaintEvent *)
+{
+  QPainter painter(this);
+  painter.drawPixmap(0, 0, *m_pixmap, 0, 0, m_pixmap->width(), m_pixmap->height());
 }
-
