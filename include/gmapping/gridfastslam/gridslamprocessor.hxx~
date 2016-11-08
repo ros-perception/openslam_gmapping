@@ -12,7 +12,7 @@ inline void GridSlamProcessor::scanMatch(const double* plainReading){
   double sumScore=0;
   double start = omp_get_wtime();
 
-#pragma omp parallel for reduction(+:sumScore)
+//#pragma omp parallel for reduction(+:sumScore)
   for (int i = 0; i < m_particles.size(); i++){
     OrientedPoint corrected;
     double score, l, s;

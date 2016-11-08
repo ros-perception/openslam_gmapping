@@ -311,7 +311,7 @@ namespace GMapping {
     // the functions below performs side effect on the internal structure,
     //should be called only inside the processScan method
   private:
-    std::vector<double> durations;
+
     /**scanmatches all the particles*/
     inline void scanMatch(const double *plainReading);
     /**normalizes the particle weights*/
