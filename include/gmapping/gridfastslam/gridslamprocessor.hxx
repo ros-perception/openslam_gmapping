@@ -16,9 +16,9 @@ inline void GridSlamProcessor::scanMatch(const double* plainReading){
   for (int i = 0; i < m_particles.size(); i++){
     OrientedPoint corrected;
     double score, l, s;
+
     score=m_matcher.optimize(corrected, m_particles[i].map, m_particles[i].pose, plainReading);
     //    it->pose=corrected;
-    // m_infoStream << i << std::endl;
     if (score>m_minimumScore){
       m_particles[i].pose=corrected;
       // m_infoStream << "Pose was corrected!" << std::endl;
@@ -40,6 +40,7 @@ inline void GridSlamProcessor::scanMatch(const double* plainReading){
     m_matcher.invalidateActiveArea();
     m_matcher.computeActiveArea(m_particles[i].map, m_particles[i].pose, plainReading);
   }
+
   double duration = omp_get_wtime() - start;
   durations.push_back(duration);
   for(int i = 0; i < durations.size(); i++) {
@@ -47,36 +48,11 @@ inline void GridSlamProcessor::scanMatch(const double* plainReading){
   }
   if(durations.size() > 0) avg_duration /= durations.size();
   
-  m_infoStream << "Scan matching took: " << avg_duration << std::endl;
-  /*for (ParticleVector::iterator it=m_particles.begin(); it!=m_particles.end(); it++, i++){
-    OrientedPoint corrected;
-    double score, l, s;
-    score=m_matcher.optimize(corrected, it->map, it->pose, plainReading);
-    //    it->pose=corrected;
-    // m_infoStream << i << std::endl;
-    if (score>m_minimumScore){
-      it->pose=corrected;
-      // m_infoStream << "Pose was corrected!" << std::endl;
-    } else {
-	if (m_infoStream){
-	  m_infoStream << "Scan Matching Failed, using odometry. Likelihood=" << l <<std::endl;
-	  m_infoStream << "lp:" << m_lastPartPose.x << " "  << m_lastPartPose.y << " "<< m_lastPartPose.theta <<std::endl;
-	  m_infoStream << "op:" << m_odoPose.x << " " << m_odoPose.y << " "<< m_odoPose.theta <<std::endl;
-	}
-    }
-
-    m_matcher.likelihoodAndScore(s, l, it->map, it->pose, plainReading);
-    sumScore+=score;
-    it->weight+=l;
-    it->weightSum+=l;
-
-    //set up the selective copy of the active area
-    //by detaching the areas that will be updated
-    m_matcher.invalidateActiveArea();
-    m_matcher.computeActiveArea(it->map, it->pose, plainReading);
-  }*/
-  if (m_infoStream)
+  
+  if (m_infoStream) {
     m_infoStream << "Average Scan Matching Score=" << sumScore/m_particles.size() << std::endl;	
+    m_infoStream << "Average Scan Matching Time=" << avg_duration << "s" << std::endl;
+  }
 }
 
 inline void GridSlamProcessor::normalize(){
