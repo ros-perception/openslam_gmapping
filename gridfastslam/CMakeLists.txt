@@ -1,10 +1,5 @@
-find_package(OpenMP REQUIRED)
 if(OPENMP_FOUND)
   message(STATUS "OPENMP FOUND")
-  set(OpenMP_FLAGS ${OpenMP_CXX_FLAGS})  # or if you use C: ${OpenMP_C_FLAGS}
-  set(OpenMP_LIBS gomp)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 endif()
 
 add_library(gridfastslam
@@ -14,6 +9,6 @@ add_library(gridfastslam
     motionmodel.cpp
 )
 
-target_link_libraries(gridfastslam scanmatcher sensor_range ${OpenMP_LIBS})
+target_link_libraries(gridfastslam scanmatcher sensor_range)
 
 install(TARGETS gridfastslam DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
