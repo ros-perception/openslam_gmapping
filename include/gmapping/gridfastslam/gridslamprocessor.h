@@ -15,6 +15,7 @@
 #include <gmapping/scanmatcher/scanmatcher.h>
 #include "motionmodel.h"
 
+#include <omp.h>
 
 
 namespace GMapping {
