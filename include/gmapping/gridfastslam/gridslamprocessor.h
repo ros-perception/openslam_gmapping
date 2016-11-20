@@ -244,7 +244,6 @@ namespace GMapping {
     /**minimum score for considering the outcome of the scanmatching good*/
     PARAM_SET_GET(double, minimumScore, protected, public, public);
 
-
   protected:
     /**Copy constructor*/
     GridSlamProcessor(const GridSlamProcessor& gsp);
