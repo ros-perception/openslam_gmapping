@@ -8,15 +8,20 @@
 If the scan matching fails, the particle gets a default likelihood.*/
 inline void GridSlamProcessor::scanMatch(const double* plainReading){
   // sample a new pose from each scan in the reference
-  
+  double avg_duration = 0;
   double sumScore=0;
-  for (ParticleVector::iterator it=m_particles.begin(); it!=m_particles.end(); it++){
+  double start = omp_get_wtime();
+
+#pragma omp parallel for reduction(+:sumScore)
+  for (int i = 0; i < m_particles.size(); i++){
     OrientedPoint corrected;
     double score, l, s;
-    score=m_matcher.optimize(corrected, it->map, it->pose, plainReading);
+
+    score=m_matcher.optimize(corrected, m_particles[i].map, m_particles[i].pose, plainReading);
     //    it->pose=corrected;
     if (score>m_minimumScore){
-      it->pose=corrected;
+      m_particles[i].pose=corrected;
+      // m_infoStream << "Pose was corrected!" << std::endl;
     } else {
 	if (m_infoStream){
 	  m_infoStream << "Scan Matching Failed, using odometry. Likelihood=" << l <<std::endl;
@@ -25,18 +30,29 @@ inline void GridSlamProcessor::scanMatch(const double* plainReading){
 	}
     }
 
-    m_matcher.likelihoodAndScore(s, l, it->map, it->pose, plainReading);
+    m_matcher.likelihoodAndScore(s, l, m_particles[i].map, m_particles[i].pose, plainReading);
     sumScore+=score;
-    it->weight+=l;
-    it->weightSum+=l;
+    m_particles[i].weight+=l;
+    m_particles[i].weightSum+=l;
 
     //set up the selective copy of the active area
     //by detaching the areas that will be updated
     m_matcher.invalidateActiveArea();
-    m_matcher.computeActiveArea(it->map, it->pose, plainReading);
+    m_matcher.computeActiveArea(m_particles[i].map, m_particles[i].pose, plainReading);
   }
-  if (m_infoStream)
+
+  double duration = omp_get_wtime() - start;
+  durations.push_back(duration);
+  for(int i = 0; i < durations.size(); i++) {
+    avg_duration += durations[i];
+  }
+  if(durations.size() > 0) avg_duration /= durations.size();
+  
+  
+  if (m_infoStream) {
     m_infoStream << "Average Scan Matching Score=" << sumScore/m_particles.size() << std::endl;	
+    m_infoStream << "Average Scan Matching Time=" << avg_duration << "s" << std::endl;
+  }
 }
 
 inline void GridSlamProcessor::normalize(){

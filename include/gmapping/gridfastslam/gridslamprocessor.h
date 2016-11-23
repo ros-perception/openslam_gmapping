@@ -15,6 +15,8 @@
 #include <gmapping/scanmatcher/scanmatcher.h>
 #include "motionmodel.h"
 
+#include <omp.h>
+
 
 namespace GMapping {
 
@@ -305,11 +307,10 @@ namespace GMapping {
     // stream in which to write the messages
     std::ostream& m_infoStream;
     
-    
     // the functions below performs side effect on the internal structure,
     //should be called only inside the processScan method
   private:
-    
+    std::vector<double> durations;
     /**scanmatches all the particles*/
     inline void scanMatch(const double *plainReading);
     /**normalizes the particle weights*/
