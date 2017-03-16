@@ -4,6 +4,6 @@ add_library(gridfastslam
     gridslamprocessor_tree.cpp
     motionmodel.cpp
 )
-target_link_libraries(gridfastslam scanmatcher sensor_range)
+target_link_libraries(gridfastslam scanmatcher sensor_range ${catkin_LIBRARIES})
 
 install(TARGETS gridfastslam DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})

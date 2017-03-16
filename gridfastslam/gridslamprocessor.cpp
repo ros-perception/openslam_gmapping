@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <gmapping/utils/stat.h>
 #include <gmapping/gridfastslam/gridslamprocessor.h>
+#include <ros/console.h>
 
 //#define MAP_CONSISTENCY_CHECK
 //#define GENERATE_TRAJECTORIES
@@ -49,11 +50,11 @@ using namespace std;
     m_angularDistance=gsp.m_angularDistance;
     m_neff=gsp.m_neff;
 	
-    cerr << "FILTER COPY CONSTRUCTOR" << endl;
-    cerr << "m_odoPose=" << m_odoPose.x << " " <<m_odoPose.y << " " << m_odoPose.theta << endl;
-    cerr << "m_lastPartPose=" << m_lastPartPose.x << " " <<m_lastPartPose.y << " " << m_lastPartPose.theta << endl;
-    cerr << "m_linearDistance=" << m_linearDistance << endl;
-    cerr << "m_angularDistance=" << m_linearDistance << endl;
+    ROS_DEBUG_STREAM("FILTER COPY CONSTRUCTOR");
+    ROS_DEBUG_STREAM("m_odoPose=" << m_odoPose.x << " " <<m_odoPose.y << " " << m_odoPose.theta);
+    ROS_DEBUG_STREAM("m_lastPartPose=" << m_lastPartPose.x << " " <<m_lastPartPose.y << " " << m_lastPartPose.theta);
+    ROS_DEBUG_STREAM("m_linearDistance=" << m_linearDistance);
+    ROS_DEBUG_STREAM("m_angularDistance=" << m_linearDistance);
     
 		
     m_xmin=gsp.m_xmin;
@@ -71,20 +72,20 @@ using namespace std;
     m_obsSigmaGain=gsp.m_obsSigmaGain;
     
 #ifdef MAP_CONSISTENCY_CHECK
-    cerr << __PRETTY_FUNCTION__ <<  ": trajectories copy.... ";
+    ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ <<  ": trajectories copy ...");
 #endif
     TNodeVector v=gsp.getTrajectories();
     for (unsigned int i=0; i<v.size(); i++){
 		m_particles[i].node=v[i];
     }
 #ifdef MAP_CONSISTENCY_CHECK
-    cerr <<  "end" << endl;
+    ROS_DEBUG_STREAM(" ... end");
 #endif
 
 
-    cerr  << "Tree: normalizing, resetting and propagating weights within copy construction/cloneing ..." ;
+    ROS_DEBUG_STREAM("Tree: normalizing, resetting and propagating weights within copy construction/cloneing ...");
     updateTreeWeights(false);
-    cerr  << ".done!" <<endl;
+    ROS_DEBUG_STREAM(" ... done!");
   }
   
   GridSlamProcessor::GridSlamProcessor(std::ostream& infoS): m_infoStream(infoS){
@@ -97,7 +98,7 @@ using namespace std;
 
   GridSlamProcessor* GridSlamProcessor::clone() const {
 # ifdef MAP_CONSISTENCY_CHECK
-    cerr << __PRETTY_FUNCTION__ << ": performing preclone_fit_test" << endl;
+    ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ << ": performing preclone_fit_test");
     typedef std::map<autoptr< Array2D<PointAccumulator> >::reference* const, int> PointerMap;
     PointerMap pmap;
 	for (ParticleVector::const_iterator it=m_particles.begin(); it!=m_particles.end(); it++){
@@ -116,17 +117,17 @@ using namespace std;
 	    }
 	  }
 	}
-	cerr << __PRETTY_FUNCTION__ <<  ": Number of allocated chunks" << pmap.size() << endl;
+	ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ <<  ": Number of allocated chunks" << pmap.size());
 	for(PointerMap::const_iterator it=pmap.begin(); it!=pmap.end(); it++)
 	  assert(it->first->shares==(unsigned int)it->second);
 
-	cerr << __PRETTY_FUNCTION__ <<  ": SUCCESS, the error is somewhere else" << endl;
+	ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ <<  ": SUCCESS, the error is somewhere else");
 # endif
 	GridSlamProcessor* cloned=new GridSlamProcessor(*this);
 	
 # ifdef MAP_CONSISTENCY_CHECK
-	cerr << __PRETTY_FUNCTION__ <<  ": trajectories end" << endl;
-	cerr << __PRETTY_FUNCTION__ << ": performing afterclone_fit_test" << endl;
+	ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ <<  ": trajectories end");
+	ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ << ": performing afterclone_fit_test");
 	ParticleVector::const_iterator jt=cloned->m_particles.begin();
 	for (ParticleVector::const_iterator it=m_particles.begin(); it!=m_particles.end(); it++){
 	  const ScanMatcherMap& m1(it->map);
@@ -143,20 +144,20 @@ using namespace std;
 	    }
 	  }
 	}
-	cerr << __PRETTY_FUNCTION__ <<  ": SUCCESS, the error is somewhere else" << endl;
+	ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ <<  ": SUCCESS, the error is somewhere else");
 # endif
 	return cloned;
 }
   
   GridSlamProcessor::~GridSlamProcessor(){
-    cerr << __PRETTY_FUNCTION__ << ": Start" << endl;
-    cerr << __PRETTY_FUNCTION__ << ": Deleting tree" << endl;
+    ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ << ": Start");
+    ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ << ": Deleting tree");
     for (std::vector<Particle>::iterator it=m_particles.begin(); it!=m_particles.end(); it++){
 #ifdef TREE_CONSISTENCY_CHECK		
       TNode* node=it->node;
       while(node)
 	node=node->parent;
-      cerr << "@" << endl;
+      ROS_DEBUG_STREAM("@");
 #endif
       if (it->node)
 	delete it->node;
@@ -164,7 +165,7 @@ using namespace std;
     }
     
 # ifdef MAP_CONSISTENCY_CHECK
-    cerr << __PRETTY_FUNCTION__ << ": performing predestruction_fit_test" << endl;
+    ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ << ": performing predestruction_fit_test");
     typedef std::map<autoptr< Array2D<PointAccumulator> >::reference* const, int> PointerMap;
     PointerMap pmap;
     for (ParticleVector::const_iterator it=m_particles.begin(); it!=m_particles.end(); it++){
@@ -183,10 +184,10 @@ using namespace std;
 	}
       }
     }
-    cerr << __PRETTY_FUNCTION__ << ": Number of allocated chunks" << pmap.size() << endl;
+    ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ << ": Number of allocated chunks" << pmap.size());
     for(PointerMap::const_iterator it=pmap.begin(); it!=pmap.end(); it++)
       assert(it->first->shares>=(unsigned int)it->second);
-    cerr << __PRETTY_FUNCTION__ << ": SUCCESS, the error is somewhere else" << endl;
+    ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ << ": SUCCESS, the error is somewhere else");
 # endif
   }
 
@@ -197,13 +198,13 @@ using namespace std;
     m_obsSigmaGain=likelihoodGain;
     m_matcher.setMatchingParameters(urange, range, sigma, kernsize, lopt, aopt, iterations, likelihoodSigma, likelihoodSkip);
     if (m_infoStream)
-      m_infoStream << " -maxUrange "<< urange
+      ROS_DEBUG_STREAM(" -maxUrange "<< urange
 		   << " -maxUrange "<< range
 		   << " -sigma     "<< sigma
 		   << " -kernelSize "<< kernsize
 		   << " -lstep "    << lopt
 		   << " -lobsGain " << m_obsSigmaGain
-		   << " -astep "    << aopt << endl;
+		   << " -astep "    << aopt);
     
     
   }
@@ -215,9 +216,8 @@ void GridSlamProcessor::setMotionModelParameters
   m_motionModel.str=str;
   m_motionModel.stt=stt;	
   
-  if (m_infoStream)
-    m_infoStream << " -srr "<< srr 	<< " -srt "<< srt  
-		 << " -str "<< str 	<< " -stt "<< stt << endl;
+  ROS_DEBUG_STREAM(" -srr "<< srr 	<< " -srt "<< srt
+		 << " -str "<< str 	<< " -stt "<< stt);
   
 }
   
@@ -226,9 +226,9 @@ void GridSlamProcessor::setMotionModelParameters
     m_angularThresholdDistance=angular;
     m_resampleThreshold=resampleThreshold;	
     if (m_infoStream)
-      m_infoStream << " -linearUpdate " << linear
+      ROS_DEBUG_STREAM(" -linearUpdate " << linear
 		   << " -angularUpdate "<< angular
-		   << " -resampleThreshold " << m_resampleThreshold << endl;
+		   << " -resampleThreshold " << m_resampleThreshold);
   }
   
   //HERE STARTS THE BEEF
@@ -249,7 +249,7 @@ void GridSlamProcessor::setMotionModelParameters
     
     SensorMap::const_iterator laser_it=smap.find(std::string("FLASER"));
     if (laser_it==smap.end()){
-      cerr << "Attempting to load the new carmen log format" << endl;
+      ROS_INFO_STREAM("Attempting to load the new carmen log format");
       laser_it=smap.find(std::string("ROBOTLASER1"));
       assert(laser_it!=smap.end());
     }
@@ -271,14 +271,13 @@ void GridSlamProcessor::setMotionModelParameters
     m_xmax=xmax;
     m_ymax=ymax;
     m_delta=delta;
-    if (m_infoStream)
-      m_infoStream 
-	<< " -xmin "<< m_xmin
+      ROS_DEBUG_STREAM(
+	   " -xmin "<< m_xmin
 	<< " -xmax "<< m_xmax
 	<< " -ymin "<< m_ymin
 	<< " -ymax "<< m_ymax
 	<< " -delta "<< m_delta
-	<< " -particles "<< size << endl;
+	<< " -particles "<< size);
     
 
     m_particles.clear();
@@ -360,18 +359,18 @@ void GridSlamProcessor::setMotionModelParameters
     
     // if the robot jumps throw a warning
     if (m_linearDistance>m_distanceThresholdCheck){
-      cerr << "***********************************************************************" << endl;
-      cerr << "********** Error: m_distanceThresholdCheck overridden!!!! *************" << endl;
-      cerr << "m_distanceThresholdCheck=" << m_distanceThresholdCheck << endl;
-      cerr << "Old Odometry Pose= " << m_odoPose.x << " " << m_odoPose.y 
-	   << " " <<m_odoPose.theta << endl;
-      cerr << "New Odometry Pose (reported from observation)= " << relPose.x << " " << relPose.y 
-	   << " " <<relPose.theta << endl;
-      cerr << "***********************************************************************" << endl;
-      cerr << "** The Odometry has a big jump here. This is probably a bug in the   **" << endl;
-      cerr << "** odometry/laser input. We continue now, but the result is probably **" << endl;
-      cerr << "** crap or can lead to a core dump since the map doesn't fit.... C&G **" << endl;
-      cerr << "***********************************************************************" << endl;
+      ROS_WARN_STREAM("***********************************************************************");
+      ROS_WARN_STREAM("********** Error: m_distanceThresholdCheck overridden!!!! *************");
+      ROS_WARN_STREAM("m_distanceThresholdCheck=" << m_distanceThresholdCheck);
+      ROS_WARN_STREAM("Old Odometry Pose= " << m_odoPose.x << " " << m_odoPose.y
+	   << " " <<m_odoPose.theta);
+      ROS_WARN_STREAM("New Odometry Pose (reported from observation)= " << relPose.x << " " << relPose.y
+	   << " " <<relPose.theta);
+      ROS_WARN_STREAM("***********************************************************************");
+      ROS_WARN_STREAM("** The Odometry has a big jump here. This is probably a bug in the   **");
+      ROS_WARN_STREAM("** odometry/laser input. We continue now, but the result is probably **");
+      ROS_WARN_STREAM("** crap or can lead to a core dump since the map doesn't fit.... C&G **");
+      ROS_WARN_STREAM("***********************************************************************");
     }
     
     m_odoPose=relPose;
@@ -393,12 +392,12 @@ void GridSlamProcessor::setMotionModelParameters
       }
       
       if (m_infoStream)
-	m_infoStream << "update frame " <<  m_readingCount << endl
-		     << "update ld=" << m_linearDistance << " ad=" << m_angularDistance << endl;
+	ROS_DEBUG_STREAM("update frame " <<  m_readingCount << endl
+		     << "update ld=" << m_linearDistance << " ad=" << m_angularDistance);
       
       
-      cerr << "Laser Pose= " << reading.getPose().x << " " << reading.getPose().y 
-	   << " " << reading.getPose().theta << endl;
+      ROS_DEBUG_STREAM("Laser Pose= " << reading.getPose().x << " " << reading.getPose().y
+	   << " " << reading.getPose().theta);
       
       
       //this is for converting the reading in a scan-matcher feedable form
@@ -407,7 +406,7 @@ void GridSlamProcessor::setMotionModelParameters
       for(unsigned int i=0; i<m_beams; i++){
 	plainReading[i]=reading[i];
       }
-      m_infoStream << "m_count " << m_count << endl;
+      ROS_DEBUG_STREAM("m_count " << m_count);
 
       RangeReading* reading_copy = 
               new RangeReading(reading.size(),
@@ -438,9 +437,7 @@ void GridSlamProcessor::setMotionModelParameters
 	
 	updateTreeWeights(false);
 				
-	if (m_infoStream){
-	  m_infoStream << "neff= " << m_neff  << endl;
-	}
+    ROS_DEBUG_STREAM("neff= " << m_neff);
 	if (m_outputStream.is_open()){
 	  m_outputStream << setiosflags(ios::fixed) << setprecision(6);
 	  m_outputStream << "NEFF " << m_neff << endl;
@@ -448,7 +445,7 @@ void GridSlamProcessor::setMotionModelParameters
  	resample(plainReading, adaptParticles, reading_copy);
 	
       } else {
-	m_infoStream << "Registering First Scan"<< endl;
+	ROS_DEBUG("Registering First Scan");
 	for (ParticleVector::iterator it=m_particles.begin(); it!=m_particles.end(); it++){	
 	  m_matcher.invalidateActiveArea();
 	  m_matcher.computeActiveArea(it->map, it->pose, plainReading);
@@ -462,9 +459,9 @@ void GridSlamProcessor::setMotionModelParameters
 	  
 	}
       }
-      //		cerr  << "Tree: normalizing, resetting and propagating weights at the end..." ;
+      ROS_DEBUG("Tree: normalizing, resetting and propagating weights at the end ...");
       updateTreeWeights(false);
-      //		cerr  << ".done!" <<endl;
+      ROS_DEBUG("... done!");
       
       delete [] plainReading;
       m_lastPartPose=m_odoPose; //update the past pose for the next iteration
@@ -512,7 +509,3 @@ void GridSlamProcessor::setMotionModelParameters
 
   
 };// end namespace
-
-
-
-

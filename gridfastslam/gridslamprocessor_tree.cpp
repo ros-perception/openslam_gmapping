@@ -5,6 +5,7 @@
 #include <set>
 #include <fstream>
 //#include <gsl/gsl_blas.h>
+#include <ros/console.h>
 
 #include <gmapping/utils/stat.h>
 #include <gmapping/gridfastslam/gridslamprocessor.h>
@@ -132,8 +133,7 @@ void GridSlamProcessor::integrateScanSequence(GridSlamProcessor::TNode* node){
 	}
 	
 	//attach the path to each particle and compute the map;
-	if (m_infoStream )
-		m_infoStream << "Restoring State Nodes=" <<count << endl;
+	ROS_INFO_STREAM("Restoring State Nodes=" <<count);
 		
 		
 	aux=reversed;
@@ -251,8 +251,7 @@ double GridSlamProcessor::propagateWeights(){
 	}
 	
 	if (fabs(aw-1.0) > 0.0001 || fabs(lastNodeWeight-1.0) > 0.0001) {
-	  cerr << "ERROR: ";
-	  cerr << "root->accWeight=" << lastNodeWeight << "    sum_leaf_weights=" << aw << endl;
+	  ROS_ERROR_STREAM("root->accWeight=" << lastNodeWeight << "    sum_leaf_weights=" << aw);
 	  assert(0);         
 	}
 	return lastNodeWeight;
