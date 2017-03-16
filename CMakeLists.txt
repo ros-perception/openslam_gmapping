@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 2.8)
 project(openslam_gmapping)
 
-find_package(catkin)
+find_package(catkin REQUIRED COMPONENTS roscpp)
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES gridfastslam scanmatcher sensor_base sensor_range sensor_odometry utils
 )
 
-include_directories(include)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_subdirectory(gridfastslam)
 add_subdirectory(scanmatcher)
