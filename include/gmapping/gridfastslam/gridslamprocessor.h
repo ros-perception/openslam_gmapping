@@ -13,6 +13,7 @@
 #include <gmapping/sensor/sensor_range/rangesensor.h>
 #include <gmapping/sensor/sensor_range/rangereading.h>
 #include <gmapping/scanmatcher/scanmatcher.h>
+#include <ros/console.h>
 #include "motionmodel.h"
 
 
