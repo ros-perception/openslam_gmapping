@@ -1,4 +1,4 @@
-<package>
+<package format="2">
   <name>openslam_gmapping</name>
   <version>0.1.2</version>
   <description>ROS-ified version of gmapping SLAM. Forked from https://openslam.informatik.uni-freiburg.de/data/svn/gmapping/trunk/</description>
@@ -13,6 +13,10 @@
   <author>Cyrill Stachniss</author>
   <author>Wolfram Burgard</author>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>ament_cmake_ros</buildtool_depend>
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

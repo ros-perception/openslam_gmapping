@@ -1,4 +1,7 @@
-add_library(scanmatcher eig3.cpp scanmatcher.cpp scanmatcherprocessor.cpp smmap.cpp)
-target_link_libraries(scanmatcher sensor_range utils)
-
-install(TARGETS scanmatcher DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+ament_auto_add_library(scanmatcher
+  eig3.cpp
+  scanmatcher.cpp
+  scanmatcherprocessor.cpp
+  smmap.cpp
+)
+ament_target_dependencies(scanmatcher)
