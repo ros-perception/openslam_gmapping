@@ -3,7 +3,7 @@
   <version>0.1.2</version>
   <description>ROS-ified version of gmapping SLAM. Forked from https://openslam.informatik.uni-freiburg.de/data/svn/gmapping/trunk/</description>
   <maintainer email="vincent.rabaud@gmail.com">Vincent Rabaud</maintainer>
-  <license>CreativeCommons-by-nc-sa-2.0</license>
+  <license>BSD-3-Clause</license>
 
   <url type="website">http://openslam.org/gmapping</url>
   <url type="repository">https://github.com/ros-perception/openslam_gmapping</url>
