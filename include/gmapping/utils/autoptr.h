@@ -7,40 +7,34 @@ namespace GMapping{
 template <class X>
 class autoptr{
 	protected:
+	struct reference{
+		unsigned int shares;
+		X data;
+	};
 	
 	public:
-	struct reference{
-		X* data;
-		unsigned int shares;
-	};
-		inline autoptr(X* p=(X*)(0));
+    inline autoptr();
 		inline autoptr(const autoptr<X>& ap);
 		inline autoptr& operator=(const autoptr<X>& ap);
 		inline ~autoptr();
 		inline operator int() const;
 		inline X& operator*();
 		inline const X& operator*() const;
-		//p	
-		reference * m_reference;
+    inline void create();
 	protected:
+		reference * m_reference;
 };
 
 template <class X>
-autoptr<X>::autoptr(X* p){
+autoptr<X>::autoptr(){
 	m_reference=0;
-	if (p){
-		m_reference=new reference;
-		m_reference->data=p;
-		m_reference->shares=1;
-	}
 }
 
 template <class X>
 autoptr<X>::autoptr(const autoptr<X>& ap){
 	m_reference=0;
-	reference* ref=ap.m_reference;
 	if (ap.m_reference){
-		m_reference=ref;
+		m_reference=ap.m_reference;
 		m_reference->shares++;
 	}
 }
@@ -51,46 +45,52 @@ autoptr<X>& autoptr<X>::operator=(const autoptr<X>& ap){
 	if (m_reference==ref){
 		return *this;
 	}
+
 	if (m_reference && !(--m_reference->shares)){
-		delete m_reference->data;
 		delete m_reference;
 		m_reference=0;
 	}	
-	if (ref){
+
+	if (ref) {
 		m_reference=ref;
 		m_reference->shares++;
-	} 
-//20050802 nasty changes begin
-	else
+	} else {
 		m_reference=0;
-//20050802 nasty changes end
+  }
 	return *this;
 }
 
 template <class X>
 autoptr<X>::~autoptr(){
 	if (m_reference && !(--m_reference->shares)){
-		delete m_reference->data;
 		delete m_reference;
 		m_reference=0;
 	}	
 }
 
 template <class X>
+void autoptr<X>::create(){
+  if(!m_reference) {
+    m_reference=new reference;
+    m_reference->shares=1;
+  }
+}
+
+template <class X>
 autoptr<X>::operator int() const{
-	return m_reference && m_reference->shares && m_reference->data;
+	return static_cast<bool>(m_reference);
 }
 
 template <class X>
 X& autoptr<X>::operator*(){
-	assert(m_reference && m_reference->shares && m_reference->data);
-	return *(m_reference->data);
+	assert(m_reference);
+	return m_reference->data;
 }
 
 template <class X>
 const X& autoptr<X>::operator*() const{
-	assert(m_reference && m_reference->shares && m_reference->data);
-	return *(m_reference->data);
+	assert(m_reference);
+	return m_reference->data;
 }
 
 };

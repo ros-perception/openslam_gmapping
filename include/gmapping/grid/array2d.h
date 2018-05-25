@@ -38,8 +38,8 @@ template<class Cell, const bool debug=false> class Array2D{
 		inline int getXSize() const {return m_xsize;}
 		inline int getYSize() const {return m_ysize;}
 	protected:
-		Cell * m_cells;
 		int m_xsize, m_ysize;
+		Cell * m_cells;
 		inline int cellIndex(int x, int y) const;
 };
 
@@ -59,6 +59,7 @@ Array2D<Cell,debug>::Array2D(int xsize, int ysize){
 	}
 	if (debug){
 		std::cerr << __PRETTY_FUNCTION__ << std::endl;
+		std::cerr << this << std::endl;
 		std::cerr << "m_xsize= " << m_xsize<< std::endl;
 		std::cerr << "m_ysize= " << m_ysize<< std::endl;
 	}
@@ -133,6 +134,12 @@ template <class Cell, const bool debug>
 void Array2D<Cell,debug>::resize(int xmin, int ymin, int xmax, int ymax){
 	int xsize=xmax-xmin;
 	int ysize=ymax-ymin;
+	if (debug){
+		std::cerr << __PRETTY_FUNCTION__ << std::endl;
+		std::cerr << this << std::endl;
+		std::cerr << "xsize= " << xsize<< std::endl;
+		std::cerr << "ysize= " << ysize<< std::endl;
+	}
 	Cell * newcells=new Cell[xsize*ysize];
 	int dx= xmin < 0 ? 0 : xmin;
 	int dy= ymin < 0 ? 0 : ymin;
