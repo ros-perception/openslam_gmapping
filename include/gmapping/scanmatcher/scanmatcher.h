@@ -83,7 +83,7 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 	unsigned int skip=0;
 	double freeDelta=map.getDelta()*m_freeCellRatio;
 	std::list<PointPair> pairs;
-	
+
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++){
 		skip++;
 		skip=skip>m_likelihoodSkip?0:skip;
@@ -96,7 +96,7 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 		Point pfree=lp;
 		pfree.x+=(*r-map.getDelta()*freeDelta)*cos(lp.theta+*angle);
 		pfree.y+=(*r-map.getDelta()*freeDelta)*sin(lp.theta+*angle);
- 		pfree=pfree-phit;
+		pfree=pfree-phit;
 		IntPoint ipfree=map.world2map(pfree);
 		bool found=false;
 		Point bestMu(0.,0.);
@@ -130,7 +130,7 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 		}
 		//std::cerr << std::endl;
 	}
-	
+
 	OrientedPoint result(0,0,0);
 	//double icpError=icpNonlinearStep(result,pairs);
 	std::cerr << "result(" << pairs.size() << ")=" << result.x << " " << result.y << " " << result.theta << std::endl;
@@ -144,47 +144,51 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 inline double ScanMatcher::score(const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const{
 	double s=0;
 	const double * angle=m_laserAngles+m_initialBeamsSkip;
-	OrientedPoint lp=p;
-	lp.x+=cos(p.theta)*m_laserPose.x-sin(p.theta)*m_laserPose.y;
-	lp.y+=sin(p.theta)*m_laserPose.x+cos(p.theta)*m_laserPose.y;
-	lp.theta+=m_laserPose.theta;
+	const OrientedPoint laser_offset(
+			cos(p.theta)*m_laserPose.x-sin(p.theta)*m_laserPose.y,
+			sin(p.theta)*m_laserPose.x+cos(p.theta)*m_laserPose.y,
+			m_laserPose.theta);
+	const OrientedPoint lp=p + laser_offset;
 	unsigned int skip=0;
-	double freeDelta=map.getDelta()*m_freeCellRatio;
+	const double freeDelta=map.getDelta()*m_freeCellRatio;
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++){
 		skip++;
 		skip=skip>m_likelihoodSkip?0:skip;
 		if (skip||*r>m_usableRange||*r==0.0) continue;
-		Point phit=lp;
-		phit.x+=*r*cos(lp.theta+*angle);
-		phit.y+=*r*sin(lp.theta+*angle);
-		IntPoint iphit=map.world2map(phit);
+		const double ca = cos(lp.theta+*angle);
+		const double sa = sin(lp.theta+*angle);
+		const double range = *r;
+		const Point phit(lp.x + range*ca, lp.y + range*sa);
+		const IntPoint iphit=map.world2map(phit);
 		Point pfree=lp;
-		pfree.x+=(*r-map.getDelta()*freeDelta)*cos(lp.theta+*angle);
-		pfree.y+=(*r-map.getDelta()*freeDelta)*sin(lp.theta+*angle);
- 		pfree=pfree-phit;
-		IntPoint ipfree=map.world2map(pfree);
+		pfree.x+=(range-map.getDelta()*freeDelta)*ca;
+		pfree.y+=(range-map.getDelta()*freeDelta)*sa;
+		pfree=pfree-phit;
+		const IntPoint ipfree=map.world2map(pfree);
 		bool found=false;
-		Point bestMu(0.,0.);
-		for (int xx=-m_kernelSize; xx<=m_kernelSize; xx++)
-		for (int yy=-m_kernelSize; yy<=m_kernelSize; yy++){
-			IntPoint pr=iphit+IntPoint(xx,yy);
-			IntPoint pf=pr+ipfree;
+		double bestMuSq = 0.;
+		for (int yy=-m_kernelSize; yy<=m_kernelSize; yy++)
+		for (int xx=-m_kernelSize; xx<=m_kernelSize; xx++){
+			const IntPoint pr(iphit.x + xx, iphit.y + yy);
+			const IntPoint pf=pr+ipfree;
 			//AccessibilityState s=map.storage().cellState(pr);
 			//if (s&Inside && s&Allocated){
 				const PointAccumulator& cell=map.cell(pr);
-				const PointAccumulator& fcell=map.cell(pf);
-				if (((double)cell )> m_fullnessThreshold && ((double)fcell )<m_fullnessThreshold){
-					Point mu=phit-cell.mean();
-					if (!found){
-						bestMu=mu;
+				//const PointAccumulator& fcell=map.cell(pf);
+				if (((double)cell )> m_fullnessThreshold && ((double)map.cell(pf) )<m_fullnessThreshold){
+					const Point mu=phit-cell.mean();
+					const double muSq = mu*mu;
+					if (!found) {
+						bestMuSq = muSq;
 						found=true;
-					}else
-						bestMu=(mu*mu)<(bestMu*bestMu)?mu:bestMu;
+					} else if(muSq < bestMuSq) {
+						bestMuSq = muSq;
+					}
 				}
 			//}
 		}
 		if (found)
-			s+=exp(-1./m_gaussianSigma*bestMu*bestMu);
+			s+=exp(-1./m_gaussianSigma*bestMuSq);
 	}
 	return s;
 }
