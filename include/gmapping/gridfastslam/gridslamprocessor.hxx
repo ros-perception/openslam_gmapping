@@ -8,6 +8,7 @@
 If the scan matching fails, the particle gets a default likelihood.*/
 inline void GridSlamProcessor::scanMatch(const double* plainReading){
   // sample a new pose from each scan in the reference
+  TRACE("scanMatch");
   
   double sumScore=0;
   for (ParticleVector::iterator it=m_particles.begin(); it!=m_particles.end(); it++){

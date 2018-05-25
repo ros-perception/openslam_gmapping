@@ -1,3 +1,3 @@
 include_directories(./)
-add_library(utils movement.cpp stat.cpp)
+add_library(utils movement.cpp stat.cpp perf.cpp)
 install(TARGETS utils DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})

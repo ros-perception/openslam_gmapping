@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 #include <gmapping/utils/stat.h>
+#include <gmapping/utils/perf.h>
 #include <gmapping/gridfastslam/gridslamprocessor.h>
 
 //#define MAP_CONSISTENCY_CHECK
@@ -314,6 +315,7 @@ void GridSlamProcessor::setMotionModelParameters
   
   
   bool GridSlamProcessor::processScan(const RangeReading & reading, int adaptParticles){
+    TRACE("processScan");
     
     /**retireve the position from the reading, and compute the odometry*/
     OrientedPoint relPose=reading.getPose();

@@ -7,6 +7,7 @@
 #include <gmapping/utils/stat.h>
 #include <iostream>
 #include <gmapping/utils/gvalues.h>
+#include <gmapping/utils/perf.h>
 #define LASER_MAXBEAMS 2048
 
 namespace GMapping {
@@ -143,6 +144,7 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 inline double ScanMatcher::score(const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const{
 	double s=0;
 	const double * angle=m_laserAngles+m_initialBeamsSkip;
+  TRACE("score");
 	OrientedPoint lp=p;
 	lp.x+=cos(p.theta)*m_laserPose.x-sin(p.theta)*m_laserPose.y;
 	lp.y+=sin(p.theta)*m_laserPose.x+cos(p.theta)*m_laserPose.y;

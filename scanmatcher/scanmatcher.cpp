@@ -3,6 +3,7 @@
 #include <list>
 #include <iostream>
 
+#include <gmapping/utils/perf.h>
 #include <gmapping/scanmatcher/scanmatcher.h>
 #include "gridlinetraversal.h"
 //#define GENERATE_MAPS
@@ -347,6 +348,7 @@ double ScanMatcher::optimize(OrientedPoint& pnew, const ScanMatcherMap& map, con
 	}
 	cout << endl;
 */	int c_iterations=0;
+  TRACE("optimize");
 	do{
 		if (bestScore>=currentScore){
 			refinement++;
@@ -439,6 +441,7 @@ double ScanMatcher::optimize(OrientedPoint& _mean, ScanMatcher::CovarianceMatrix
 	unsigned int refinement=0;
 	int count=0;
 	enum Move{Front, Back, Left, Right, TurnLeft, TurnRight, Done};
+  TRACE("optimize_cov");
 	do{
 		if (bestScore>=currentScore){
 			refinement++;

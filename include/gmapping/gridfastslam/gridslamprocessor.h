@@ -9,6 +9,7 @@
 #include <gmapping/particlefilter/particlefilter.h>
 #include <gmapping/utils/point.h>
 #include <gmapping/utils/macro_params.h>
+#include <gmapping/utils/perf.h>
 #include <gmapping/log/sensorlog.h>
 #include <gmapping/sensor/sensor_range/rangesensor.h>
 #include <gmapping/sensor/sensor_range/rangereading.h>
