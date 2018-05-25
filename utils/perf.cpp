@@ -5,6 +5,8 @@
 
 #include <gmapping/utils/perf.h>
 
+#ifdef TRACE_ENABLE
+
 namespace GMapping {
 
 #define MAX_MSG_LENGTH 256
@@ -28,3 +30,5 @@ TraceScope::~TraceScope() {
 }
 
 }
+
+#endif
