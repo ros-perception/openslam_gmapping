@@ -139,7 +139,7 @@ void rle(OutputIterator& out, const Iterator & begin, const Iterator & end){
 	}
 	if (count>0)
 		*out=std::make_pair(current,count);
-		out++;
+    out++;  // WARNING(allenh1): Bad indentation. Place in if?
 }
 
 //BEGIN legacy
