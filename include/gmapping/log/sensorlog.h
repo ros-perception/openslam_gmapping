@@ -3,11 +3,11 @@
 
 #include <list>
 #include <istream>
-#include <sensor/sensor_base/sensorreading.h>
-#include <sensor/sensor_odometry/odometrysensor.h>
-#include <sensor/sensor_range/rangesensor.h>
-#include <sensor/sensor_odometry/odometryreading.h>
-#include <sensor/sensor_range/rangereading.h>
+#include <gmapping/sensor/sensor_base/sensorreading.h>
+#include <gmapping/sensor/sensor_odometry/odometrysensor.h>
+#include <gmapping/sensor/sensor_range/rangesensor.h>
+#include <gmapping/sensor/sensor_odometry/odometryreading.h>
+#include <gmapping/sensor/sensor_range/rangereading.h>
 #include "configuration.h"
 
 namespace GMapping {

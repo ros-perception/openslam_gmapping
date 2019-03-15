@@ -1,7 +1,7 @@
 #ifndef _ICP_H_
 #define _ICP_H_
 
-#include <utils/point.h>
+#include <gmapping/utils/point.h>
 #include <utility>
 #include <list>
 #include <vector>

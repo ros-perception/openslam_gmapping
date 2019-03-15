@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <utils/point.h>
-#include "particlefilter.h"
+#include "gmapping/particlefilter/particlefilter.h"
 
 using namespace std;
 using namespace GMapping;

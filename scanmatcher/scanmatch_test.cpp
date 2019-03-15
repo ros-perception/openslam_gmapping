@@ -1,12 +1,12 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <log/carmenconfiguration.h>
-#include <log/sensorlog.h>
+#include <gmapping/log/carmenconfiguration.h>
+#include <gmapping/log/sensorlog.h>
 #include <unistd.h>
-#include <utils/commandline.h>
-#include <log/sensorstream.h>
-#include "scanmatcherprocessor.h"
+#include <gmapping/utils/commandline.h>
+#include <gmapping/log/sensorstream.h>
+#include "gmapping/scanmatcher/scanmatcherprocessor.h"
 
 using namespace std;
 using namespace GMapping;

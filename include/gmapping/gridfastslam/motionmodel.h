@@ -1,9 +1,9 @@
 #ifndef MOTIONMODEL_H
 #define MOTIONMODEL_H
 
-#include <utils/point.h>
-#include <utils/stat.h>
-#include <utils/macro_params.h>
+#include <gmapping/utils/point.h>
+#include <gmapping/utils/stat.h>
+#include <gmapping/utils/macro_params.h>
 
 namespace  GMapping { 
 

@@ -22,7 +22,7 @@
 
 
 #include <cstdlib>
-#include "configfile.h"
+#include "gmapping/configfile/configfile.h"
 
 #include <fstream>
 #include <iostream>

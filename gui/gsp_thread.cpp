@@ -21,10 +21,10 @@
  *****************************************************************/
 
 
-#include "gsp_thread.h"
-#include <utils/commandline.h>
-#include <utils/stat.h>
-#include <configfile/configfile.h>
+#include "gmaping/gui/gsp_thread.h"
+#include <gmapping/utils/commandline.h>
+#include <gmapping/utils/stat.h>
+#include <gmapping/configfile/configfile.h>
 
 #ifdef CARMEN_SUPPORT
 	#include <carmenwrapper/carmenwrapper.h>

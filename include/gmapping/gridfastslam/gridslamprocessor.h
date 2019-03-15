@@ -6,13 +6,13 @@
 #include <fstream>
 #include <vector>
 #include <deque>
-#include <particlefilter/particlefilter.h>
-#include <utils/point.h>
-#include <utils/macro_params.h>
-#include <log/sensorlog.h>
-#include <sensor/sensor_range/rangesensor.h>
-#include <sensor/sensor_range/rangereading.h>
-#include <scanmatcher/scanmatcher.h>
+#include <gmapping/particlefilter/particlefilter.h>
+#include <gmapping/utils/point.h>
+#include <gmapping/utils/macro_params.h>
+#include <gmapping/log/sensorlog.h>
+#include <gmapping/sensor/sensor_range/rangesensor.h>
+#include <gmapping/sensor/sensor_range/rangereading.h>
+#include <gmapping/scanmatcher/scanmatcher.h>
 #include "motionmodel.h"
 
 

@@ -3,7 +3,7 @@
 #include <fstream>
 
 #include <list>
-#include "icp.h"
+#include "gmapping/scanmatcher/icp.h"
 
 using namespace GMapping;
 using namespace std;

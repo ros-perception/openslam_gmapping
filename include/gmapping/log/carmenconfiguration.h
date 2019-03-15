@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 #include <istream>
-#include <sensor/sensor_base/sensor.h>
+#include <gmapping/sensor/sensor_base/sensor.h>
 #include "configuration.h"
 
 namespace GMapping {

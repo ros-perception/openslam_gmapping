@@ -1,5 +1,5 @@
-#include "qmappainter.h"
-#include "moc_qmappainter.cpp"
+#include "gmapping/gui/qmappainter.h"
+#include "gmapping/gui/moc_qmappainter.cpp"
 
 QMapPainter::QMapPainter( QWidget * parent, const char * name, WFlags f):
 	QWidget(parent, name, f|WRepaintNoErase|WResizeNoErase){

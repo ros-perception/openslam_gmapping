@@ -21,8 +21,8 @@
  *****************************************************************/
 
 
-#include "qparticleviewer.h"
-#include "moc_qparticleviewer.cpp"
+#include "gmapping/gui/qparticleviewer.h"
+#include "gmapping/gui/moc_qparticleviewer.cpp"
 #include <qimage.h>
 
 

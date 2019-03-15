@@ -1,12 +1,12 @@
 #include <cstdlib>
 #include <limits.h>
-#include <scanmatcher/scanmatcher.h>
-#include <gridfastslam/gfsreader.h>
-#include <qpixmap.h>
-#include <qpainter.h>
-#include <qimage.h>
-#include <qapplication.h>
-#include <utils/commandline.h>
+#include <gmapping/scanmatcher/scanmatcher.h>
+#include <gmapping/gridfastslam/gfsreader.h>
+#include <gmapping/gui/qpixmap.h>
+#include <gmapping/gui/qpainter.h>
+#include <gmapping/gui/qimage.h>
+#include <gmapping/gui/qapplication.h>
+#include <gmapping/utils/commandline.h>
 
 #define MAX_LASER_BEAMS 1024
 #define MAX_FILENAME 1024

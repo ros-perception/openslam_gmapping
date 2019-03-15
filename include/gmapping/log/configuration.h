@@ -2,7 +2,7 @@
 #define CONFIGURATION_H
 
 #include <istream>
-#include <sensor/sensor_base/sensor.h>
+#include <gmapping/sensor/sensor_base/sensor.h>
 
 namespace GMapping {
 

@@ -2,7 +2,7 @@
 #define GRIDLINETRAVERSAL_H
 
 #include <cstdlib>
-#include <utils/point.h>
+#include <gmapping/utils/point.h>
 
 namespace GMapping {
 
