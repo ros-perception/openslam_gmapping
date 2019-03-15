@@ -145,9 +145,9 @@ struct ResampleRecord: public Record{
 	virtual void read(istream& is){
 		is >> dim;
 		for (unsigned int i=0; i< dim; i++){
-			unsigned int i;
-			is >> i;
-			indexes.push_back(i);
+			unsigned int j;
+			is >> j;
+			indexes.push_back(j);
 		}
 	}
 };
