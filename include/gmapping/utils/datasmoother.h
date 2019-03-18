@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <values.h>
-#include "stat.h"
+#include "gmapping/utils/stat.h"
 #include <assert.h>
 
 namespace GMapping {

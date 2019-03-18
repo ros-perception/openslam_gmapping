@@ -1,6 +1,6 @@
 #include <iostream>
-#include "map.h"
-#include "harray2d.h"
+#include "gmapping/grid/map.h"
+#include "gmapping/grid/harray2d.h"
 
 using namespace std;
 using namespace GMapping;

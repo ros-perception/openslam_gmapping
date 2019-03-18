@@ -2,8 +2,8 @@
 #define RANGESENSOR_H
 
 #include <vector>
-#include <sensor/sensor_base/sensor.h>
-#include <utils/point.h>
+#include <gmapping/sensor/sensor_base/sensor.h>
+#include <gmapping/utils/point.h>
 
 namespace GMapping{
 

@@ -23,7 +23,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include "configfile.h"
+#include "gmapping/configfile/configfile.h"
 
 using namespace std;
 using namespace GMapping;

@@ -2,7 +2,7 @@
 #define SENSORSTREAM_H
 
 #include <istream>
-#include "sensorlog.h"
+#include "gmapping/log/sensorlog.h"
 
 namespace GMapping {
 class SensorStream{

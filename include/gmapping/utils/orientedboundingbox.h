@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include <utils/point.h>
+#include <gmapping/utils/point.h>
 
 namespace GMapping{
 
@@ -23,7 +23,7 @@ class OrientedBoundingBox {
   Point lr;  
 };
 
-#include "orientedboundingbox.hxx"
+#include "gmapping/utils/orientedboundingbox.hxx"
 
 };// end namespace
 

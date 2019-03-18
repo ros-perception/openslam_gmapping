@@ -5,8 +5,8 @@
 #include <qpixmap.h>
 #include <qstring.h>
 #include <qwidget.h>
-#include <utils/gvalues.h>
-#include <utils/point.h>
+#include <gmapping/utils/gvalues.h>
+#include <gmapping/utils/point.h>
 
 class QMapPainter :  public QWidget{
 	public:

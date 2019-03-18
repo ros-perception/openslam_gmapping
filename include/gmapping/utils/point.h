@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <math.h>
 #include <iostream>
-#include "gvalues.h"
+#include "gmapping/utils/gvalues.h"
 
 #define DEBUG_STREAM cerr << __PRETTY_FUNCTION__ << ":" //FIXME
 

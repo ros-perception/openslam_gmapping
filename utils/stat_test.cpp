@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
-#include "stat.h"
+#include "gmapping/utils/stat.h"
 
 using namespace std;
 using namespace GMapping;

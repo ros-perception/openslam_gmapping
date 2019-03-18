@@ -2,8 +2,8 @@
 #define ARRAY2D_H
 
 #include <assert.h>
-#include <utils/point.h>
-#include "accessstate.h"
+#include <gmapping/utils/point.h>
+#include "gmapping/grid/accessstate.h"
 
 #include <iostream>
 

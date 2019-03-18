@@ -5,8 +5,8 @@
 #include <set>
 #include <fstream>
 #include <iomanip>
-#include <utils/stat.h>
-#include "gridslamprocessor.h"
+#include <gmapping/utils/stat.h>
+#include "gmapping/gridfastslam/gridslamprocessor.h"
 
 //#define MAP_CONSISTENCY_CHECK
 //#define GENERATE_TRAJECTORIES

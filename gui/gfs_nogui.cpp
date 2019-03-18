@@ -22,7 +22,7 @@
 
 
 #include <unistd.h>
-#include "gsp_thread.h"
+#include "gmapping/gui/gsp_thread.h"
 
 using namespace GMapping;
 

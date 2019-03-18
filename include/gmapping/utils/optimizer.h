@@ -1,7 +1,7 @@
 #ifndef _OPTIMIZER_H_
 #define _OPTIMIZER_H_
 
-#include "point.h"
+#include "gmapping/utils/point.h"
 
 namespace GMapping {
 

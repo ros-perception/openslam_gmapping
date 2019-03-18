@@ -1,9 +1,9 @@
 #ifndef _QNAVIGATOR_WIDGET_H
 #define _QNAVIGATOR_WIDGET_H
 
-#include "qmappainter.h"
-#include "qpixmapdumper.h"
-#include <utils/point.h>
+#include "gmapping/gui/qmappainter.h"
+#include "gmapping/gui/qpixmapdumper.h"
+#include <gmapping/utils/point.h>
 #include <list>
 
 class QNavigatorWidget :  public QMapPainter{

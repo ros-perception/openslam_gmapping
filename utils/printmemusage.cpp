@@ -1,4 +1,4 @@
-#include "printmemusage.h"
+#include "gmapping/utils/printmemusage.h"
 
 namespace GMapping{
 

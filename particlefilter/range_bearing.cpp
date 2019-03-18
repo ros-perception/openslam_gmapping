@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include <utils/point.h>
-#include "particlefilter.h"
+#include <gmapping/utils/point.h>
+#include "gmapping/particlefilter/particlefilter.h"
 
 using namespace std;
 using namespace GMapping;

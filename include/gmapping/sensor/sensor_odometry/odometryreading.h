@@ -2,9 +2,9 @@
 #define ODOMETRYREADING_H
 
 #include <string.h>
-#include <sensor/sensor_base/sensorreading.h>
-#include <utils/point.h>
-#include "odometrysensor.h"
+#include <gmapping/sensor/sensor_base/sensorreading.h>
+#include <gmapping/utils/point.h>
+#include "gmapping/sensor/sensor_odometry/odometrysensor.h"
 
 namespace GMapping{
 

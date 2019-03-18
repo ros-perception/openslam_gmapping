@@ -1,9 +1,9 @@
 #ifndef MAP_H
 #define MAP_H
-#include <utils/point.h>
+#include <gmapping/utils/point.h>
 #include <assert.h>
-#include "accessstate.h"
-#include "array2d.h"
+#include "gmapping/grid/accessstate.h"
+#include "gmapping/grid/array2d.h"
 
 namespace GMapping {
 /**

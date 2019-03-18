@@ -30,12 +30,12 @@
 #include <semaphore.h>
 #include <carmen/carmen.h>
 #include <carmen/global.h>
-#include <sensor/sensor_base/sensor.h>
-#include <log/carmenconfiguration.h>
-#include <log/sensorstream.h>
-#include <log/sensorlog.h>
-#include <sensor/sensor_range/rangesensor.h>
-#include <sensor/sensor_range/rangereading.h>
+#include <gmapping/sensor/sensor_base/sensor.h>
+#include <gmapping/log/carmenconfiguration.h>
+#include <gmapping/log/sensorstream.h>
+#include <gmapping/log/sensorlog.h>
+#include <gmapping/sensor/sensor_range/rangesensor.h>
+#include <gmapping/sensor/sensor_range/rangereading.h>
 
 namespace GMapping{
 

@@ -29,9 +29,9 @@
 #include <deque>
 #include <fstream>
 #include <iostream>
-#include <log/carmenconfiguration.h>
-#include <log/sensorstream.h>
-#include <gridfastslam/gridslamprocessor.h>
+#include <gmapping/log/carmenconfiguration.h>
+#include <gmapping/log/sensorstream.h>
+#include <gmapping/gridfastslam/gridslamprocessor.h>
 
 using namespace std;
 using namespace GMapping;

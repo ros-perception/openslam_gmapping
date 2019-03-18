@@ -1,8 +1,8 @@
 #ifndef STAT_H
 #define STAT_H
-#include "point.h"
+#include "gmapping/utils/point.h"
 #include <vector>
-#include "gvalues.h"
+#include "gmapping/utils/gvalues.h"
 
 namespace GMapping {
 

@@ -30,7 +30,7 @@
 #include <qwidget.h>
 #include <qwmatrix.h>
 #include <deque>
-#include <utils/gvalues.h>
+#include <gmapping/utils/gvalues.h>
 
 typedef std::deque<double> DoubleDeque;
 

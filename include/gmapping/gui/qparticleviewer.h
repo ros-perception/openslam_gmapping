@@ -35,8 +35,8 @@
 #include <iostream>
 #include <qimage.h>
 
-#include <utils/point.h>
-#include "gsp_thread.h"
+#include <gmapping/utils/point.h>
+#include "gmapping/gui/gsp_thread.h"
 
 namespace GMapping {
 

@@ -22,7 +22,7 @@
 
 
 #include <iostream>
-#include "qgraphpainter.h"
+#include "gmapping/gui/qgraphpainter.h"
 #include "moc_qgraphpainter.cpp"
 using namespace std;
 

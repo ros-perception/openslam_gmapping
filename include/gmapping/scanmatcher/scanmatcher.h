@@ -1,12 +1,12 @@
 #ifndef SCANMATCHER_H
 #define SCANMATCHER_H
 
-#include "icp.h"
-#include "smmap.h"
-#include <utils/macro_params.h>
-#include <utils/stat.h>
+#include "gmapping/scanmatcher/icp.h"
+#include "gmapping/scanmatcher/smmap.h"
+#include <gmapping/utils/macro_params.h>
+#include <gmapping/utils/stat.h>
 #include <iostream>
-#include <utils/gvalues.h>
+#include <gmapping/utils/gvalues.h>
 #define LASER_MAXBEAMS 1024
 
 namespace GMapping {

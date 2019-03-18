@@ -21,8 +21,8 @@
  *****************************************************************/
 
 
-#include "qparticleviewer.h"
-#include "qgraphpainter.h"
+#include "gmapping/gui/qparticleviewer.h"
+#include "gmapping/gui/qgraphpainter.h"
 #include <qapplication.h>
 #include <qframe.h>
 #include <qlabel.h>
