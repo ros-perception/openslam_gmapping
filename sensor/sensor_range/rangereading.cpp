@@ -2,8 +2,8 @@
 #include <iostream>
 #include <assert.h>
 #include <sys/types.h>
-#include <utils/gvalues.h>
-#include "rangereading.h"
+#include <gmapping/utils/gvalues.h>
+#include "gmapping/sensor/sensor_range/rangereading.h"
 
 namespace GMapping{
 

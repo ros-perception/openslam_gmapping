@@ -21,11 +21,11 @@
  *****************************************************************/
 
 
-#include <utils/commandline.h>
-#include <carmenwrapper/carmenwrapper.h>
-#include <gridfastslam/gridslamprocessor.h>
-#include <utils/orientedboundingbox.h>
-#include <configfile/configfile.h>
+#include <gmapping/utils/commandline.h>
+#include <gmapping/carmenwrapper/carmenwrapper.h>
+#include <gmapping/gridfastslam/gridslamprocessor.h>
+#include <gmapping/utils/orientedboundingbox.h>
+#include <gmapping/configfile/configfile.h>
 
 #define DEBUG cout << __PRETTY_FUNCTION__
 

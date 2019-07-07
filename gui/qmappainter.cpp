@@ -1,4 +1,4 @@
-#include "qmappainter.h"
+#include "gmapping/gui/qmappainter.h"
 #include "moc_qmappainter.cpp"
 
 QMapPainter::QMapPainter( QWidget * parent, const char * name, WFlags f):

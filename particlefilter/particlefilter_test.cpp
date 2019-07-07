@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include "particlefilter.h"
+#include "gmapping/particlefilter/particlefilter.h"
 
 using namespace std;
 

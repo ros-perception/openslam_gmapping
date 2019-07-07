@@ -1,5 +1,5 @@
 #include <cstring>
-#include "gfsreader.h"
+#include "gmapping/gridfastslam/gfsreader.h"
 #include <iomanip>
 #include <limits>
 

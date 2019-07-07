@@ -22,7 +22,7 @@
 
 
 #include <qapplication.h>
-#include "qparticleviewer.h"
+#include "gmapping/gui/qparticleviewer.h"
 
 int  main (int argc, char ** argv){
 	QApplication app(argc, argv);

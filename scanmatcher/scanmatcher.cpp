@@ -3,8 +3,8 @@
 #include <list>
 #include <iostream>
 
-#include "scanmatcher.h"
-#include "gridlinetraversal.h"
+#include "gmapping/scanmatcher/scanmatcher.h"
+#include "gmapping/scanmatcher/gridlinetraversal.h"
 //#define GENERATE_MAPS
 
 namespace GMapping {
@@ -46,6 +46,12 @@ ScanMatcher::ScanMatcher(): m_laserPose(0,0,0){
 	m_lasamplestep=0.01;
 	m_generateMap=false;
 */
+
+   m_linePoints = new IntPoint[20000];
+}
+
+ScanMatcher::~ScanMatcher(){
+	delete [] m_linePoints;
 }
 
 void ScanMatcher::invalidateActiveArea(){
@@ -127,7 +133,7 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 	/*determine the size of the area*/
 	const double * angle=m_laserAngles+m_initialBeamsSkip;
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++){
-		if (*r>m_laserMaxRange) continue;
+		if (*r>m_laserMaxRange||*r==0.0||isnan(*r)) continue;
 		double d=*r>m_usableRange?m_usableRange:*r;
 		Point phit=lp;
 		phit.x+=d*cos(lp.theta+*angle);
@@ -159,7 +165,7 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++)
 		if (m_generateMap){
 			double d=*r;
-			if (d>m_laserMaxRange)
+			if (d>m_laserMaxRange||d==0.0||isnan(d))
 				continue;
 			if (d>m_usableRange)
 				d=m_usableRange;
@@ -167,14 +173,14 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 			IntPoint p0=map.world2map(lp);
 			IntPoint p1=map.world2map(phit);
 			
-			IntPoint linePoints[20000] ;
+			//IntPoint linePoints[20000] ;
 			GridLineTraversalLine line;
-			line.points=linePoints;
+			line.points=m_linePoints;
 			GridLineTraversal::gridLine(p0, p1, &line);
 			for (int i=0; i<line.num_points-1; i++){
-				assert(map.isInside(linePoints[i]));
-				activeArea.insert(map.storage().patchIndexes(linePoints[i]));
-				assert(linePoints[i].x>=0 && linePoints[i].y>=0);
+				assert(map.isInside(m_linePoints[i]));
+				activeArea.insert(map.storage().patchIndexes(m_linePoints[i]));
+				assert(m_linePoints[i].x>=0 && m_linePoints[i].y>=0);
 			}
 			if (d<m_usableRange){
 				IntPoint cp=map.storage().patchIndexes(p1);
@@ -182,7 +188,7 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 				activeArea.insert(cp);
 			}
 		} else {
-			if (*r>m_laserMaxRange||*r>m_usableRange) continue;
+			if (*r>m_laserMaxRange||*r>m_usableRange||*r==0.0||isnan(*r)) continue;
 			Point phit=lp;
 			phit.x+=*r*cos(lp.theta+*angle);
 			phit.y+=*r*sin(lp.theta+*angle);
@@ -225,15 +231,15 @@ double ScanMatcher::registerScan(ScanMatcherMap& map, const OrientedPoint& p, co
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++)
 		if (m_generateMap){
 			double d=*r;
-			if (d>m_laserMaxRange)
+			if (d>m_laserMaxRange||d==0.0||isnan(d))
 				continue;
 			if (d>m_usableRange)
 				d=m_usableRange;
 			Point phit=lp+Point(d*cos(lp.theta+*angle),d*sin(lp.theta+*angle));
 			IntPoint p1=map.world2map(phit);
-			IntPoint linePoints[20000] ;
+			//IntPoint linePoints[20000] ;
 			GridLineTraversalLine line;
-			line.points=linePoints;
+			line.points=m_linePoints;
 			GridLineTraversal::gridLine(p0, p1, &line);
 			for (int i=0; i<line.num_points-1; i++){
 				PointAccumulator& cell=map.cell(line.points[i]);
@@ -249,7 +255,7 @@ double ScanMatcher::registerScan(ScanMatcherMap& map, const OrientedPoint& p, co
 				esum+=e;
 			}
 		} else {
-			if (*r>m_laserMaxRange||*r>m_usableRange) continue;
+			if (*r>m_laserMaxRange||*r>m_usableRange||*r==0.0||isnan(*r)) continue;
 			Point phit=lp;
 			phit.x+=*r*cos(lp.theta+*angle);
 			phit.y+=*r*sin(lp.theta+*angle);

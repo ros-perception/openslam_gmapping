@@ -1,8 +1,8 @@
-#include <utils/stat.h>
-#include <particlefilter/particlefilter.h>
+#include <gmapping/utils/stat.h>
+#include <gmapping/particlefilter/particlefilter.h>
 #include <iostream>
 #include <fstream>
-#include "gfsreader.h"
+#include "gmapping/gridfastslam/gfsreader.h"
 
 using namespace std;
 using namespace GMapping;

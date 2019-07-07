@@ -1,4 +1,4 @@
-#include "smmap.h"
+#include "gmapping/scanmatcher/smmap.h"
 
 namespace GMapping {
 
