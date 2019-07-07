@@ -2,8 +2,8 @@
 Changelog for package openslam_gmapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.0 (2019-07-07)
+------------------
 * update license to BSD-3 (`#29 <https://github.com/ros-perception/openslam_gmapping/issues/29>`_)
   
   * update maintainer to ROS Orphaned Package Maintainers
