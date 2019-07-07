@@ -4,7 +4,7 @@
   <version>0.1.1</version>
   <description>The catkinized verseion of openslam_gmapping package (https://github.com/OpenSLAM-org/openslam_gmapping/tree/79ef0b0e6d9a12d6390ae64c4c00d37d776abefb)</description>
 
-  <maintainer email="vincent.rabaud@gmail.com">Vincent Rabaud</maintainer>
+  <maintainer email="ros-orphaned-packages@googlegroups.com">ROS Orphaned Package Maintainers</maintainer>
   <license>BSD</license>
 
   <url type="website">http://openslam.org/gmapping</url>
