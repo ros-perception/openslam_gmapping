@@ -2,6 +2,11 @@
 Changelog for package openslam_gmapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* CMakeLists.txt: fix install command (install libs, install includes to corrrect position as well as hxx (`#30 <https://github.com/ros-perception/openslam_gmapping/issues/30>`_)
+* Contributors: Kei Okada
+
 0.2.0 (2019-07-07)
 ------------------
 * update license to BSD-3 (`#29 <https://github.com/ros-perception/openslam_gmapping/issues/29>`_)
