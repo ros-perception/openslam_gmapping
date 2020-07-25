@@ -178,7 +178,7 @@ bool CarmenWrapper::getReading(RangeReading& reading){
 	sem_wait(&m_dequeSem);
 	pthread_mutex_lock(&m_mutex);
 	if (!m_rangeDeque.empty()){
-//		cerr << __PRETTY_FUNCTION__ << ": queue size=" <<m_rangeDeque.size() << endl;
+//		cerr << __func__ << ": queue size=" <<m_rangeDeque.size() << endl;
 		reading=m_rangeDeque.front();
 		m_rangeDeque.pop_front();
 		present=true;
@@ -214,7 +214,7 @@ void CarmenWrapper::robot_frontlaser_handler(carmen_robot_laser_message* frontla
 		m_rangeSensor=new RangeSensor("FLASER",frontlaser->num_readings, res, OrientedPoint(0,0,0), 0, 89.9);
 		m_sensorMap.insert(make_pair(string("FLASER"), m_rangeSensor));
 		
-		cout << __PRETTY_FUNCTION__ 
+		cout << __func__ 
 		     << ": FrontLaser configured." 
 		     << " Readings " << m_rangeSensor->beams().size() 
 		     << " Resolution " << res << endl;
@@ -242,7 +242,7 @@ void CarmenWrapper::robot_rearlaser_handler(carmen_robot_laser_message* rearlase
 		m_rangeSensor=new RangeSensor("FLASER",frontlaser->num_readings, res, OrientedPoint(0,0,0), 0, 89.9);
 		m_sensorMap.insert(make_pair(string("FLASER"), m_rangeSensor));
 		
-		cout << __PRETTY_FUNCTION__ 
+		cout << __func__ 
 		     << ": FrontLaser configured." 
 		     << " Readings " << m_rangeSensor->beams().size() 
 		     << " Resolution " << res << endl;
@@ -325,7 +325,7 @@ RangeReading CarmenWrapper::carmen2reading(const carmen_robot_laser_message& msg
 		m_frontLaser->updateBeamsLookup();
 		m_sensorMap.insert(make_pair(sensorName, m_frontLaser));
 		
-		cout << __PRETTY_FUNCTION__ 
+		cout << __func__ 
 		     << ": " << sensorName <<" configured." 
 		     << " Readings " << m_frontLaser->beams().size() 
 		     << " Resolution " << res << endl;
@@ -347,7 +347,7 @@ RangeReading CarmenWrapper::carmen2reading(const carmen_robot_laser_message& msg
 		m_rearLaser->updateBeamsLookup();
 		m_sensorMap.insert(make_pair(sensorName, m_rearLaser));
 		
-		cout << __PRETTY_FUNCTION__ 
+		cout << __func__ 
 		     << ": " << sensorName <<" configured." 
 		     << " Readings " << m_rearLaser->beams().size() 
 		     << " Resolution " << res << endl;

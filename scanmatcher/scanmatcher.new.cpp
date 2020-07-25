@@ -208,11 +208,11 @@ double ScanMatcher::optimize(OrientedPoint& pnew, const ScanMatcherMap& map, con
 			c_iterations++;
 		} while(move!=Done);
 		currentPose=bestLocalPose;
-		//cout << __PRETTY_FUNCTION__ << "currentScore=" << currentScore<< endl;
+		//cout << __func__ << "currentScore=" << currentScore<< endl;
 		//here we look for the best move;
 	}while (currentScore>bestScore || refinement<m_optRecursiveIterations);
-	//cout << __PRETTY_FUNCTION__ << "bestScore=" << bestScore<< endl;
-	//cout << __PRETTY_FUNCTION__ << "iterations=" << c_iterations<< endl;
+	//cout << __func__ << "bestScore=" << bestScore<< endl;
+	//cout << __func__ << "iterations=" << c_iterations<< endl;
 	pnew=currentPose;
 	return bestScore;
 }
@@ -292,10 +292,10 @@ double ScanMatcher::optimize(OrientedPoint& _mean, ScanMatcher::CovarianceMatrix
 			//update the move list
 		} while(move!=Done);
 		currentPose=bestLocalPose;
-		//cout << __PRETTY_FUNCTION__ << "currentScore=" << currentScore<< endl;
+		//cout << __func__ << "currentScore=" << currentScore<< endl;
 		//here we look for the best move;
 	}while (currentScore>bestScore || refinement<m_optRecursiveIterations);
-	//cout << __PRETTY_FUNCTION__ << "bestScore=" << bestScore<< endl;
+	//cout << __func__ << "bestScore=" << bestScore<< endl;
 	
 	//normalize the likelihood
 	double lmin=1e9;

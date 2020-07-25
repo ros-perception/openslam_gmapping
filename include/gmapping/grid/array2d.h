@@ -56,7 +56,7 @@ Array2D<Cell,debug>::Array2D(int xsize, int ysize){
 		m_cells=0;
 	}
 	if (debug){
-		std::cerr << __PRETTY_FUNCTION__ << std::endl;
+		std::cerr << __func__ << std::endl;
 		std::cerr << "m_xsize= " << m_xsize<< std::endl;
 		std::cerr << "m_ysize= " << m_ysize<< std::endl;
 	}
@@ -79,7 +79,7 @@ Array2D<Cell,debug> & Array2D<Cell,debug>::operator=(const Array2D<Cell,debug> &
 			m_cells[x][y]=g.m_cells[x][y];
 	
 	if (debug){
-		std::cerr << __PRETTY_FUNCTION__ << std::endl;
+		std::cerr << __func__ << std::endl;
 		std::cerr << "m_xsize= " << m_xsize<< std::endl;
 		std::cerr << "m_ysize= " << m_ysize<< std::endl;
 	}
@@ -97,7 +97,7 @@ Array2D<Cell,debug>::Array2D(const Array2D<Cell,debug> & g){
 			m_cells[x][y]=g.m_cells[x][y];
 	}
 	if (debug){
-		std::cerr << __PRETTY_FUNCTION__ << std::endl;
+		std::cerr << __func__ << std::endl;
 		std::cerr << "m_xsize= " << m_xsize<< std::endl;
 		std::cerr << "m_ysize= " << m_ysize<< std::endl;
 	}
@@ -106,7 +106,7 @@ Array2D<Cell,debug>::Array2D(const Array2D<Cell,debug> & g){
 template <class Cell, const bool debug>
 Array2D<Cell,debug>::~Array2D(){
   if (debug){
-  	std::cerr << __PRETTY_FUNCTION__ << std::endl;
+  	std::cerr << __func__ << std::endl;
 	std::cerr << "m_xsize= " << m_xsize<< std::endl;
 	std::cerr << "m_ysize= " << m_ysize<< std::endl;
   }
@@ -121,7 +121,7 @@ Array2D<Cell,debug>::~Array2D(){
 template <class Cell, const bool debug>
 void Array2D<Cell,debug>::clear(){
   if (debug){
-  	std::cerr << __PRETTY_FUNCTION__ << std::endl;
+  	std::cerr << __func__ << std::endl;
 	std::cerr << "m_xsize= " << m_xsize<< std::endl;
 	std::cerr << "m_ysize= " << m_ysize<< std::endl;
   }

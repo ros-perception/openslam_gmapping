@@ -30,7 +30,7 @@
 	#include <gmapping/carmenwrapper/carmenwrapper.h>
 #endif
 
-#define DEBUG cout << __PRETTY_FUNCTION__
+#define DEBUG cout << __func__
 
 using namespace std;
 

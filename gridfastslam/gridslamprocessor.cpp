@@ -71,7 +71,7 @@ using namespace std;
     m_obsSigmaGain=gsp.m_obsSigmaGain;
     
 #ifdef MAP_CONSISTENCY_CHECK
-    cerr << __PRETTY_FUNCTION__ <<  ": trajectories copy.... ";
+    cerr << __func__ <<  ": trajectories copy.... ";
 #endif
     TNodeVector v=gsp.getTrajectories();
     for (unsigned int i=0; i<v.size(); i++){
@@ -97,7 +97,7 @@ using namespace std;
 
   GridSlamProcessor* GridSlamProcessor::clone() const {
 # ifdef MAP_CONSISTENCY_CHECK
-    cerr << __PRETTY_FUNCTION__ << ": performing preclone_fit_test" << endl;
+    cerr << __func__ << ": performing preclone_fit_test" << endl;
     typedef std::map<autoptr< Array2D<PointAccumulator> >::reference* const, int> PointerMap;
     PointerMap pmap;
 	for (ParticleVector::const_iterator it=m_particles.begin(); it!=m_particles.end(); it++){
@@ -116,17 +116,17 @@ using namespace std;
 	    }
 	  }
 	}
-	cerr << __PRETTY_FUNCTION__ <<  ": Number of allocated chunks" << pmap.size() << endl;
+	cerr << __func__ <<  ": Number of allocated chunks" << pmap.size() << endl;
 	for(PointerMap::const_iterator it=pmap.begin(); it!=pmap.end(); it++)
 	  assert(it->first->shares==(unsigned int)it->second);
 
-	cerr << __PRETTY_FUNCTION__ <<  ": SUCCESS, the error is somewhere else" << endl;
+	cerr << __func__ <<  ": SUCCESS, the error is somewhere else" << endl;
 # endif
 	GridSlamProcessor* cloned=new GridSlamProcessor(*this);
 	
 # ifdef MAP_CONSISTENCY_CHECK
-	cerr << __PRETTY_FUNCTION__ <<  ": trajectories end" << endl;
-	cerr << __PRETTY_FUNCTION__ << ": performing afterclone_fit_test" << endl;
+	cerr << __func__ <<  ": trajectories end" << endl;
+	cerr << __func__ << ": performing afterclone_fit_test" << endl;
 	ParticleVector::const_iterator jt=cloned->m_particles.begin();
 	for (ParticleVector::const_iterator it=m_particles.begin(); it!=m_particles.end(); it++){
 	  const ScanMatcherMap& m1(it->map);
@@ -143,14 +143,14 @@ using namespace std;
 	    }
 	  }
 	}
-	cerr << __PRETTY_FUNCTION__ <<  ": SUCCESS, the error is somewhere else" << endl;
+	cerr << __func__ <<  ": SUCCESS, the error is somewhere else" << endl;
 # endif
 	return cloned;
 }
   
   GridSlamProcessor::~GridSlamProcessor(){
-    cerr << __PRETTY_FUNCTION__ << ": Start" << endl;
-    cerr << __PRETTY_FUNCTION__ << ": Deleting tree" << endl;
+    cerr << __func__ << ": Start" << endl;
+    cerr << __func__ << ": Deleting tree" << endl;
     for (std::vector<Particle>::iterator it=m_particles.begin(); it!=m_particles.end(); it++){
 #ifdef TREE_CONSISTENCY_CHECK		
       TNode* node=it->node;
@@ -164,7 +164,7 @@ using namespace std;
     }
     
 # ifdef MAP_CONSISTENCY_CHECK
-    cerr << __PRETTY_FUNCTION__ << ": performing predestruction_fit_test" << endl;
+    cerr << __func__ << ": performing predestruction_fit_test" << endl;
     typedef std::map<autoptr< Array2D<PointAccumulator> >::reference* const, int> PointerMap;
     PointerMap pmap;
     for (ParticleVector::const_iterator it=m_particles.begin(); it!=m_particles.end(); it++){
@@ -183,10 +183,10 @@ using namespace std;
 	}
       }
     }
-    cerr << __PRETTY_FUNCTION__ << ": Number of allocated chunks" << pmap.size() << endl;
+    cerr << __func__ << ": Number of allocated chunks" << pmap.size() << endl;
     for(PointerMap::const_iterator it=pmap.begin(); it!=pmap.end(); it++)
       assert(it->first->shares>=(unsigned int)it->second);
-    cerr << __PRETTY_FUNCTION__ << ": SUCCESS, the error is somewhere else" << endl;
+    cerr << __func__ << ": SUCCESS, the error is somewhere else" << endl;
 # endif
   }
 

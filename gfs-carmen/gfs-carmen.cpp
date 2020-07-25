@@ -27,7 +27,7 @@
 #include <gmapping/utils/orientedboundingbox.h>
 #include <gmapping/configfile/configfile.h>
 
-#define DEBUG cout << __PRETTY_FUNCTION__
+#define DEBUG cout << __func__
 
 /*
 Example file for interfacing carmen, and gfs.
@@ -228,10 +228,10 @@ int main(int argc, const char * const * argv){
 				cerr << "Best Particle is " << best_idx << " with weight " << best_weight << endl;
 				
 */				
-				cerr << __PRETTY_FUNCTION__  << "CLONING... " << endl;
+				cerr << __func__  << "CLONING... " << endl;
 				GridSlamProcessor* newProcessor=processor->clone();
 				cerr << "DONE" << endl;
-				cerr << __PRETTY_FUNCTION__  << "DELETING... " << endl;
+				cerr << __func__  << "DELETING... " << endl;
 				delete processor;
 				cerr << "DONE" << endl;
 				processor=newProcessor;

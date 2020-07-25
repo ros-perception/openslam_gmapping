@@ -3,10 +3,11 @@
 
 #include <string>
 #include <gmapping/sensor/sensor_base/sensor.h>
+#include <gmapping/sensor/sensor_odometry/sensor_odometry_export.h>
 
 namespace GMapping{
 
-class OdometrySensor: public Sensor{
+class SENSOR_ODOMETRY_EXPORT OdometrySensor: public Sensor{
 	public:
 		OdometrySensor(const std::string& name, bool ideal=false);
 		inline bool isIdeal() const { return m_ideal; }

@@ -27,10 +27,11 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <gmapping/configfile/configfile_export.h>
 
 namespace GMapping{
 
-class AutoVal {
+class CONFIGFILE_EXPORT AutoVal {
 public:
   AutoVal() {};
   explicit AutoVal(const std::string&);
@@ -63,7 +64,7 @@ private:
   std::string m_value;
 };
 
-class ConfigFile {
+class CONFIGFILE_EXPORT ConfigFile {
   std::map<std::string,AutoVal> m_content;
   
 public:

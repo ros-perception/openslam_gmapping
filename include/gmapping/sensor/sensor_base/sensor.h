@@ -3,10 +3,11 @@
 
 #include <string>
 #include <map>
+#include <gmapping/sensor/sensor_base/sensor_base_export.h>
 
 namespace GMapping{
 
-class Sensor{
+class SENSOR_BASE_EXPORT Sensor{
 	public:
 		Sensor(const std::string& name="");
 		virtual ~Sensor();

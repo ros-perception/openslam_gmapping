@@ -5,10 +5,11 @@
 #include <gmapping/sensor/sensor_base/sensorreading.h>
 #include <gmapping/utils/point.h>
 #include "gmapping/sensor/sensor_odometry/odometrysensor.h"
+#include <gmapping/sensor/sensor_odometry/sensor_odometry_export.h>
 
 namespace GMapping{
 
-class OdometryReading: public SensorReading{
+class SENSOR_ODOMETRY_EXPORT OdometryReading: public SensorReading{
 	public:
 		OdometryReading(const OdometrySensor* odo, double time=0);
 		inline const OrientedPoint& getPose() const {return m_pose;}

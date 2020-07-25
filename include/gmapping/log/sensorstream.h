@@ -3,9 +3,10 @@
 
 #include <istream>
 #include "gmapping/log/sensorlog.h"
+#include <gmapping/log/log_export.h>
 
 namespace GMapping {
-class SensorStream{
+class LOG_EXPORT SensorStream{
 	public:
 		SensorStream(const SensorMap& sensorMap);
 		virtual ~SensorStream();
@@ -20,7 +21,7 @@ class SensorStream{
 		static RangeReading* parseRange(std::istream& is, const RangeSensor* );
 };
 
-class InputSensorStream: public SensorStream{
+class LOG_EXPORT InputSensorStream: public SensorStream{
 	public:
 		InputSensorStream(const SensorMap& sensorMap, std::istream& is);
 		virtual operator bool() const;
@@ -32,7 +33,7 @@ class InputSensorStream: public SensorStream{
 		std::istream& m_inputStream;
 };
 
-class LogSensorStream: public SensorStream{
+class LOG_EXPORT LogSensorStream: public SensorStream{
 	public:
 		LogSensorStream(const SensorMap& sensorMap, const SensorLog* log);
 		virtual operator bool() const;
