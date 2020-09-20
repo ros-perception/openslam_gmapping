@@ -196,8 +196,8 @@ generate_export_header(gridfastslam
   EXPORT_FILE_NAME ${EXPORT_HEADER_DIR}/gmapping/gridfastslam/gridfastslam_export.h)
 
 install(DIRECTORY
-  ${EXPORT_HEADER_DIR}
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+  ${EXPORT_HEADER_DIR}/
+  DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION})
 
 #############
 ## Testing ##
