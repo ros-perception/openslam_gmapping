@@ -76,7 +76,7 @@ void RawOdometryRecord::read(istream& is){
   is >> pose.y;
   is >> pose.theta;
   time = 0;
-  assert(is);
+  assert(static_cast<bool>(is));
     is >> time;
  
 }
