@@ -560,7 +560,11 @@ void ScanMatcher::setLaserParameters
 	/*if (m_laserAngles)
 		delete [] m_laserAngles;
 	*/
-	assert(beams<LASER_MAXBEAMS);
+	if(beams>LASER_MAXBEAMS) {
+    cerr << "Number of beams (" << beams << ") is larger than maximum supported value (" <<
+      LASER_MAXBEAMS << ")." << endl;
+    exit(-1);
+  }
 	m_laserPose=lpose;
 	m_laserBeams=beams;
 	//m_laserAngles=new double[beams];
