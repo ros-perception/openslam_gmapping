@@ -2,11 +2,12 @@
 #define FSRMOVEMENT_H
 
 #include "gmapping/utils/point.h"
+#include <gmapping/utils/utils_export.h>
 
 namespace GMapping {
 
   /** fsr-movement (forward, sideward, rotate) **/
-class FSRMovement  {
+class UTILS_EXPORT FSRMovement  {
  public:
   FSRMovement(double f=0.0, double s=0.0, double r=0.0);
   FSRMovement(const FSRMovement& src);

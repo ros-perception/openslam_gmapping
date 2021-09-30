@@ -21,7 +21,7 @@ RangeReading::RangeReading(unsigned int n_beams, const double* d, const RangeSen
 }
 
 RangeReading::~RangeReading(){
-//	cerr << __PRETTY_FUNCTION__ << ": CAZZZZZZZZZZZZZZZZZZZZOOOOOOOOOOO" << endl;
+//	cerr << __func__ << ": CAZZZZZZZZZZZZZZZZZZZZOOOOOOOOOOO" << endl;
 }
 
 unsigned int RangeReading::rawView(double* v, double density) const{
@@ -48,7 +48,7 @@ unsigned int RangeReading::rawView(double* v, double density) const{
 				lastPoint=lp;
 				v[i]=(*this)[i];
 			}
-			//std::cerr<< __PRETTY_FUNCTION__ << std::endl;
+			//std::cerr<< __func__ << std::endl;
 			//std::cerr<< "suppressed " << suppressed <<"/"<<size() << std::endl;
 		}
 	}
@@ -78,7 +78,7 @@ unsigned int RangeReading::activeBeams(double density) const{
 			lastPoint=lp;
 			ab++;
 		}
-		//std::cerr<< __PRETTY_FUNCTION__ << std::endl;
+		//std::cerr<< __func__ << std::endl;
 		//std::cerr<< "suppressed " << suppressed <<"/"<<size() << std::endl;
 	}
 	return ab;

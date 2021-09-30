@@ -6,10 +6,11 @@
 #include <gmapping/sensor/sensor_range/rangereading.h>
 //#include <gsl/gsl_eigen.h>
 #include "gmapping/scanmatcher/scanmatcher.h"
+#include <gmapping/scanmatcher/scanmatcher_export.h>
 
 namespace GMapping {
 
-class ScanMatcherProcessor{
+class SCANMATCHER_EXPORT ScanMatcherProcessor{
 	public:
   ScanMatcherProcessor(const ScanMatcherMap& m);
   ScanMatcherProcessor (double xmin, double ymin, double xmax, double ymax, double delta, double patchdelta);

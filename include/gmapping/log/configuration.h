@@ -3,10 +3,11 @@
 
 #include <istream>
 #include <gmapping/sensor/sensor_base/sensor.h>
+#include <gmapping/log/log_export.h>
 
 namespace GMapping {
 
-class Configuration{
+class LOG_EXPORT Configuration{
 	public:
 		virtual ~Configuration();
 		virtual SensorMap computeSensorMap() const=0;

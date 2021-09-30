@@ -1,7 +1,9 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <unistd.h>
+#ifndef _WIN32
+  #include <unistd.h>
+#endif
 
 
 using namespace std;

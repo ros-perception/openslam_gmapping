@@ -201,7 +201,7 @@ void QParticleViewer::drawMap(const ScanMatcherMap& map){
   Point wmax=Point(pic2map(IntPoint(m_pixmap->width()/2,-m_pixmap->height()/2)));
   IntPoint imin=map.world2map(wmin);
   IntPoint imax=map.world2map(wmax);
-  /*	cout << __PRETTY_FUNCTION__ << endl;
+  /*	cout << __func__ << endl;
 	cout << " viewCenter=" << viewCenter.x << "," << viewCenter.y <<   endl;	
 	cout << " wmin=" << wmin.x << "," << wmin.y <<  " wmax=" << wmax.x << "," << wmax.y << endl;	
 	cout << " imin=" << imin.x << "," << imin.y <<  " imax=" << imax.x << "," << imax.y << endl;

@@ -4,10 +4,11 @@
 #include <vector>
 #include <gmapping/sensor/sensor_base/sensor.h>
 #include <gmapping/utils/point.h>
+#include <gmapping/sensor/sensor_range/sensor_range_export.h>
 
 namespace GMapping{
 
-class RangeSensor: public Sensor{
+class SENSOR_RANGE_EXPORT RangeSensor: public Sensor{
 	friend class Configuration;
 	friend class CarmenConfiguration;
 	friend class CarmenWrapper;

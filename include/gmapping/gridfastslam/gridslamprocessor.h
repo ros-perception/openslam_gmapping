@@ -14,6 +14,7 @@
 #include <gmapping/sensor/sensor_range/rangereading.h>
 #include <gmapping/scanmatcher/scanmatcher.h>
 #include "gmapping/gridfastslam/motionmodel.h"
+#include <gmapping/gridfastslam/gridfastslam_export.h>
 
 
 namespace GMapping {
@@ -31,7 +32,7 @@ namespace GMapping {
      In order to avoid unnecessary computation the filter state is updated 
      only when the robot moves more than a given threshold.
   */
-  class GridSlamProcessor{
+  class GRIDFASTSLAM_EXPORT GridSlamProcessor{
   public:
 
     

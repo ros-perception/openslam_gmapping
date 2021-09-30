@@ -23,8 +23,10 @@
 #ifndef GSP_THREAD_H
 #define GSP_THREAD_H
 
-#include <unistd.h>
-#include <pthread.h>
+#ifndef _WIN32
+  #include <unistd.h>
+  #include <pthread.h>
+#endif
 #include <deque>
 #include <fstream>
 #include <iostream>
