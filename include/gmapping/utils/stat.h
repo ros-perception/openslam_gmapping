@@ -3,18 +3,17 @@
 #include "gmapping/utils/point.h"
 #include <vector>
 #include "gmapping/utils/gvalues.h"
-#include <gmapping/utils/utils_export.h>
 
 namespace GMapping {
 
 /**stupid utility function for drawing particles form a zero mean, sigma variance normal distribution
 probably it should not go there*/
-double UTILS_EXPORT sampleGaussian(double sigma,unsigned long int S=0);
+double sampleGaussian(double sigma,unsigned long int S=0);
 
-double UTILS_EXPORT evalGaussian(double sigmaSquare, double delta);
-double UTILS_EXPORT evalLogGaussian(double sigmaSquare, double delta);
-int UTILS_EXPORT sampleUniformInt(int max);
-double UTILS_EXPORT sampleUniformDouble(double min, double max);
+double evalGaussian(double sigmaSquare, double delta);
+double evalLogGaussian(double sigmaSquare, double delta);
+int sampleUniformInt(int max);
+double sampleUniformDouble(double min, double max);
 
 struct Covariance3{
 	Covariance3 operator + (const Covariance3 & cov) const;
@@ -35,7 +34,7 @@ struct Gaussian3{
 	OrientedPoint mean;
 	EigenCovariance3 covariance;
 	Covariance3 cov;
-	double UTILS_EXPORT eval(const OrientedPoint& p) const;
+	double eval(const OrientedPoint& p) const;
 	void computeFromSamples(const std::vector<OrientedPoint> & poses);
 	void computeFromSamples(const std::vector<OrientedPoint> & poses, const std::vector<double>& weights );
 };

@@ -20,9 +20,7 @@
  *****************************************************************/
 
 
-#ifndef _WIN32
-  #include <unistd.h>
-#endif
+#include <unistd.h>
 #include "gmapping/gui/gsp_thread.h"
 
 using namespace GMapping;

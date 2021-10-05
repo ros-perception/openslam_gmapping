@@ -2,11 +2,9 @@
 #define SENSORREADING_H
 
 #include "gmapping/sensor/sensor_base/sensor.h"
-#include <gmapping/sensor/sensor_base/sensor_base_export.h>
-
 namespace GMapping{
 
-class SENSOR_BASE_EXPORT SensorReading{
+class SensorReading{
 	public:
 		SensorReading(const Sensor* s=0, double time=0);
 		virtual ~SensorReading();

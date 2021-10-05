@@ -7,12 +7,11 @@
 #include <gmapping/utils/stat.h>
 #include <iostream>
 #include <gmapping/utils/gvalues.h>
-#include <gmapping/scanmatcher/scanmatcher_export.h>
 #define LASER_MAXBEAMS 2048
 
 namespace GMapping {
 
-class SCANMATCHER_EXPORT ScanMatcher{
+class ScanMatcher{
 	public:
 		typedef Covariance3 CovarianceMatrix;
 		

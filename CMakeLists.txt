@@ -4,19 +4,13 @@ project(openslam_gmapping)
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED)
 
-include(GenerateExportHeader)
-set(EXPORT_HEADER_DIR "${CATKIN_DEVEL_PREFIX}/include")
-file(MAKE_DIRECTORY "${EXPORT_HEADER_DIR}")
-
 ###################################
 ## catkin specific configuration ##
 ###################################
 ## The catkin_package macro generates cmake config files for your package
 ## Declare things to be passed to dependent projects
 catkin_package(
-  INCLUDE_DIRS
-    include
-    ${EXPORT_HEADER_DIR}
+  INCLUDE_DIRS include
   LIBRARIES utils sensor_base sensor_odometry sensor_range log configfile scanmatcher gridfastslam
 )
 
@@ -26,10 +20,7 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-  include
-  ${EXPORT_HEADER_DIR}
-)
+include_directories(include)
 
 #SUBDIRS=utils sensor log configfile scanmatcher gridfastslam gui
 
@@ -161,13 +152,9 @@ target_link_libraries(gridfastslam
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS utils sensor_base sensor_odometry sensor_range log configfile scanmatcher gridfastslam
+install(TARGETS utils autoptr_test sensor_base sensor_odometry sensor_range sensor_range log log_test log_plot scanstudio2carmen rdk2carmen configfile configfile_test scanmatcher scanmatch_test icptest gridfastslam gfs2log gfs2rec gfs2neff
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-)
-
-install(TARGETS autoptr_test log_test log_plot scanstudio2carmen rdk2carmen configfile_test scanmatch_test icptest gfs2log gfs2rec gfs2neff
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -177,27 +164,6 @@ install(DIRECTORY include/gmapping
   FILES_MATCHING PATTERN "*.h*"
   PATTERN ".svn" EXCLUDE
 )
-
-generate_export_header(utils
-  EXPORT_FILE_NAME ${EXPORT_HEADER_DIR}/gmapping/utils/utils_export.h)
-generate_export_header(sensor_base
-  EXPORT_FILE_NAME ${EXPORT_HEADER_DIR}/gmapping/sensor/sensor_base/sensor_base_export.h)
-generate_export_header(sensor_odometry
-  EXPORT_FILE_NAME ${EXPORT_HEADER_DIR}/gmapping/sensor/sensor_odometry/sensor_odometry_export.h)
-generate_export_header(sensor_range
-  EXPORT_FILE_NAME ${EXPORT_HEADER_DIR}/gmapping/sensor/sensor_range/sensor_range_export.h)
-generate_export_header(log
-  EXPORT_FILE_NAME ${EXPORT_HEADER_DIR}/gmapping/log/log_export.h)
-generate_export_header(configfile
-  EXPORT_FILE_NAME ${EXPORT_HEADER_DIR}/gmapping/configfile/configfile_export.h)
-generate_export_header(scanmatcher
-  EXPORT_FILE_NAME ${EXPORT_HEADER_DIR}/gmapping/scanmatcher/scanmatcher_export.h)
-generate_export_header(gridfastslam
-  EXPORT_FILE_NAME ${EXPORT_HEADER_DIR}/gmapping/gridfastslam/gridfastslam_export.h)
-
-install(DIRECTORY
-  ${EXPORT_HEADER_DIR}/
-  DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION})
 
 #############
 ## Testing ##

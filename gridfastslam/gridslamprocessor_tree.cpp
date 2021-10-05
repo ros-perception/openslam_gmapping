@@ -57,22 +57,22 @@ GridSlamProcessor::TNodeVector GridSlamProcessor::getTrajectories() const{
 		assert(newnode->childs==0);
 		if (newnode->parent){
 			parentCache.insert(make_pair(newnode->parent, newnode));
-			//cerr << __func__ << ": node " << newnode->parent << " flag=" << newnode->parent->flag<< endl;
+			//cerr << __PRETTY_FUNCTION__ << ": node " << newnode->parent << " flag=" << newnode->parent->flag<< endl;
 			if (! newnode->parent->flag){
-				//cerr << __func__ << ": node " << newnode->parent << " flag=" << newnode->parent->flag<< endl;
+				//cerr << __PRETTY_FUNCTION__ << ": node " << newnode->parent << " flag=" << newnode->parent->flag<< endl;
 				newnode->parent->flag=true;
 				border.push_back(newnode->parent);
 			}
 		}
 	}
 	
-	//cerr << __func__ << ": border.size(INITIAL)=" << border.size() << endl;
-	//cerr << __func__ << ": parentCache.size()=" << parentCache.size() << endl;
+	//cerr << __PRETTY_FUNCTION__ << ": border.size(INITIAL)=" << border.size() << endl;
+	//cerr << __PRETTY_FUNCTION__ << ": parentCache.size()=" << parentCache.size() << endl;
 	while (! border.empty()){
-		//cerr << __func__ << ": border.size(PREPROCESS)=" << border.size() << endl;
-		//cerr << __func__ << ": parentCache.size(PREPROCESS)=" << parentCache.size() << endl;
+		//cerr << __PRETTY_FUNCTION__ << ": border.size(PREPROCESS)=" << border.size() << endl;
+		//cerr << __PRETTY_FUNCTION__ << ": parentCache.size(PREPROCESS)=" << parentCache.size() << endl;
 		const TNode* node=border.front();
-		//cerr << __func__ << ": node " << node << endl;
+		//cerr << __PRETTY_FUNCTION__ << ": node " << node << endl;
 		border.pop_front();
 		if (! node)
 			continue;
@@ -91,7 +91,7 @@ GridSlamProcessor::TNodeVector GridSlamProcessor::getTrajectories() const{
 		}
 		////cerr << endl;
 		parentCache.erase(p.first, p.second);
-		//cerr << __func__ << ": parentCache.size(POSTERASE)=" << parentCache.size() << endl;
+		//cerr << __PRETTY_FUNCTION__ << ": parentCache.size(POSTERASE)=" << parentCache.size() << endl;
 		assert(childs==newnode->childs);
 		
 		//unmark the node
@@ -104,7 +104,7 @@ GridSlamProcessor::TNodeVector GridSlamProcessor::getTrajectories() const{
 		}
 		//insert the parent in the cache
 	}
-	//cerr << __func__ << " : checking cloned trajectories" << endl;
+	//cerr << __PRETTY_FUNCTION__ << " : checking cloned trajectories" << endl;
 	for (unsigned int i=0; i<v.size(); i++){
 		TNode* node= v[i];
 		while (node){

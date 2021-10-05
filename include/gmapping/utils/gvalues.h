@@ -15,7 +15,6 @@
   #ifndef __DRAND48_DEFINED__
      #define __DRAND48_DEFINED__
      inline double drand48() { return double(rand()) / RAND_MAX;}
-     inline void srand48(unsigned int seed) { srand(seed); }
   #endif
   #ifndef M_PI
     #define M_PI 3.1415926535897932384626433832795

@@ -7,7 +7,6 @@
 #include <vector>
 #include <list>
 #include <gmapping/utils/point.h>
-#include <gmapping/gridfastslam/gridfastslam_export.h>
 
 #define MAX_LINE_LENGHT (1000000)
 
@@ -17,7 +16,7 @@ namespace GFSReader{
 	
 using namespace std;
 
-struct GRIDFASTSLAM_EXPORT Record{
+struct Record{
 	unsigned int dim;
 	double time;
 	virtual ~Record();
@@ -25,13 +24,13 @@ struct GRIDFASTSLAM_EXPORT Record{
 	virtual void write(ostream& os);
 };
 
-struct GRIDFASTSLAM_EXPORT CommentRecord: public Record{
+struct CommentRecord: public Record{
 	string text;
 	virtual void read(istream& is);
 	virtual void write(ostream& os);
 };
 
-struct GRIDFASTSLAM_EXPORT PoseRecord: public Record{
+struct PoseRecord: public Record{
 	PoseRecord(bool ideal=false);
 	void read(istream& is);
 	virtual void write(ostream& os);
@@ -39,13 +38,13 @@ struct GRIDFASTSLAM_EXPORT PoseRecord: public Record{
 	OrientedPoint pose;
 };
 
-struct GRIDFASTSLAM_EXPORT NeffRecord: public Record{
+struct NeffRecord: public Record{
 	void read(istream& is);
 	virtual void write(ostream& os);
 	double neff;
 };
 
-struct GRIDFASTSLAM_EXPORT EntropyRecord: public Record{
+struct EntropyRecord: public Record{
 	void read(istream& is);
 	virtual void write(ostream& os);
 	double poseEntropy;
@@ -54,23 +53,23 @@ struct GRIDFASTSLAM_EXPORT EntropyRecord: public Record{
 };
 
 
-struct GRIDFASTSLAM_EXPORT OdometryRecord: public Record{
+struct OdometryRecord: public Record{
 	virtual void read(istream& is);
 	vector<OrientedPoint> poses;
 };
 
-struct GRIDFASTSLAM_EXPORT RawOdometryRecord: public Record{
+struct RawOdometryRecord: public Record{
 	virtual void read(istream& is);
 	OrientedPoint pose;
 };
 
-struct GRIDFASTSLAM_EXPORT ScanMatchRecord: public Record{
+struct ScanMatchRecord: public Record{
 	virtual void read(istream& is);
 	vector<OrientedPoint> poses;
 	vector<double> weights;
 };
 
-struct GRIDFASTSLAM_EXPORT LaserRecord: public Record{
+struct LaserRecord: public Record{
 	virtual void read(istream& is);
 	virtual void write(ostream& os);
 	vector<double> readings;
@@ -78,12 +77,12 @@ struct GRIDFASTSLAM_EXPORT LaserRecord: public Record{
 	double weight;
 };
 
-struct GRIDFASTSLAM_EXPORT ResampleRecord: public Record{
+struct ResampleRecord: public Record{
 	virtual void read(istream& is);
 	vector<unsigned int> indexes;
 };
 
-struct GRIDFASTSLAM_EXPORT RecordList: public list<Record*>{
+struct RecordList: public list<Record*>{
 	mutable int sampleSize;
 	istream& read(istream& is);
 	double getLogWeight(unsigned int i) const;

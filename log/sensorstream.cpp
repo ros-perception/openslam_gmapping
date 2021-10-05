@@ -66,7 +66,7 @@ OdometryReading* SensorStream::parseOdometry(std::istream& is, const OdometrySen
 }
 
 RangeReading* SensorStream::parseRange(std::istream& is, const RangeSensor* rs){
-	//cerr << __func__ << endl;
+	//cerr << __PRETTY_FUNCTION__ << endl;
 	if(rs->newFormat){
 		string laser_type, start_angle, field_of_view, angular_resolution, maximum_range, accuracy, remission_mode;
 		is >> laser_type>> start_angle>> field_of_view>> angular_resolution>> maximum_range>> accuracy>> remission_mode;

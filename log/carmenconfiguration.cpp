@@ -131,12 +131,12 @@ SensorMap CarmenConfiguration::computeSensorMap() const{
 			const vector<string> & soff=key->second;
 
 			if( (soff.size()/3<sonar_num)){
-				cerr << __func__ << ": Error " << soff.size()
+				cerr << __PRETTY_FUNCTION__ << ": Error " << soff.size()
 				<< " parameters for defining the sonar offsets"
 				<< " while the specified number of sonars requires "
 				<< sonar_num*3 << " parameters at least" << endl;
 			} else {
-				cerr << __func__ << ": Ok " << soff.size() << " parameters for defining the sonar offsets of " << sonar_num << " devices" << endl;
+				cerr << __PRETTY_FUNCTION__ << ": Ok " << soff.size() << " parameters for defining the sonar offsets of " << sonar_num << " devices" << endl;
 			}
 
 

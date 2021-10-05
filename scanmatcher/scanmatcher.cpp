@@ -341,7 +341,7 @@ double ScanMatcher::optimize(OrientedPoint& pnew, const ScanMatcherMap& map, con
 	double adelta=m_optAngularDelta, ldelta=m_optLinearDelta;
 	unsigned int refinement=0;
 	enum Move{Front, Back, Left, Right, TurnLeft, TurnRight, Done};
-/*	cout << __func__<<  " readings: ";
+/*	cout << __PRETTY_FUNCTION__<<  " readings: ";
 	for (int i=0; i<m_laserBeams; i++){
 		cout << readings[i] << " ";
 	}
@@ -413,8 +413,8 @@ double ScanMatcher::optimize(OrientedPoint& pnew, const ScanMatcherMap& map, con
 //		cout << "currentScore=" << currentScore<< endl;
 		//here we look for the best move;
 	}while (currentScore>bestScore || refinement<m_optRecursiveIterations);
-	//cout << __func__ << "bestScore=" << bestScore<< endl;
-	//cout << __func__ << "iterations=" << c_iterations<< endl;
+	//cout << __PRETTY_FUNCTION__ << "bestScore=" << bestScore<< endl;
+	//cout << __PRETTY_FUNCTION__ << "iterations=" << c_iterations<< endl;
 	pnew=currentPose;
 	return bestScore;
 }
@@ -509,11 +509,11 @@ double ScanMatcher::optimize(OrientedPoint& _mean, ScanMatcher::CovarianceMatrix
 			//update the move list
 		} while(move!=Done);
 		currentPose=bestLocalPose;
-		//cout << __func__ << "currentScore=" << currentScore<< endl;
+		//cout << __PRETTY_FUNCTION__ << "currentScore=" << currentScore<< endl;
 		//here we look for the best move;
 	}while (currentScore>bestScore || refinement<m_optRecursiveIterations);
-	//cout << __func__ << "bestScore=" << bestScore<< endl;
-	//cout << __func__ << "iterations=" << count<< endl;
+	//cout << __PRETTY_FUNCTION__ << "bestScore=" << bestScore<< endl;
+	//cout << __PRETTY_FUNCTION__ << "iterations=" << count<< endl;
 	
 	//normalize the likelihood
 	double lmin=1e9;
