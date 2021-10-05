@@ -8,6 +8,7 @@ on:
       - master
       - "[kmn]*-devel"
       - patch-2
+      - check_40
 
 jobs:
   run_openslam_gmapping_compilation:
