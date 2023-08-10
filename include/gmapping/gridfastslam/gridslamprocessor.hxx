@@ -67,7 +67,7 @@ inline void GridSlamProcessor::normalize(){
   
 }
 
-inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSize, const RangeReading* reading){
+inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSize, std::shared_ptr<RangeReading> reading){
   
   bool hasResampled = false;
   

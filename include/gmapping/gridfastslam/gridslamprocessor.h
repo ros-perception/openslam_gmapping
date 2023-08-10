@@ -5,6 +5,7 @@
 #include <limits>
 #include <fstream>
 #include <vector>
+#include <memory>
 #include <deque>
 #include <gmapping/particlefilter/particlefilter.h>
 #include <gmapping/utils/point.h>
@@ -70,7 +71,7 @@ namespace GMapping {
       TNode* parent;
 
       /**The range reading to which this node is associated*/
-      const RangeReading* reading;
+      std::shared_ptr<RangeReading> reading;
 
       /**The number of childs*/
       unsigned int childs;
@@ -318,7 +319,7 @@ namespace GMapping {
     
     // return if a resampling occured or not
     inline bool resample(const double* plainReading, int adaptParticles, 
-			 const RangeReading* rr=0);
+        std::shared_ptr<RangeReading> rr=std::shared_ptr<RangeReading>());
     
     //tree utilities
     

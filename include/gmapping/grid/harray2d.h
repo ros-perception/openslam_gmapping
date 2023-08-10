@@ -1,6 +1,7 @@
 #ifndef HARRAY2D_H
 #define HARRAY2D_H
 #include <set>
+#include <memory>
 #include <gmapping/utils/point.h>
 #include <gmapping/utils/autoptr.h>
 #include "gmapping/grid/array2d.h"
@@ -8,8 +9,11 @@
 namespace GMapping {
 
 template <class Cell>
-class HierarchicalArray2D: public Array2D<autoptr< Array2D<Cell> > >{
+class HierarchicalArray2D: public Array2D< std::shared_ptr< Array2D<Cell> > >{
 	public:
+    using HCell = std::shared_ptr< Array2D<Cell> >;
+    using HCellArray = std::shared_ptr<HCell[]>;
+    using HCellArray2d = std::shared_ptr<HCellArray[]>;
 		typedef std::set< point<int>, pointcomparator<int> > PointSet;
 		HierarchicalArray2D(int xsize, int ysize, int patchMagnitude=5);
 		HierarchicalArray2D(const HierarchicalArray2D& hg);
@@ -43,20 +47,27 @@ class HierarchicalArray2D: public Array2D<autoptr< Array2D<Cell> > >{
 
 template <class Cell>
 HierarchicalArray2D<Cell>::HierarchicalArray2D(int xsize, int ysize, int patchMagnitude) 
-  :Array2D<autoptr< Array2D<Cell> > >::Array2D((xsize>>patchMagnitude), (ysize>>patchMagnitude)){
+  :Array2D<std::shared_ptr< Array2D<Cell> > >::Array2D((xsize>>patchMagnitude), (ysize>>patchMagnitude)){
 	m_patchMagnitude=patchMagnitude;
 	m_patchSize=1<<m_patchMagnitude;
+    // this->m_xsize = (xsize>>patchMagnitude);
+    // this->m_ysize = (ysize>>patchMagnitude);
 }
 
 template <class Cell>
 HierarchicalArray2D<Cell>::HierarchicalArray2D(const HierarchicalArray2D& hg)
-  :Array2D<autoptr< Array2D<Cell> > >::Array2D((hg.m_xsize>>hg.m_patchMagnitude), (hg.m_ysize>>hg.m_patchMagnitude))  // added by cyrill: if you have a resize error, check this again
+  :Array2D<std::shared_ptr< Array2D<Cell> > >::Array2D((hg.m_xsize>>hg.m_patchMagnitude), (hg.m_ysize>>hg.m_patchMagnitude))  // added by cyrill: if you have a resize error, check this again
 {
 	this->m_xsize=hg.m_xsize;
 	this->m_ysize=hg.m_ysize;
-	this->m_cells=new autoptr< Array2D<Cell> >*[this->m_xsize];
+  if (this->m_cells)
+  {
+    this->m_cells.reset();
+  }
+	// the Array2D m_cells is a std::shared_ptr<std::shared_ptr<Cell[]>[]>, where Cell is std::shared_ptr< Array2D<Cell> >
+  this->m_cells=HCellArray2d(new HCellArray[this->m_xsize], [](auto ptr){ delete[] ptr; });
 	for (int x=0; x<this->m_xsize; x++){
-		this->m_cells[x]=new autoptr< Array2D<Cell> >[this->m_ysize];
+    this->m_cells[x]=HCellArray(new HCell[this->m_ysize]);
 		for (int y=0; y<this->m_ysize; y++)
 			this->m_cells[x][y]=hg.m_cells[x][y];
 	}
@@ -68,11 +79,11 @@ template <class Cell>
 void HierarchicalArray2D<Cell>::resize(int xmin, int ymin, int xmax, int ymax){
 	int xsize=xmax-xmin;
 	int ysize=ymax-ymin;
-	autoptr< Array2D<Cell> > ** newcells=new autoptr< Array2D<Cell> > *[xsize];
+  HCellArray2d newcells=HCellArray2d(new HCellArray[xsize], [](auto ptr){ delete[] ptr; });
 	for (int x=0; x<xsize; x++){
-		newcells[x]=new autoptr< Array2D<Cell> >[ysize];
+    newcells[x]=HCellArray(new HCell[ysize], [](auto ptr){ delete[] ptr; });
 		for (int y=0; y<ysize; y++){
-			newcells[x][y]=autoptr< Array2D<Cell> >(0);
+      newcells[x][y]=HCell();
 		}
 	}
 	int dx= xmin < 0 ? 0 : xmin;
@@ -83,9 +94,7 @@ void HierarchicalArray2D<Cell>::resize(int xmin, int ymin, int xmax, int ymax){
 		for (int y=dy; y<Dy; y++){
 			newcells[x-xmin][y-ymin]=this->m_cells[x][y];
 		}
-		delete [] this->m_cells[x];
 	}
-	delete [] this->m_cells;
 	this->m_cells=newcells;
 	this->m_xsize=xsize;
 	this->m_ysize=ysize; 
@@ -95,14 +104,12 @@ template <class Cell>
 HierarchicalArray2D<Cell>& HierarchicalArray2D<Cell>::operator=(const HierarchicalArray2D& hg){
 //	Array2D<autoptr< Array2D<Cell> > >::operator=(hg);
 	if (this->m_xsize!=hg.m_xsize || this->m_ysize!=hg.m_ysize){
-		for (int i=0; i<this->m_xsize; i++)
-			delete [] this->m_cells[i];
-		delete [] this->m_cells;
+		this->m_cells.reset();
 		this->m_xsize=hg.m_xsize;
 		this->m_ysize=hg.m_ysize;
-		this->m_cells=new autoptr< Array2D<Cell> >*[this->m_xsize];
+    this->m_cells=HCellArray2d(new HCellArray[this->m_xsize], [](auto ptr){ delete[] ptr; });
 		for (int i=0; i<this->m_xsize; i++)
-			this->m_cells[i]=new autoptr< Array2D<Cell> > [this->m_ysize];
+      this->m_cells[i]=HCellArray(new HCell[this->m_ysize]);
 	}
 	for (int x=0; x<this->m_xsize; x++)
 		for (int y=0; y<this->m_ysize; y++)
@@ -137,32 +144,34 @@ Array2D<Cell>* HierarchicalArray2D<Cell>::createPatch(const IntPoint& ) const{
 template <class Cell>
 AccessibilityState  HierarchicalArray2D<Cell>::cellState(int x, int y) const {
 	if (this->isInside(patchIndexes(x,y)))
+  {
 		if(isAllocated(x,y))
 			return (AccessibilityState)((int)Inside|(int)Allocated);
 		else
 			return Inside;
+  }
 	return Outside;
 }
 
 template <class Cell>
 void HierarchicalArray2D<Cell>::allocActiveArea(){
 	for (PointSet::const_iterator it= m_activeArea.begin(); it!=m_activeArea.end(); it++){
-		const autoptr< Array2D<Cell> >& ptr=this->m_cells[it->x][it->y];
+		const HCell ptr=this->m_cells[it->x][it->y];
 		Array2D<Cell>* patch=0;
 		if (!ptr){
 			patch=createPatch(*it);
 		} else{	
 			patch=new Array2D<Cell>(*ptr);
 		}
-		this->m_cells[it->x][it->y]=autoptr< Array2D<Cell> >(patch);
+		this->m_cells[it->x][it->y]=HCell(patch);
 	}
 }
 
 template <class Cell>
 bool HierarchicalArray2D<Cell>::isAllocated(int x, int y) const{
 	IntPoint c=patchIndexes(x,y);
-	autoptr< Array2D<Cell> >& ptr=this->m_cells[c.x][c.y];
-	return (ptr != 0);
+  HCell ptr=this->m_cells[c.x][c.y];
+	return (ptr.get() != nullptr);
 }
 
 template <class Cell>
@@ -178,10 +187,10 @@ Cell& HierarchicalArray2D<Cell>::cell(int x, int y){
 	assert(this->isInside(c.x, c.y));
 	if (!this->m_cells[c.x][c.y]){
 		Array2D<Cell>* patch=createPatch(IntPoint(x,y));
-		this->m_cells[c.x][c.y]=autoptr< Array2D<Cell> >(patch);
+    this->m_cells[c.x][c.y]=HCell(patch);
 		//cerr << "!!! FATAL: your dick is going to fall down" << endl;
 	}
-	autoptr< Array2D<Cell> >& ptr=this->m_cells[c.x][c.y];
+	HCell ptr=this->m_cells[c.x][c.y];
 	return (*ptr).cell(IntPoint(x-(c.x<<m_patchMagnitude),y-(c.y<<m_patchMagnitude)));
 }
 
@@ -189,7 +198,7 @@ template <class Cell>
 const Cell& HierarchicalArray2D<Cell>::cell(int x, int y) const{
 	assert(isAllocated(x,y));
 	IntPoint c=patchIndexes(x,y);
-	const autoptr< Array2D<Cell> >& ptr=this->m_cells[c.x][c.y];
+	const HCell ptr=this->m_cells[c.x][c.y];
 	return (*ptr).cell(IntPoint(x-(c.x<<m_patchMagnitude),y-(c.y<<m_patchMagnitude)));
 }
 

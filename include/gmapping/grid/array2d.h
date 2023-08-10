@@ -1,6 +1,7 @@
 #ifndef ARRAY2D_H
 #define ARRAY2D_H
 
+#include <memory>
 #include <assert.h>
 #include <gmapping/utils/point.h>
 #include "gmapping/grid/accessstate.h"
@@ -11,6 +12,8 @@ namespace GMapping {
 
 template<class Cell, const bool debug=false> class Array2D{
 	public:
+    using CellArray = std::shared_ptr<Cell[]>;
+    using CellArray2d = std::shared_ptr<CellArray[]>;
 		Array2D(int xsize=0, int ysize=0);
 		Array2D& operator=(const Array2D &);
 		Array2D(const Array2D<Cell,debug> &);
@@ -33,10 +36,10 @@ template<class Cell, const bool debug=false> class Array2D{
 		inline int getPatchMagnitude() const{return 0;}
 		inline int getXSize() const {return m_xsize;}
 		inline int getYSize() const {return m_ysize;}
-		inline Cell** cells() {return m_cells;}
-		Cell ** m_cells;
+		inline CellArray2d cells() {return m_cells;}
+    CellArray2d m_cells;
 	protected:
-		int m_xsize, m_ysize;
+		int m_xsize = 0, m_ysize = 0;
 };
 
 
@@ -44,12 +47,17 @@ template <class Cell, const bool debug>
 Array2D<Cell,debug>::Array2D(int xsize, int ysize){
 //	assert(xsize>0);
 //	assert(ysize>0);
-	m_xsize=xsize;
-	m_ysize=ysize;
+  // delete memory
+  if (m_cells)
+  {
+    m_cells.reset();
+  }
+  m_xsize=xsize;
+  m_ysize=ysize;
 	if (m_xsize>0 && m_ysize>0){
-		m_cells=new Cell*[m_xsize];
+    m_cells=CellArray2d(new CellArray[m_xsize], [](auto ptr){ delete[] ptr; });
 		for (int i=0; i<m_xsize; i++)
-			m_cells[i]=new Cell[m_ysize];
+      m_cells[i]=CellArray(new Cell[m_ysize], [](auto ptr){ delete[] ptr; });
 	}
 	else{
 		m_xsize=m_ysize=0;
@@ -65,14 +73,16 @@ Array2D<Cell,debug>::Array2D(int xsize, int ysize){
 template <class Cell, const bool debug>
 Array2D<Cell,debug> & Array2D<Cell,debug>::operator=(const Array2D<Cell,debug> & g){
 	if (debug || m_xsize!=g.m_xsize || m_ysize!=g.m_ysize){
-		for (int i=0; i<m_xsize; i++)
-			delete [] m_cells[i];
-		delete [] m_cells;
+    // delete memory
+    if (m_cells)
+    {
+      m_cells.reset();
+    }
 		m_xsize=g.m_xsize;
 		m_ysize=g.m_ysize;
-		m_cells=new Cell*[m_xsize];
+    m_cells=CellArray2d(new CellArray[m_xsize], [](auto ptr){ delete[] ptr; });
 		for (int i=0; i<m_xsize; i++)
-			m_cells[i]=new Cell[m_ysize];
+      m_cells[i]=CellArray(new Cell[m_ysize], [](auto ptr){ delete[] ptr; });
 	}
 	for (int x=0; x<m_xsize; x++)
 		for (int y=0; y<m_ysize; y++)
@@ -88,11 +98,16 @@ Array2D<Cell,debug> & Array2D<Cell,debug>::operator=(const Array2D<Cell,debug> &
 
 template <class Cell, const bool debug>
 Array2D<Cell,debug>::Array2D(const Array2D<Cell,debug> & g){
+  // delete memory
+  if (m_cells)
+  {
+    m_cells.reset();
+  }
 	m_xsize=g.m_xsize;
 	m_ysize=g.m_ysize;
-	m_cells=new Cell*[m_xsize];
+  m_cells=CellArray2d(new CellArray[m_xsize], [](auto ptr){ delete[] ptr; });
 	for (int x=0; x<m_xsize; x++){
-		m_cells[x]=new Cell[m_ysize];
+    m_cells[x]=CellArray(new Cell[m_ysize], [](auto ptr){ delete[] ptr; });
 		for (int y=0; y<m_ysize; y++)
 			m_cells[x][y]=g.m_cells[x][y];
 	}
@@ -110,12 +125,11 @@ Array2D<Cell,debug>::~Array2D(){
 	std::cerr << "m_xsize= " << m_xsize<< std::endl;
 	std::cerr << "m_ysize= " << m_ysize<< std::endl;
   }
-  for (int i=0; i<m_xsize; i++){
-    delete [] m_cells[i];
-    m_cells[i]=0;
+  // delete memory
+  if (m_cells)
+  {
+    m_cells.reset();
   }
-  delete [] m_cells;
-  m_cells=0;
 }
 
 template <class Cell, const bool debug>
@@ -125,12 +139,11 @@ void Array2D<Cell,debug>::clear(){
 	std::cerr << "m_xsize= " << m_xsize<< std::endl;
 	std::cerr << "m_ysize= " << m_ysize<< std::endl;
   }
-  for (int i=0; i<m_xsize; i++){
-    delete [] m_cells[i];
-    m_cells[i]=0;
+  // delete memory
+  if (m_cells)
+  {
+    m_cells.reset();
   }
-  delete [] m_cells;
-  m_cells=0;
   m_xsize=0;
   m_ysize=0;
 }
@@ -140,9 +153,9 @@ template <class Cell, const bool debug>
 void Array2D<Cell,debug>::resize(int xmin, int ymin, int xmax, int ymax){
 	int xsize=xmax-xmin;
 	int ysize=ymax-ymin;
-	Cell ** newcells=new Cell *[xsize];
+  CellArray2d newcells=CellArray2d(new CellArray[xsize], [](auto ptr){ delete[] ptr; });
 	for (int x=0; x<xsize; x++){
-		newcells[x]=new Cell[ysize];
+    newcells[x]=CellArray(new Cell[ysize], [](auto ptr){ delete[] ptr; });;
 	}
 	int dx= xmin < 0 ? 0 : xmin;
 	int dy= ymin < 0 ? 0 : ymin;
@@ -152,9 +165,7 @@ void Array2D<Cell,debug>::resize(int xmin, int ymin, int xmax, int ymax){
 		for (int y=dy; y<Dy; y++){
 			newcells[x-xmin][y-ymin]=this->m_cells[x][y];
 		}
-		delete [] this->m_cells[x];
 	}
-	delete [] this->m_cells;
 	this->m_cells=newcells;
 	this->m_xsize=xsize;
 	this->m_ysize=ysize; 
