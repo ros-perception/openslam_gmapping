@@ -165,6 +165,10 @@ int main(int argc, const char * const * argv){
 			}
 			const RangeSensor* rs=dynamic_cast<const RangeSensor*>(rr->getSensor());
 			assert (rs && rs->beams().size()==rr->size());
+            if (!rs || rs->beams().size() != rr->size()){
+                cout << "Invalid RangeSensor." << endl;
+                return -1;
+            }
 			odopathStream << rr->getPose().x << " " << rr->getPose().y << endl;
 			scanmatcher.processScan(*rr);
 			OrientedPoint p=scanmatcher.getPose();
