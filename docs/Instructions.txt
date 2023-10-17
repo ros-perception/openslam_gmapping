@@ -32,7 +32,7 @@
 	5) compile the software
 		make
 
-	At rhis point the following binaries should have been generated in the mapping/bin directory
+	At this point the following binaries should have been generated in the mapping/bin directory
 	
 	autoptr_test
 	converter
@@ -109,10 +109,10 @@
 		The grid fast slam (gfs) algorithm is the coolest algorithm in the suite.
 		It allows to build maps with a fast slam based algorithm, by adopting a smart choice of the prior distribution.
 		There are three gfs tools here:
-		1) the gui based tool (gfs_gui), which allows to track what is appening while building a map
+		1) the gui based tool (gfs_gui), which allows to track what is happening while building a map
 		2) the off line tool (gfs_test), which allows to process a carmen log and to produce a *.gfs file (which is the gfs output format),
-		containing all of the informations produced by the algorithm while running
-		3) the gfs2log utility, which converts the gfs outoput file in a log file, tracking the best particle.
+		containing all of the information produced by the algorithm while running
+		3) the gfs2log utility, which converts the gfs output file in a log file, tracking the best particle.
 		It is possible to suddenly process the log file in order to obtain the occupancy grid as specified in the scanmatcher.
 		
 		The options of gfs_gui and gfs_test are the same, and moreover, since they are based on the scanmatcher, they accepts all of the options for the scanmatcher.
