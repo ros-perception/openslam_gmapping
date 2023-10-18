@@ -8,7 +8,7 @@
 #include <iostream>
 #include <gmapping/utils/gvalues.h>
 #include <gmapping/scanmatcher/scanmatcher_export.h>
-#define LASER_MAXBEAMS 2048
+#include <vector>
 
 namespace GMapping {
 
@@ -35,7 +35,7 @@ class SCANMATCHER_EXPORT ScanMatcher{
 		inline unsigned int likelihoodAndScore(double& s, double& l, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const;
 		double likelihood(double& lmax, OrientedPoint& mean, CovarianceMatrix& cov, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings);
 		double likelihood(double& _lmax, OrientedPoint& _mean, CovarianceMatrix& _cov, const ScanMatcherMap& map, const OrientedPoint& p, Gaussian3& odometry, const double* readings, double gain=180.);
-		inline const double* laserAngles() const { return m_laserAngles; }
+		inline const double* laserAngles() const { return m_laserAngles.data(); }
 		inline unsigned int laserBeams() const { return m_laserBeams; }
 		
 		static const double nullLikelihood;
@@ -45,7 +45,7 @@ class SCANMATCHER_EXPORT ScanMatcher{
 		
 		/**laser parameters*/
 		unsigned int m_laserBeams;
-		double       m_laserAngles[LASER_MAXBEAMS];
+		std::vector<double>       m_laserAngles;
 		//OrientedPoint m_laserPose;
 		PARAM_SET_GET(OrientedPoint, laserPose, protected, public, public)
 		PARAM_SET_GET(double, laserMaxRange, protected, public, public)
@@ -75,7 +75,7 @@ class SCANMATCHER_EXPORT ScanMatcher{
 };
 
 inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const{
-	const double * angle=m_laserAngles+m_initialBeamsSkip;
+	std::vector<double>::const_iterator angle=m_laserAngles.begin()+m_initialBeamsSkip;
 	OrientedPoint lp=p;
 	lp.x+=cos(p.theta)*m_laserPose.x-sin(p.theta)*m_laserPose.y;
 	lp.y+=sin(p.theta)*m_laserPose.x+cos(p.theta)*m_laserPose.y;
@@ -90,12 +90,12 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 		if (*r>m_usableRange||*r==0.0) continue;
 		if (skip) continue;
 		Point phit=lp;
-		phit.x+=*r*cos(lp.theta+*angle);
-		phit.y+=*r*sin(lp.theta+*angle);
+		phit.x+=*r*cos(lp.theta+(*angle));
+		phit.y+=*r*sin(lp.theta+(*angle));
 		IntPoint iphit=map.world2map(phit);
 		Point pfree=lp;
-		pfree.x+=(*r-map.getDelta()*freeDelta)*cos(lp.theta+*angle);
-		pfree.y+=(*r-map.getDelta()*freeDelta)*sin(lp.theta+*angle);
+		pfree.x+=(*r-map.getDelta()*freeDelta)*cos(lp.theta+(*angle));
+		pfree.y+=(*r-map.getDelta()*freeDelta)*sin(lp.theta+(*angle));
  		pfree=pfree-phit;
 		IntPoint ipfree=map.world2map(pfree);
 		bool found=false;
@@ -143,7 +143,7 @@ inline double ScanMatcher::icpStep(OrientedPoint & pret, const ScanMatcherMap& m
 
 inline double ScanMatcher::score(const ScanMatcherMap& map, const OrientedPoint& p, const double* readings) const{
 	double s=0;
-	const double * angle=m_laserAngles+m_initialBeamsSkip;
+	std::vector<double>::const_iterator angle=m_laserAngles.begin()+m_initialBeamsSkip;
 	OrientedPoint lp=p;
 	lp.x+=cos(p.theta)*m_laserPose.x-sin(p.theta)*m_laserPose.y;
 	lp.y+=sin(p.theta)*m_laserPose.x+cos(p.theta)*m_laserPose.y;
@@ -155,12 +155,12 @@ inline double ScanMatcher::score(const ScanMatcherMap& map, const OrientedPoint&
 		skip=skip>m_likelihoodSkip?0:skip;
 		if (skip||*r>m_usableRange||*r==0.0) continue;
 		Point phit=lp;
-		phit.x+=*r*cos(lp.theta+*angle);
-		phit.y+=*r*sin(lp.theta+*angle);
+		phit.x+=*r*cos(lp.theta+(*angle));
+		phit.y+=*r*sin(lp.theta+(*angle));
 		IntPoint iphit=map.world2map(phit);
 		Point pfree=lp;
-		pfree.x+=(*r-map.getDelta()*freeDelta)*cos(lp.theta+*angle);
-		pfree.y+=(*r-map.getDelta()*freeDelta)*sin(lp.theta+*angle);
+		pfree.x+=(*r-map.getDelta()*freeDelta)*cos(lp.theta+(*angle));
+		pfree.y+=(*r-map.getDelta()*freeDelta)*sin(lp.theta+(*angle));
  		pfree=pfree-phit;
 		IntPoint ipfree=map.world2map(pfree);
 		bool found=false;
@@ -193,7 +193,7 @@ inline unsigned int ScanMatcher::likelihoodAndScore(double& s, double& l, const 
 	using namespace std;
 	l=0;
 	s=0;
-	const double * angle=m_laserAngles+m_initialBeamsSkip;
+	std::vector<double>::const_iterator angle=m_laserAngles.begin()+m_initialBeamsSkip;
 	OrientedPoint lp=p;
 	lp.x+=cos(p.theta)*m_laserPose.x-sin(p.theta)*m_laserPose.y;
 	lp.y+=sin(p.theta)*m_laserPose.x+cos(p.theta)*m_laserPose.y;
@@ -208,12 +208,12 @@ inline unsigned int ScanMatcher::likelihoodAndScore(double& s, double& l, const 
 		if (*r>m_usableRange) continue;
 		if (skip) continue;
 		Point phit=lp;
-		phit.x+=*r*cos(lp.theta+*angle);
-		phit.y+=*r*sin(lp.theta+*angle);
+		phit.x+=*r*cos(lp.theta+(*angle));
+		phit.y+=*r*sin(lp.theta+(*angle));
 		IntPoint iphit=map.world2map(phit);
 		Point pfree=lp;
-		pfree.x+=(*r-freeDelta)*cos(lp.theta+*angle);
-		pfree.y+=(*r-freeDelta)*sin(lp.theta+*angle);
+		pfree.x+=(*r-freeDelta)*cos(lp.theta+(*angle));
+		pfree.y+=(*r-freeDelta)*sin(lp.theta+(*angle));
 		pfree=pfree-phit;
 		IntPoint ipfree=map.world2map(pfree);
 		bool found=false;

@@ -131,13 +131,13 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 	if (lp.y>max.y) max.y=lp.y;
 	
 	/*determine the size of the area*/
-	const double * angle=m_laserAngles+m_initialBeamsSkip;
+	std::vector<double>::const_iterator angle=m_laserAngles.begin()+m_initialBeamsSkip;
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++){
 		if (*r>m_laserMaxRange||*r==0.0||isnan(*r)) continue;
 		double d=*r>m_usableRange?m_usableRange:*r;
 		Point phit=lp;
-		phit.x+=d*cos(lp.theta+*angle);
-		phit.y+=d*sin(lp.theta+*angle);
+		phit.x+=d*cos(lp.theta+(*angle));
+		phit.y+=d*sin(lp.theta+(*angle));
 		if (phit.x<min.x) min.x=phit.x;
 		if (phit.y<min.y) min.y=phit.y;
 		if (phit.x>max.x) max.x=phit.x;
@@ -161,7 +161,7 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 	
 	HierarchicalArray2D<PointAccumulator>::PointSet activeArea;
 	/*allocate the active area*/
-	angle=m_laserAngles+m_initialBeamsSkip;
+	angle=m_laserAngles.begin()+m_initialBeamsSkip;
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++)
 		if (m_generateMap){
 			double d=*r;
@@ -169,7 +169,7 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 				continue;
 			if (d>m_usableRange)
 				d=m_usableRange;
-			Point phit=lp+Point(d*cos(lp.theta+*angle),d*sin(lp.theta+*angle));
+			Point phit=lp+Point(d*cos(lp.theta+(*angle)),d*sin(lp.theta+(*angle)));
 			IntPoint p0=map.world2map(lp);
 			IntPoint p1=map.world2map(phit);
 			
@@ -226,7 +226,7 @@ double ScanMatcher::registerScan(ScanMatcherMap& map, const OrientedPoint& p, co
 	IntPoint p0=map.world2map(lp);
 	
 	
-	const double * angle=m_laserAngles+m_initialBeamsSkip;
+	std::vector<double>::const_iterator angle=m_laserAngles.begin()+m_initialBeamsSkip;
 	double esum=0;
 	for (const double* r=readings+m_initialBeamsSkip; r<readings+m_laserBeams; r++, angle++)
 		if (m_generateMap){
@@ -235,7 +235,7 @@ double ScanMatcher::registerScan(ScanMatcherMap& map, const OrientedPoint& p, co
 				continue;
 			if (d>m_usableRange)
 				d=m_usableRange;
-			Point phit=lp+Point(d*cos(lp.theta+*angle),d*sin(lp.theta+*angle));
+			Point phit=lp+Point(d*cos(lp.theta+(*angle)),d*sin(lp.theta+(*angle)));
 			IntPoint p1=map.world2map(phit);
 			//IntPoint linePoints[20000] ;
 			GridLineTraversalLine line;
@@ -257,8 +257,8 @@ double ScanMatcher::registerScan(ScanMatcherMap& map, const OrientedPoint& p, co
 		} else {
 			if (*r>m_laserMaxRange||*r>m_usableRange||*r==0.0||isnan(*r)) continue;
 			Point phit=lp;
-			phit.x+=*r*cos(lp.theta+*angle);
-			phit.y+=*r*sin(lp.theta+*angle);
+			phit.x+=*r*cos(lp.theta+(*angle));
+			phit.y+=*r*sin(lp.theta+(*angle));
 			IntPoint p1=map.world2map(phit);
 			assert(p1.x>=0 && p1.y>=0);
 			map.cell(p1).update(true,phit);
@@ -560,11 +560,10 @@ void ScanMatcher::setLaserParameters
 	/*if (m_laserAngles)
 		delete [] m_laserAngles;
 	*/
-	assert(beams<LASER_MAXBEAMS);
 	m_laserPose=lpose;
 	m_laserBeams=beams;
 	//m_laserAngles=new double[beams];
-	memcpy(m_laserAngles, angles, sizeof(double)*m_laserBeams);	
+	m_laserAngles = vector<double>(angles, angles+beams);
 }
 	
 
