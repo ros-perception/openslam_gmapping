@@ -54,16 +54,22 @@ Array2D<Cell,debug>::Array2D(int xsize, int ysize){
   }
   m_xsize=xsize;
   m_ysize=ysize;
-	if (m_xsize>0 && m_ysize>0){
+	if (m_xsize>0 && m_ysize>0)
+  {
     m_cells=CellArray2d(new CellArray[m_xsize], [](auto ptr){ delete[] ptr; });
 		for (int i=0; i<m_xsize; i++)
+    {
       m_cells[i]=CellArray(new Cell[m_ysize], [](auto ptr){ delete[] ptr; });
+    }
 	}
-	else{
+	else
+  {
+    std::cerr << __func__ << "Invalid size: " << "m_xsize= " << m_xsize << " m_ysize= " << m_ysize << " - resetting " << std::endl;
 		m_xsize=m_ysize=0;
-		m_cells=0;
+    m_cells.reset();
 	}
-	if (debug){
+	if (debug)
+  {
 		std::cerr << __func__ << std::endl;
 		std::cerr << "m_xsize= " << m_xsize<< std::endl;
 		std::cerr << "m_ysize= " << m_ysize<< std::endl;
@@ -72,7 +78,8 @@ Array2D<Cell,debug>::Array2D(int xsize, int ysize){
 
 template <class Cell, const bool debug>
 Array2D<Cell,debug> & Array2D<Cell,debug>::operator=(const Array2D<Cell,debug> & g){
-	if (debug || m_xsize!=g.m_xsize || m_ysize!=g.m_ysize){
+	if (debug || m_xsize!=g.m_xsize || m_ysize!=g.m_ysize)
+  {
     // delete memory
     if (m_cells)
     {
@@ -80,15 +87,31 @@ Array2D<Cell,debug> & Array2D<Cell,debug>::operator=(const Array2D<Cell,debug> &
     }
 		m_xsize=g.m_xsize;
 		m_ysize=g.m_ysize;
-    m_cells=CellArray2d(new CellArray[m_xsize], [](auto ptr){ delete[] ptr; });
-		for (int i=0; i<m_xsize; i++)
-      m_cells[i]=CellArray(new Cell[m_ysize], [](auto ptr){ delete[] ptr; });
+    if (m_xsize > 0 && m_ysize > 0)
+    {
+      m_cells = CellArray2d(new CellArray[m_xsize], [](auto ptr) { delete[] ptr; });
+      for (int i = 0; i < m_xsize; i++)
+      {
+        m_cells[i] = CellArray(new Cell[m_ysize], [](auto ptr) { delete[] ptr; });
+      }
+    }
+    else
+    {
+      std::cerr << __func__ << "Invalid size: " << "m_xsize= " << m_xsize << " m_ysize= " << m_ysize << " - resetting " << std::endl;
+      m_xsize = m_ysize = 0;
+      m_cells.reset();
+    }
 	}
 	for (int x=0; x<m_xsize; x++)
-		for (int y=0; y<m_ysize; y++)
-			m_cells[x][y]=g.m_cells[x][y];
+  {
+    for (int y = 0; y < m_ysize; y++)
+    {
+      m_cells[x][y] = g.m_cells[x][y];
+    }
+  }
 	
-	if (debug){
+	if (debug)
+  {
 		std::cerr << __func__ << std::endl;
 		std::cerr << "m_xsize= " << m_xsize<< std::endl;
 		std::cerr << "m_ysize= " << m_ysize<< std::endl;
@@ -97,7 +120,8 @@ Array2D<Cell,debug> & Array2D<Cell,debug>::operator=(const Array2D<Cell,debug> &
 }
 
 template <class Cell, const bool debug>
-Array2D<Cell,debug>::Array2D(const Array2D<Cell,debug> & g){
+Array2D<Cell,debug>::Array2D(const Array2D<Cell,debug> & g)
+{
   // delete memory
   if (m_cells)
   {
@@ -105,12 +129,24 @@ Array2D<Cell,debug>::Array2D(const Array2D<Cell,debug> & g){
   }
 	m_xsize=g.m_xsize;
 	m_ysize=g.m_ysize;
-  m_cells=CellArray2d(new CellArray[m_xsize], [](auto ptr){ delete[] ptr; });
-	for (int x=0; x<m_xsize; x++){
-    m_cells[x]=CellArray(new Cell[m_ysize], [](auto ptr){ delete[] ptr; });
-		for (int y=0; y<m_ysize; y++)
-			m_cells[x][y]=g.m_cells[x][y];
-	}
+  if (m_xsize > 0 && m_ysize > 0)
+  {
+    m_cells = CellArray2d(new CellArray[m_xsize], [](auto ptr) { delete[] ptr; });
+    for (int x = 0; x < m_xsize; x++)
+    {
+      m_cells[x] = CellArray(new Cell[m_ysize], [](auto ptr) { delete[] ptr; });
+      for (int y = 0; y < m_ysize; y++)
+      {
+        m_cells[x][y] = g.m_cells[x][y];
+      }
+    }
+  }
+  else
+  {
+    std::cerr << __func__ << "Invalid size: " << "m_xsize= " << m_xsize << " m_ysize= " << m_ysize << " - resetting " << std::endl;
+    m_xsize=m_ysize=0;
+    m_cells.reset();
+  }
 	if (debug){
 		std::cerr << __func__ << std::endl;
 		std::cerr << "m_xsize= " << m_xsize<< std::endl;
@@ -122,8 +158,8 @@ template <class Cell, const bool debug>
 Array2D<Cell,debug>::~Array2D(){
   if (debug){
   	std::cerr << __func__ << std::endl;
-	std::cerr << "m_xsize= " << m_xsize<< std::endl;
-	std::cerr << "m_ysize= " << m_ysize<< std::endl;
+    std::cerr << "m_xsize= " << m_xsize<< std::endl;
+    std::cerr << "m_ysize= " << m_ysize<< std::endl;
   }
   // delete memory
   if (m_cells)
@@ -136,8 +172,8 @@ template <class Cell, const bool debug>
 void Array2D<Cell,debug>::clear(){
   if (debug){
   	std::cerr << __func__ << std::endl;
-	std::cerr << "m_xsize= " << m_xsize<< std::endl;
-	std::cerr << "m_ysize= " << m_ysize<< std::endl;
+    std::cerr << "m_xsize= " << m_xsize<< std::endl;
+    std::cerr << "m_ysize= " << m_ysize<< std::endl;
   }
   // delete memory
   if (m_cells)
@@ -151,8 +187,13 @@ void Array2D<Cell,debug>::clear(){
 
 template <class Cell, const bool debug>
 void Array2D<Cell,debug>::resize(int xmin, int ymin, int xmax, int ymax){
-	int xsize=xmax-xmin;
-	int ysize=ymax-ymin;
+	int xsize = xmax-xmin;
+	int ysize = ymax-ymin;
+  if (xsize <= 0 || ysize <= 0)
+  {
+    std::cerr << __func__ << "Invalid reset size: " << "xsize= " << xsize << " ysize= " << ysize << " - no-op " << std::endl;
+    return;
+  }
   CellArray2d newcells=CellArray2d(new CellArray[xsize], [](auto ptr){ delete[] ptr; });
 	for (int x=0; x<xsize; x++){
     newcells[x]=CellArray(new Cell[ysize], [](auto ptr){ delete[] ptr; });;

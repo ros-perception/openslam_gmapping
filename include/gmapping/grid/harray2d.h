@@ -64,25 +64,44 @@ HierarchicalArray2D<Cell>::HierarchicalArray2D(const HierarchicalArray2D& hg)
   {
     this->m_cells.reset();
   }
-	// the Array2D m_cells is a std::shared_ptr<std::shared_ptr<Cell[]>[]>, where Cell is std::shared_ptr< Array2D<Cell> >
-  this->m_cells=HCellArray2d(new HCellArray[this->m_xsize], [](auto ptr){ delete[] ptr; });
-	for (int x=0; x<this->m_xsize; x++){
-    this->m_cells[x]=HCellArray(new HCell[this->m_ysize]);
-		for (int y=0; y<this->m_ysize; y++)
-			this->m_cells[x][y]=hg.m_cells[x][y];
-	}
-	this->m_patchMagnitude=hg.m_patchMagnitude;
-	this->m_patchSize=hg.m_patchSize;
+  if (this->m_xsize > 0 && this->m_ysize > 0)
+  {
+    // the Array2D m_cells is a std::shared_ptr<std::shared_ptr<Cell[]>[]>, where Cell is std::shared_ptr< Array2D<Cell> >
+    this->m_cells = HCellArray2d(new HCellArray[this->m_xsize], [](auto ptr) { delete[] ptr; });
+    for (int x = 0; x < this->m_xsize; x++)
+    {
+      this->m_cells[x] = HCellArray(new HCell[this->m_ysize]);
+      for (int y = 0; y < this->m_ysize; y++)
+      {
+        this->m_cells[x][y] = hg.m_cells[x][y];
+      }
+    }
+    this->m_patchMagnitude = hg.m_patchMagnitude;
+    this->m_patchSize = hg.m_patchSize;
+  }
+  else
+  {
+    std::cerr << __func__ << "Invalid size: " << "m_xsize= " << this->m_xsize << " m_ysize= " << this->m_ysize << " - resetting " << std::endl;
+    this->m_xsize = this->m_ysize=0;
+    this->m_cells.reset();
+  }
 }
 
 template <class Cell>
 void HierarchicalArray2D<Cell>::resize(int xmin, int ymin, int xmax, int ymax){
 	int xsize=xmax-xmin;
 	int ysize=ymax-ymin;
+  if (xsize <= 0 || ysize <= 0)
+  {
+    std::cerr << __func__ << "Invalid reset size: " << "xsize= " << xsize << " ysize= " << ysize << " - no-op " << std::endl;
+    return;
+  }
   HCellArray2d newcells=HCellArray2d(new HCellArray[xsize], [](auto ptr){ delete[] ptr; });
-	for (int x=0; x<xsize; x++){
+	for (int x=0; x<xsize; x++)
+  {
     newcells[x]=HCellArray(new HCell[ysize], [](auto ptr){ delete[] ptr; });
-		for (int y=0; y<ysize; y++){
+		for (int y=0; y<ysize; y++)
+    {
       newcells[x][y]=HCell();
 		}
 	}
@@ -90,8 +109,10 @@ void HierarchicalArray2D<Cell>::resize(int xmin, int ymin, int xmax, int ymax){
 	int dy= ymin < 0 ? 0 : ymin;
 	int Dx=xmax<this->m_xsize?xmax:this->m_xsize;
 	int Dy=ymax<this->m_ysize?ymax:this->m_ysize;
-	for (int x=dx; x<Dx; x++){
-		for (int y=dy; y<Dy; y++){
+	for (int x=dx; x<Dx; x++)
+  {
+		for (int y=dy; y<Dy; y++)
+    {
 			newcells[x-xmin][y-ymin]=this->m_cells[x][y];
 		}
 	}
@@ -107,9 +128,21 @@ HierarchicalArray2D<Cell>& HierarchicalArray2D<Cell>::operator=(const Hierarchic
 		this->m_cells.reset();
 		this->m_xsize=hg.m_xsize;
 		this->m_ysize=hg.m_ysize;
-    this->m_cells=HCellArray2d(new HCellArray[this->m_xsize], [](auto ptr){ delete[] ptr; });
-		for (int i=0; i<this->m_xsize; i++)
-      this->m_cells[i]=HCellArray(new HCell[this->m_ysize]);
+
+    if (this->m_xsize > 0 && this->m_ysize > 0)
+    {
+      this->m_cells = HCellArray2d(new HCellArray[this->m_xsize], [](auto ptr) { delete[] ptr; });
+      for (int i = 0; i < this->m_xsize; i++)
+      {
+        this->m_cells[i] = HCellArray(new HCell[this->m_ysize]);
+      }
+    }
+    else
+    {
+      std::cerr << __func__ << "Invalid size: " << "m_xsize= " << this->m_xsize << " m_ysize= " << this->m_ysize << " - resetting " << std::endl;
+      this->m_xsize = this->m_ysize = 0;
+      this->m_cells.reset();
+    }
 	}
 	for (int x=0; x<this->m_xsize; x++)
 		for (int y=0; y<this->m_ysize; y++)
