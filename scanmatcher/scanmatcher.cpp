@@ -170,7 +170,7 @@ void ScanMatcher::computeActiveArea(ScanMatcherMap& map, const OrientedPoint& p,
 			if (d>m_usableRange)
 				d=m_usableRange;
 			Point phit=lp+Point(d*cos(lp.theta+*angle),d*sin(lp.theta+*angle));
-			IntPoint p0=map.world2map(lp);
+			p0=map.world2map(lp);
 			IntPoint p1=map.world2map(phit);
 			
 			//IntPoint linePoints[20000] ;
@@ -432,7 +432,7 @@ double ScanMatcher::optimize(OrientedPoint& _mean, ScanMatcher::CovarianceMatrix
 	double bestScore=-1;
 	OrientedPoint currentPose=init;
 	ScoredMove sm={currentPose,0,0};
-	unsigned int matched=likelihoodAndScore(sm.score, sm.likelihood, map, currentPose, readings);
+    (void)likelihoodAndScore(sm.score, sm.likelihood, map, currentPose, readings);
 	double currentScore=sm.score;
 	moveList.push_back(sm);
 	double adelta=m_optAngularDelta, ldelta=m_optLinearDelta;
@@ -497,7 +497,7 @@ double ScanMatcher::optimize(OrientedPoint& _mean, ScanMatcher::CovarianceMatrix
 			localScore=odo_gain*score(map, localPose, readings);
 			//update the score
 			count++;
-			matched=likelihoodAndScore(localScore, localLikelihood, map, localPose, readings);
+            (void)likelihoodAndScore(localScore, localLikelihood, map, localPose, readings);
 			if (localScore>currentScore){
 				currentScore=localScore;
 				bestLocalPose=localPose;

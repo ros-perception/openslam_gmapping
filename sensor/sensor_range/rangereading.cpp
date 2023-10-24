@@ -58,9 +58,10 @@ unsigned int RangeReading::rawView(double* v, double density) const{
 };
 
 unsigned int RangeReading::activeBeams(double density) const{
-	if (density==0.)
+	if (density==0.){
 		return size();
-		int ab=0;
+    }
+	int ab=0;
 	Point lastPoint(0,0);
 	uint suppressed=0;
 	for (unsigned int i=0; i<size(); i++){

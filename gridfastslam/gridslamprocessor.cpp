@@ -409,8 +409,8 @@ void GridSlamProcessor::setMotionModelParameters
       }
       m_infoStream << "m_count " << m_count << endl;
 
-      RangeReading* reading_copy = 
-              new RangeReading(reading.size(),
+      std::shared_ptr<RangeReading> reading_copy =
+              std::make_shared<RangeReading>(reading.size(),
                                &(reading[0]),
                                static_cast<const RangeSensor*>(reading.getSensor()),
                                reading.getTime());
@@ -466,7 +466,8 @@ void GridSlamProcessor::setMotionModelParameters
       updateTreeWeights(false);
       //		cerr  << ".done!" <<endl;
       
-      delete [] plainReading;
+      delete[] plainReading;
+      plainReading=0;
       m_lastPartPose=m_odoPose; //update the past pose for the next iteration
       m_linearDistance=0;
       m_angularDistance=0;

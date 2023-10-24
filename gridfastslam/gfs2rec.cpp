@@ -375,14 +375,9 @@ int main (int argc, const char * const * argv){
 		return -1;
 	}
 	bool err=0;
-	bool neff=0;
 	unsigned int  c=1;
 	if (!strcmp(argv[c],"-err")){
 		err=true;
-		c++;
-	}
-	if (!strcmp(argv[c],"-neff")){
-		neff=true;
 		c++;
 	}
 	ifstream is(argv[c]);
